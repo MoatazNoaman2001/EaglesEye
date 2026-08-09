@@ -1,0 +1,21 @@
+# Build output
+platform/**/target/
+*.class
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Hub: keep tasks.json and journal.json (they are the project state), ignore rotating backups
+hub/data/backups/
+
+# Secrets — never in git (NFR-08)
+.env
+*.env
+!.env.example
+secrets/
