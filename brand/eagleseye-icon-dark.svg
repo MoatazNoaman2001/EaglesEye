@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <!-- EaglesEye brand mark — "Cyber Raptor" (final, v1)
+       Version for dark backgrounds: light head, glowing eye pops. -->
+  <defs>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2.4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <path d="M16 76 L22 44 L40 24 L62 18 L86 28 L112 50 L96 56 L102 64 L86 62 L74 66 L66 74 L56 68 L50 80 L40 74 L34 86 L24 80 Z" fill="#e8eef6"/>
+  <path d="M40 24 L62 18 L86 28 L64 40 Z" fill="#9cc9ec"/>
+  <path d="M86 28 L112 50 L96 56 L82 44 Z" fill="#5ea8e0"/>
+  <path d="M96 56 L102 64 L86 62 Z" fill="#7db9e8"/>
+  <path d="M22 44 L64 40 L56 68 L50 80 L40 74 L34 86 L24 80 L16 76 Z" fill="#cfe0f0"/>
+  <g filter="url(#glow)">
+    <circle cx="64" cy="46" r="13" fill="none" stroke="#1fc3f0" stroke-width="2.4"/>
+    <circle cx="64" cy="46" r="8" fill="none" stroke="#1fc3f0" stroke-width="1.4" stroke-dasharray="9 4"/>
+    <circle cx="64" cy="46" r="4" fill="#1fc3f0"/>
+    <path d="M64 29 V35 M64 57 V63 M47 46 H53 M75 46 H81" stroke="#1fc3f0" stroke-width="2.2" stroke-linecap="round"/>
+  </g>
+</svg>

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 120">
+  <!-- EaglesEye horizontal lockup — icon + wordmark.
+       Note: wordmark uses system font as placeholder; final typography TBD (see README). -->
+  <defs>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2.2" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g>
+    <path d="M16 76 L22 44 L40 24 L62 18 L86 28 L112 50 L96 56 L102 64 L86 62 L74 66 L66 74 L56 68 L50 80 L40 74 L34 86 L24 80 Z" fill="#1f3a5f"/>
+    <path d="M40 24 L62 18 L86 28 L64 40 Z" fill="#3d8fd6"/>
+    <path d="M86 28 L112 50 L96 56 L82 44 Z" fill="#5ea8e0"/>
+    <path d="M96 56 L102 64 L86 62 Z" fill="#2a6cb5"/>
+    <path d="M22 44 L64 40 L56 68 L50 80 L40 74 L34 86 L24 80 L16 76 Z" fill="#27476e"/>
+    <g filter="url(#glow)">
+      <circle cx="64" cy="46" r="13" fill="none" stroke="#1fc3f0" stroke-width="2.4"/>
+      <circle cx="64" cy="46" r="8" fill="none" stroke="#1fc3f0" stroke-width="1.4" stroke-dasharray="9 4"/>
+      <circle cx="64" cy="46" r="4" fill="#1fc3f0"/>
+      <path d="M64 29 V35 M64 57 V63 M47 46 H53 M75 46 H81" stroke="#1fc3f0" stroke-width="2.2" stroke-linecap="round"/>
+    </g>
+  </g>
+  <text x="126" y="72" font-family="'Segoe UI', system-ui, sans-serif" font-size="46" font-weight="800" fill="#1f3a5f">Eagles<tspan fill="#14a8d6">Eye</tspan></text>
+  <text x="128" y="94" font-family="'Segoe UI', system-ui, sans-serif" font-size="12" letter-spacing="3.5" font-weight="600" fill="#5b6b7d">WE SEE YOU — WHEREVER YOU ARE</text>
+</svg>
