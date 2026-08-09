@@ -9,6 +9,8 @@ quarkus:
     enabled: false
   flyway:
     migrate-at-start: true
+  mailer:
+    from: digest@eagleseye.local   # dev: mailer mocks and logs; real SMTP at deploy time
   # the web console (React+Vite) lives in src/main/webui, served by Quinoa;
   # dev mode proxies Vite's hot-reload server, prod builds it into the jar
   quinoa:
@@ -37,6 +39,9 @@ mp:
     bootstrap:
       servers: localhost:9092
   eagleseye:
+    digest:
+      email:
+        to: manotrip78@gmail.com   # dev: mock mailer logs instead of sending
     traccar:
       url: http://localhost:8083
       token: ${EE_TRACCAR_TOKEN:ee-dev-service-token}

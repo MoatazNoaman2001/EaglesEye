@@ -5,6 +5,7 @@ import LiveMapPage from "./pages/LiveMapPage";
 import VehiclesPage from "./pages/VehiclesPage";
 import TripsPage from "./pages/TripsPage";
 import AlertsPage from "./pages/AlertsPage";
+import DigestPage from "./pages/DigestPage";
 import RulesPage from "./pages/RulesPage";
 import SettingsPage from "./pages/SettingsPage";
 
@@ -33,6 +34,7 @@ export default function App() {
           <NavLink to="/" end>{t("nav.liveMap")}</NavLink>
           <NavLink to="/vehicles">{t("nav.vehicles")}</NavLink>
           <NavLink to="/trips">{t("nav.trips")}</NavLink>
+          <NavLink to="/digest">{t("nav.digest")}</NavLink>
           <NavLink to="/alerts">{t("nav.alerts")}</NavLink>
           <NavLink to="/rules">{t("nav.rules")}</NavLink>
           <NavLink to="/settings">{t("nav.settings")}</NavLink>
@@ -46,6 +48,7 @@ export default function App() {
           <Route path="/" element={<LiveMapPage />} />
           <Route path="/vehicles" element={<VehiclesPage />} />
           <Route path="/trips" element={<TripsPage />} />
+          <Route path="/digest" element={<DigestPage />} />
           <Route path="/alerts" element={<AlertsPage />} />
           <Route path="/rules" element={<RulesPage />} />
           <Route path="/settings" element={<SettingsPage />} />

@@ -128,3 +128,13 @@ tr.row-acked td { color: var(--muted); }
 .msg { font-size: 0.8rem; margin-block-start: 10px; }
 .msg.ok { color: var(--green); }
 .msg.err { color: var(--red); }
+
+/* digest */
+.digest-layout { display: flex; gap: 20px; align-items: flex-start; }
+.digest-list { display: flex; flex-direction: column; gap: 6px; min-width: 150px; }
+.digest-day { padding: 8px 14px; border: 1px solid var(--border2); border-radius: 8px; background: var(--panel); cursor: pointer; font-family: inherit; font-weight: 600; color: var(--muted); text-align: center; }
+.digest-day.active { background: #e8f0f7; color: var(--navy); border-color: var(--navy); }
+.btn-small.generate { padding: 8px 14px; background: var(--navy); color: #fff; border: none; }
+.digest-bubble { flex: 1; max-width: 560px; background: #eef9ee; border: 1px solid #cde5cd; border-radius: 14px; padding: 16px 20px; box-shadow: 0 2px 8px rgba(28,39,51,.08); }
+.digest-bubble pre { font-family: "Segoe UI", system-ui, sans-serif; font-size: 0.92rem; line-height: 1.65; white-space: pre-wrap; margin: 0; }
+.bubble-foot { margin-block-start: 12px; padding-block-start: 10px; border-block-start: 1px dashed #cde5cd; font-size: 0.72rem; color: var(--muted); }

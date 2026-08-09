@@ -5,7 +5,8 @@ import { initReactI18next } from "react-i18next";
 const resources = {
   en: {
     translation: {
-      nav: { liveMap: "Live Map", vehicles: "Vehicles", trips: "Trips", alerts: "Alerts", rules: "Alert Rules", settings: "Settings" },
+      nav: { liveMap: "Live Map", vehicles: "Vehicles", trips: "Trips", alerts: "Alerts", rules: "Alert Rules", digest: "Daily Digest", settings: "Settings" },
+      digest: { title: "Daily Digest", subtitle: "The morning verdict: exceptions, money, reassurance", generateToday: "Generate for today", none: "No digests yet - generate one.", channelNote: "Delivered by email and in-app today - WhatsApp when the Business API is approved" },
       alerts: { title: "Alerts", subtitle: "What the platform caught", open: "unacknowledged", severity: "Severity", message: "Message", rule: "Rule", time: "Time", ack: "Acknowledge", acked: "Acknowledged", none: "No alerts yet — that is good news." },
       rules: { title: "Alert Rules", subtitle: "Rules become live in the pipeline within a minute — no redeploy", on: "On", off: "Off", saved: "Saved", error: "Save failed", badJson: "Invalid JSON" },
       severity: { info: "Info", warning: "Warning", critical: "Critical" },
@@ -19,7 +20,8 @@ const resources = {
   },
   ar: {
     translation: {
-      nav: { liveMap: "الخريطة الحية", vehicles: "المركبات", trips: "الرحلات", alerts: "التنبيهات", rules: "قواعد التنبيه", settings: "الإعدادات" },
+      nav: { liveMap: "الخريطة الحية", vehicles: "المركبات", trips: "الرحلات", alerts: "التنبيهات", rules: "قواعد التنبيه", digest: "التقرير اليومي", settings: "الإعدادات" },
+      digest: { title: "التقرير اليومي", subtitle: "خلاصة الصباح: الاستثناءات، التكلفة، والاطمئنان", generateToday: "توليد تقرير اليوم", none: "لا تقارير بعد - قم بتوليد واحد.", channelNote: "يصل بالبريد وداخل المنصة حالياً - وعبر واتساب بعد اعتماد Business API" },
       alerts: { title: "التنبيهات", subtitle: "ما رصدته المنصة", open: "غير مؤكدة", severity: "الخطورة", message: "الرسالة", rule: "القاعدة", time: "الوقت", ack: "تأكيد", acked: "مؤكد", none: "لا توجد تنبيهات — وهذا خبر جيد." },
       rules: { title: "قواعد التنبيه", subtitle: "تصبح القواعد نشطة خلال دقيقة — دون إعادة نشر", on: "مفعلة", off: "معطلة", saved: "تم الحفظ", error: "فشل الحفظ", badJson: "صيغة JSON غير صحيحة" },
       severity: { info: "معلومة", warning: "تحذير", critical: "حرج" },

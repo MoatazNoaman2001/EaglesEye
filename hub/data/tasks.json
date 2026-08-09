@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "saved": "2026-08-09T14:23:47.835Z",
+  "saved": "2026-08-09T15:02:19.543Z",
   "tasks": [
     {
       "id": "T-101",
@@ -685,8 +685,8 @@
       "prio": "h",
       "biz": false,
       "title": "Rule configuration per vehicle/group: thresholds, active time windows",
-      "refs": "FR-ALT-02",
-      "status": "backlog",
+      "refs": "FR-ALT-02 - rule params editable from console (thresholds, windows, cooldowns); per-vehicle/group scoping pending",
+      "status": "doing",
       "deps": [],
       "blockReason": ""
     },
@@ -729,8 +729,8 @@
       "prio": "h",
       "biz": false,
       "title": "Alert history: searchable, acknowledgement; per-user subscriptions",
-      "refs": "FR-ALT-07 - history persisted + list/ack API live; console UI + search pending",
-      "status": "doing",
+      "refs": "FR-ALT-07 - history + ack in console with severity badges; search/filters can grow later",
+      "status": "done",
       "deps": [],
       "blockReason": ""
     },
@@ -776,8 +776,8 @@
       "prio": "u",
       "biz": false,
       "title": "Daily Digest generator: nightly per-tenant rollup of events+trips into one verdict message (the product heartbeat)",
-      "refs": "Thesis - verdict-first; consumes events.domain + trips",
-      "status": "backlog",
+      "refs": "Thesis heartbeat LIVE: nightly 06:00 scheduler + on-demand; trips+alerts+devices rollup; AR/EN WhatsApp-ready plain text; verified with real day data",
+      "status": "done",
       "deps": [
         "T-601",
         "T-701"
@@ -803,8 +803,8 @@
       "prio": "h",
       "biz": false,
       "title": "Money model: fuel price + idle-burn settings; EGP framing in digest and reports",
-      "refs": "Thesis - visible ROI; extends T-210 settings",
-      "status": "backlog",
+      "refs": "Money model LIVE: fuel price + consumption settings -> EGP framing (65.1 km -> ~117 EGP verified). Idle-cost arrives with stops table",
+      "status": "done",
       "deps": [
         "T-210"
       ],
@@ -816,8 +816,8 @@
       "prio": "h",
       "biz": false,
       "title": "Digest delivery: email + in-app in WhatsApp-ready template; start WhatsApp Business API application early (months of lead time)",
-      "refs": "Thesis; OQ-06 answered - WhatsApp is the owner surface",
-      "status": "backlog",
+      "refs": "Delivery: email (dev-mocked) + in-app console page DONE; WhatsApp Business API application = Moataz action, months of lead time",
+      "status": "doing",
       "deps": [
         "T-704",
         "T-711"

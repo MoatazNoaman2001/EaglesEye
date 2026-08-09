@@ -8,13 +8,102 @@
 [INFO] 
 [INFO] --- quarkus:3.38.1:dev (default-cli) @ core ---
 [INFO] Invoking resources:3.3.1:resources (default-resources) @ core
-[INFO] Copying 8 resources from src\main\resources to target\classes
+[INFO] Copying 9 resources from src\main\resources to target\classes
 [INFO] Invoking quarkus:3.38.1:generate-code (default) @ core
 [INFO] Invoking compiler:3.15.0:compile (default-compile) @ core
-[INFO] Nothing to compile - all classes are up to date.
+[INFO] Recompiling the module because of added or removed source files.
+[INFO] Compiling 19 source files with javac [debug parameters release 21] to target\classes
+[INFO] /C:/Users/moata/Documents/EaglesEye/platform/core/src/main/java/io/eagleseye/core/geofence/GeofenceResource.java: C:\Users\moata\Documents\EaglesEye\platform\core\src\main\java\io\eagleseye\core\geofence\GeofenceResource.java uses unchecked or unsafe operations.
+[INFO] /C:/Users/moata/Documents/EaglesEye/platform/core/src/main/java/io/eagleseye/core/geofence/GeofenceResource.java: Recompile with -Xlint:unchecked for details.
 [INFO] Invoking resources:3.3.1:testResources (default-testResources) @ core
 [INFO] skip non existing resourceDirectory C:\Users\moata\Documents\EaglesEye\platform\core\src\test\resources
 [INFO] Invoking quarkus:3.38.1:generate-code-tests (default) @ core
 [INFO] Invoking compiler:3.15.0:testCompile (default-testCompile) @ core
 [INFO] No sources to compile
 Listening for transport dt_socket at address: 5005
+2026-08-09 18:00:47,959 INFO  [io.quarkiverse.quinoa.deployment.framework.FrameworkType] (build-3) Quinoa detected 'VITE' frameworkType from package.json file.
+2026-08-09 18:00:47,985 INFO  [io.quarkiverse.quinoa.deployment.packagemanager.PackageManagerRunner] (build-2) Running Quinoa package manager live coding as a dev service: npm.cmd run dev
+
+> eagleseye-console@0.1.0 dev
+> vite
+
+
+  VITE v5.4.21  ready in 546 ms
+
+  ?  Local:   http://localhost:5173/
+  ?  Network: use --host to expose
+2026-08-09 18:00:49,378 INFO  [io.quarkus.resteasy.reactive.jackson.deployment.processor.JacksonCodeGenerator] (build-16) Skipping generation of reflection-free Jackson serializer for class io.eagleseye.core.fleet.Device because it contains the unsupported Jackson annotation jakarta.persistence.Column
+2026-08-09 18:00:49,379 INFO  [io.quarkus.resteasy.reactive.jackson.deployment.processor.JacksonCodeGenerator] (build-16) Skipping generation of reflection-free Jackson serializer for class io.eagleseye.core.settings.PlatformSetting because it contains the unsupported Jackson annotation jakarta.persistence.Column
+2026-08-09 18:00:49,379 INFO  [io.quarkus.resteasy.reactive.jackson.deployment.processor.JacksonCodeGenerator] (build-16) Skipping generation of reflection-free Jackson serializer for class io.eagleseye.core.alerts.AlertRule because it contains the unsupported Jackson annotation jakarta.persistence.Column
+2026-08-09 18:00:49,379 INFO  [io.quarkus.resteasy.reactive.jackson.deployment.processor.JacksonCodeGenerator] (build-16) Skipping generation of reflection-free Jackson serializer for class io.eagleseye.core.digest.DigestResource$Digest because it contains the unsupported Jackson annotation jakarta.persistence.Column
+2026-08-09 18:00:49,379 INFO  [io.quarkus.resteasy.reactive.jackson.deployment.processor.JacksonCodeGenerator] (build-16) Skipping generation of reflection-free Jackson serializer for class io.eagleseye.core.alerts.Alert because it contains the unsupported Jackson annotation jakarta.persistence.Column
+2026-08-09 18:00:49,379 INFO  [io.quarkus.resteasy.reactive.jackson.deployment.processor.JacksonCodeGenerator] (build-16) Skipping generation of reflection-free Jackson serializer for class io.eagleseye.core.trips.Trip because it contains the unsupported Jackson annotation jakarta.persistence.Column
+2026-08-09 18:00:49,384 INFO  [io.quarkus.resteasy.reactive.jackson.deployment.processor.JacksonCodeGenerator] (build-16) Skipping generation of reflection-free Jackson serializer for class io.eagleseye.core.fleet.Vehicle because it contains the unsupported Jackson annotation jakarta.persistence.Column
+2026-08-09 18:00:50,095 INFO  [io.quarkiverse.quinoa.deployment.ForwardedDevProcessor] (build-2) Quinoa package manager live coding is up and running on port: 5173 (in 2111ms)
+2026-08-09 18:00:50,098 INFO  [io.quarkiverse.quinoa.deployment.ForwardedDevProcessor] (build-17) Quinoa is forwarding unhandled requests to port: 5173
+2026-08-09 18:00:50,127 INFO  [org.testcontainers.DockerClientFactory] (build-14) Testcontainers version: 2.0.5
+2026-08-09 18:00:50,338 INFO  [org.testcontainers.dockerclient.DockerClientProviderStrategy] (build-14) Loaded org.testcontainers.dockerclient.NpipeSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
+2026-08-09 18:00:50,775 INFO  [org.testcontainers.dockerclient.DockerClientProviderStrategy] (build-14) Found Docker environment with local Npipe socket (npipe:////./pipe/docker_engine)
+__  ____  __  _____   ___  __ ____  ______ 
+ --/ __ \/ / / / _ | / _ \/ //_/ / / / __/ 
+ -/ /_/ / /_/ / __ |/ , _/ ,< / /_/ /\ \   
+--\___\_\____/_/ |_/_/|_/_/|_|\____/___/   
+2026-08-09 18:00:54,717 INFO  [org.flywaydb.core.FlywayExecutor] (Quarkus Main Thread) Database: jdbc:postgresql://localhost:5433/eagleseye (PostgreSQL 16.14)
+2026-08-09 18:00:54,854 INFO  [org.flywaydb.core.internal.command.DbValidate] (Quarkus Main Thread) Successfully validated 7 migrations (execution time 00:00.061s)
+2026-08-09 18:00:54,927 INFO  [org.flywaydb.core.internal.command.DbMigrate] (Quarkus Main Thread) Current version of schema "public": 7
+2026-08-09 18:00:54,935 INFO  [org.flywaydb.core.internal.command.DbMigrate] (Quarkus Main Thread) Schema "public" is up to date. No migration necessary.
+2026-08-09 18:00:56,985 INFO  [io.smallrye.reactive.messaging.kafka] (smallrye-kafka-producer-thread-0) SRMSG18258: Kafka producer kafka-producer-registry-devices, connected to Kafka brokers 'localhost:9092', is configured to write records to 'registry.devices'
+2026-08-09 18:00:58,024 INFO  [io.eagleseye.core.fleet.RegistryPublisher] (Quarkus Main Thread) Registry republished: 2 device(s)
+2026-08-09 18:00:58,191 INFO  [io.quarkus] (Quarkus Main Thread) eagleseye-core 0.1.0-SNAPSHOT on JVM (powered by Quarkus 3.38.1) started in 12.984s. Listening on: http://localhost:8080
+2026-08-09 18:00:58,191 INFO  [io.quarkus] (Quarkus Main Thread) Profile dev activated. Live Coding activated.
+2026-08-09 18:00:58,192 INFO  [io.quarkus] (Quarkus Main Thread) Installed features: [agroal, cdi, compose, config-yaml, flyway, hibernate-orm, hibernate-orm-panache, jdbc-postgresql, kafka-client, mailer, messaging, messaging-kafka, narayana-jta, oidc, quinoa, qute, redis-client, rest, rest-jackson, scheduler, security, smallrye-context-propagation, smallrye-health, smallrye-openapi, swagger-ui, vertx]
+2026-08-09 18:01:02,801 INFO  [quarkus-mailer] (executor-thread-1) Sending email EaglesEye � 2026-08-10 digest from digest@eagleseye.local to [manotrip78@gmail.com] (cc: [], bcc: []), text body: 
+????? EaglesEye � 2026-08-10
+?? ????? ??? ??????? ?? ??? ?????.
+
+???????: 0 ?? 1 ????? ??????
+
+
+----
+
+EaglesEye report � 2026-08-10
+No trips and no alerts on this day.
+
+Devices: 0 of 1 reported
+
+html body: 
+<empty>
+2026-08-09 18:01:02,807 INFO  [io.eagleseye.core.digest.DigestService] (executor-thread-1) Digest dev-tenant/2026-08-10: 0 trips, 0.0 km, 0 alert(s)
+2026-08-09 18:01:50,119 INFO  [quarkus-mailer] (executor-thread-1) Sending email EaglesEye � 2026-08-09 digest from digest@eagleseye.local to [manotrip78@gmail.com] (cc: [], bcc: []), text body: 
+????? EaglesEye � 2026-08-09
+???????: 7 ????? 65.1 ?? ???????
+????? ??????: ????? 117 ????
+
+????????? (3):
+- [?????] Delivery Van 1 at 58 km/h (limit 50)
+- [???] Delivery Van 1 entered North Corridor
+- [?????] Delivery Van 1 at 53 km/h (limit 50)
+
+Delivery Van 1: 7 ????? 65.1 ??? ???? ???? 60 ??/?
+
+???????: ???? ???? ???? ????? (1/1)
+
+
+----
+
+EaglesEye report � 2026-08-09
+Trips: 7, 65.1 km total
+Fuel estimate: ~117 EGP
+
+Alerts (3):
+- [warning] Delivery Van 1 at 58 km/h (limit 50)
+- [critical] Delivery Van 1 entered North Corridor
+- [warning] Delivery Van 1 at 53 km/h (limit 50)
+
+Delivery Van 1: 7 trip(s), 65.1 km, max 60 km/h
+
+Devices: all healthy (1/1)
+
+html body: 
+<empty>
+2026-08-09 18:01:50,120 INFO  [io.eagleseye.core.digest.DigestService] (executor-thread-1) Digest dev-tenant/2026-08-09: 7 trips, 65.1 km, 3 alert(s)
