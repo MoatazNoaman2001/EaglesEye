@@ -25,15 +25,21 @@ import java.util.concurrent.ConcurrentHashMap;
  * zone entry/exit per vehicle, and publishes geofence events back onto
  * `events.domain` — where the rules engine, digest and reports consume them (AO-03).
  *
- * v1 honesty: single-fix transitions (two-fix hysteresis and time-window rules
- * follow with the rules engine); in-memory presence state (recompute T-603 will
- * make it rebuildable from the topic).
+ * Boundary flapping (GPS jitter dancing across a zone edge) is suppressed by
+ * two-fix hysteresis: a transition fires only after `hysteresis-fixes` consecutive
+ * fixes agree on the new side, and the event carries the time of the FIRST such
+ * fix — so dwell stays accurate. In-memory state (recompute T-603 will make it
+ * rebuildable from the topic); time-window rules land with the rules engine.
  */
 @ApplicationScoped
 public class GeofenceEvaluator {
 
     private static final Logger LOG = Logger.getLogger(GeofenceEvaluator.class);
     private static final GeometryFactory GEOMETRY = new GeometryFactory();
+
+    @org.eclipse.microprofile.config.inject.ConfigProperty(
+            name = "eagleseye.geofence.hysteresis-fixes", defaultValue = "2")
+    int hysteresisFixes;
 
     @Inject
     ZoneCache zones;
@@ -45,8 +51,15 @@ public class GeofenceEvaluator {
     @Channel("events-domain")
     Emitter<Record<String, String>> events;
 
-    /** vehicleId|zoneId -> entry time; presence = key exists */
-    private final Map<String, Instant> presence = new ConcurrentHashMap<>();
+    /** Presence state per vehicle|zone, with a pending side awaiting confirmation. */
+    private static final class ZoneState {
+        boolean inside;            // confirmed side
+        Instant enteredAt;         // when confirmed inside (event-accurate)
+        int pendingCount;          // consecutive fixes on the other side
+        Instant pendingSince;      // first fix of the pending run
+    }
+
+    private final Map<String, ZoneState> states = new ConcurrentHashMap<>();
 
     @Incoming("geofence-in")
     public void evaluate(String json) {
@@ -64,16 +77,31 @@ public class GeofenceEvaluator {
             for (ZoneCache.Zone zone : zones.zonesFor(tenantId)) {
                 String key = vehicleId + "|" + zone.id();
                 boolean inside = zone.geometry().contains(point);
-                Instant enteredAt = presence.get(key);
+                ZoneState s = states.computeIfAbsent(key, k -> new ZoneState());
 
-                if (inside && enteredAt == null) {
-                    presence.put(key, time);
-                    publish(vehicleId, event(e, zone, "geofence.entered", time, null));
+                if (inside == s.inside) {
+                    // fix agrees with the confirmed side — any pending flap dissolves
+                    s.pendingCount = 0;
+                    s.pendingSince = null;
+                    continue;
+                }
+                if (s.pendingCount == 0) s.pendingSince = time;
+                s.pendingCount++;
+                if (s.pendingCount < hysteresisFixes) continue;   // not confirmed yet
+
+                // confirmed transition, effective at the first pending fix
+                Instant at = s.pendingSince;
+                s.inside = inside;
+                s.pendingCount = 0;
+                s.pendingSince = null;
+                if (inside) {
+                    s.enteredAt = at;
+                    publish(vehicleId, event(e, zone, "geofence.entered", at, null));
                     LOG.infof("%s ENTERED %s", vehicleId, zone.name());
-                } else if (!inside && enteredAt != null) {
-                    presence.remove(key);
-                    long dwell = Duration.between(enteredAt, time).getSeconds();
-                    publish(vehicleId, event(e, zone, "geofence.exited", time, dwell));
+                } else {
+                    long dwell = s.enteredAt != null ? Duration.between(s.enteredAt, at).getSeconds() : 0;
+                    s.enteredAt = null;
+                    publish(vehicleId, event(e, zone, "geofence.exited", at, dwell));
                     LOG.infof("%s EXITED %s after %ds", vehicleId, zone.name(), dwell);
                 }
             }

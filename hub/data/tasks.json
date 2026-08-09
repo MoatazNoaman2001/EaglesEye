@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "saved": "2026-08-09T13:49:53.701Z",
+  "saved": "2026-08-09T13:58:53.687Z",
   "tasks": [
     {
       "id": "T-101",
@@ -638,7 +638,7 @@
       "prio": "u",
       "biz": false,
       "title": "Geofence evaluator: enter/exit hysteresis, dwell time, time-window rules",
-      "refs": "FR-GEO-04/05 - evaluator LIVE: enter/exit/dwell events on events.domain, JTS prepared geoms, 60s zone cache. Pending: two-fix hysteresis (flapping observed at boundaries!), time-window rules",
+      "refs": "FR-GEO-04/05 - evaluator + two-fix hysteresis VERIFIED (7 noisy events -> 3 clean, dwell backdated correctly). Pending: time-window rules (with rules engine T-702)",
       "status": "doing",
       "deps": [],
       "blockReason": ""
