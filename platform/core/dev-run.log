@@ -8,31 +8,53 @@
 [INFO] 
 [INFO] --- quarkus:3.38.1:dev (default-cli) @ core ---
 [INFO] Invoking resources:3.3.1:resources (default-resources) @ core
-[INFO] Copying 4 resources from src\main\resources to target\classes
+[INFO] Copying 6 resources from src\main\resources to target\classes
 [INFO] Invoking quarkus:3.38.1:generate-code (default) @ core
 [INFO] Invoking compiler:3.15.0:compile (default-compile) @ core
 [INFO] Recompiling the module because of added or removed source files.
-[INFO] Compiling 10 source files with javac [debug parameters release 21] to target\classes
+[INFO] Compiling 12 source files with javac [debug parameters release 21] to target\classes
 [INFO] Invoking resources:3.3.1:testResources (default-testResources) @ core
 [INFO] skip non existing resourceDirectory C:\Users\moata\Documents\EaglesEye\platform\core\src\test\resources
 [INFO] Invoking quarkus:3.38.1:generate-code-tests (default) @ core
 [INFO] Invoking compiler:3.15.0:testCompile (default-testCompile) @ core
 [INFO] No sources to compile
 Listening for transport dt_socket at address: 5005
-2026-08-09 13:31:08,207 INFO  [io.quarkus.resteasy.reactive.jackson.deployment.processor.JacksonCodeGenerator] (build-13) Skipping generation of reflection-free Jackson serializer for class io.eagleseye.core.fleet.Device because it contains the unsupported Jackson annotation jakarta.persistence.Column
-2026-08-09 13:31:08,208 INFO  [io.quarkus.resteasy.reactive.jackson.deployment.processor.JacksonCodeGenerator] (build-13) Skipping generation of reflection-free Jackson serializer for class io.eagleseye.core.settings.PlatformSetting because it contains the unsupported Jackson annotation jakarta.persistence.Column
-2026-08-09 13:31:08,208 INFO  [io.quarkus.resteasy.reactive.jackson.deployment.processor.JacksonCodeGenerator] (build-13) Skipping generation of reflection-free Jackson serializer for class io.eagleseye.core.fleet.Vehicle because it contains the unsupported Jackson annotation jakarta.persistence.Column
+2026-08-09 13:37:36,644 INFO  [io.quarkus.resteasy.reactive.jackson.deployment.processor.JacksonCodeGenerator] (build-21) Skipping generation of reflection-free Jackson serializer for class io.eagleseye.core.fleet.Device because it contains the unsupported Jackson annotation jakarta.persistence.Column
+2026-08-09 13:37:36,645 INFO  [io.quarkus.resteasy.reactive.jackson.deployment.processor.JacksonCodeGenerator] (build-21) Skipping generation of reflection-free Jackson serializer for class io.eagleseye.core.settings.PlatformSetting because it contains the unsupported Jackson annotation jakarta.persistence.Column
+2026-08-09 13:37:36,645 INFO  [io.quarkus.resteasy.reactive.jackson.deployment.processor.JacksonCodeGenerator] (build-21) Skipping generation of reflection-free Jackson serializer for class io.eagleseye.core.trips.Trip because it contains the unsupported Jackson annotation jakarta.persistence.Column
+2026-08-09 13:37:36,645 INFO  [io.quarkus.resteasy.reactive.jackson.deployment.processor.JacksonCodeGenerator] (build-21) Skipping generation of reflection-free Jackson serializer for class io.eagleseye.core.fleet.Vehicle because it contains the unsupported Jackson annotation jakarta.persistence.Column
 __  ____  __  _____   ___  __ ____  ______ 
  --/ __ \/ / / / _ | / _ \/ //_/ / / / __/ 
  -/ /_/ / /_/ / __ |/ , _/ ,< / /_/ /\ \   
 --\___\_\____/_/ |_/_/|_/_/|_|\____/___/   
-2026-08-09 13:31:11,479 INFO  [org.flywaydb.core.FlywayExecutor] (Quarkus Main Thread) Database: jdbc:postgresql://localhost:5433/eagleseye (PostgreSQL 16.14)
-2026-08-09 13:31:11,624 INFO  [org.flywaydb.core.internal.command.DbValidate] (Quarkus Main Thread) Successfully validated 2 migrations (execution time 00:00.040s)
-2026-08-09 13:31:11,673 INFO  [org.flywaydb.core.internal.command.DbMigrate] (Quarkus Main Thread) Current version of schema "public": 2
-2026-08-09 13:31:11,677 INFO  [org.flywaydb.core.internal.command.DbMigrate] (Quarkus Main Thread) Schema "public" is up to date. No migration necessary.
-2026-08-09 13:31:12,520 INFO  [io.smallrye.reactive.messaging.kafka] (smallrye-kafka-producer-thread-0) SRMSG18258: Kafka producer kafka-producer-registry-devices, connected to Kafka brokers 'localhost:9092', is configured to write records to 'registry.devices'
-2026-08-09 13:31:13,080 INFO  [io.eagleseye.core.fleet.RegistryPublisher] (Quarkus Main Thread) Registry republished: 1 device(s)
-2026-08-09 13:31:13,193 INFO  [io.quarkus] (Quarkus Main Thread) eagleseye-core 0.1.0-SNAPSHOT on JVM (powered by Quarkus 3.38.1) started in 8.449s. Listening on: http://localhost:8080
-2026-08-09 13:31:13,193 INFO  [io.quarkus] (Quarkus Main Thread) Profile dev activated. Live Coding activated.
-2026-08-09 13:31:13,194 INFO  [io.quarkus] (Quarkus Main Thread) Installed features: [agroal, cdi, compose, config-yaml, flyway, hibernate-orm, hibernate-orm-panache, jdbc-postgresql, kafka-client, messaging, messaging-kafka, narayana-jta, oidc, redis-client, rest, rest-jackson, security, smallrye-context-propagation, smallrye-health, smallrye-openapi, swagger-ui, vertx]
+2026-08-09 13:37:40,148 INFO  [org.flywaydb.core.FlywayExecutor] (Quarkus Main Thread) Database: jdbc:postgresql://localhost:5433/eagleseye (PostgreSQL 16.14)
+2026-08-09 13:37:40,225 INFO  [org.flywaydb.core.internal.command.DbValidate] (Quarkus Main Thread) Successfully validated 4 migrations (execution time 00:00.030s)
+2026-08-09 13:37:40,281 INFO  [org.flywaydb.core.internal.command.DbMigrate] (Quarkus Main Thread) Current version of schema "public": 2
+2026-08-09 13:37:40,301 INFO  [org.flywaydb.core.internal.command.DbMigrate] (Quarkus Main Thread) Migrating schema "public" to version "3 - positions hypertable"
+2026-08-09 13:37:40,316 WARN  [org.flywaydb.core.internal.sqlscript.DefaultSqlScriptExecutor] (Quarkus Main Thread) DB: extension "timescaledb" already exists, skipping (SQL State: 42710 - Error Code: 0)
+2026-08-09 13:37:40,391 INFO  [org.flywaydb.core.internal.sqlscript.DefaultSqlScriptExecutor] (Quarkus Main Thread) +------------------------+
+| create_hypertable      |
++------------------------+
+| (1,public,positions,t) |
++------------------------+
+
+2026-08-09 13:37:40,424 INFO  [org.flywaydb.core.internal.sqlscript.DefaultSqlScriptExecutor] (Quarkus Main Thread) +------------------------+
+| add_compression_policy |
++------------------------+
+| 1000                   |
++------------------------+
+
+2026-08-09 13:37:40,431 INFO  [org.flywaydb.core.internal.sqlscript.DefaultSqlScriptExecutor] (Quarkus Main Thread) +----------------------+
+| add_retention_policy |
++----------------------+
+| 1001                 |
++----------------------+
+
+2026-08-09 13:37:40,494 INFO  [org.flywaydb.core.internal.command.DbMigrate] (Quarkus Main Thread) Migrating schema "public" to version "4 - trips"
+2026-08-09 13:37:40,574 INFO  [org.flywaydb.core.internal.command.DbMigrate] (Quarkus Main Thread) Successfully applied 2 migrations to schema "public", now at version v4 (execution time 00:00.187s)
+2026-08-09 13:37:41,733 INFO  [io.smallrye.reactive.messaging.kafka] (smallrye-kafka-producer-thread-0) SRMSG18258: Kafka producer kafka-producer-registry-devices, connected to Kafka brokers 'localhost:9092', is configured to write records to 'registry.devices'
+2026-08-09 13:37:42,476 INFO  [io.eagleseye.core.fleet.RegistryPublisher] (Quarkus Main Thread) Registry republished: 2 device(s)
+2026-08-09 13:37:42,638 INFO  [io.quarkus] (Quarkus Main Thread) eagleseye-core 0.1.0-SNAPSHOT on JVM (powered by Quarkus 3.38.1) started in 11.485s. Listening on: http://localhost:8080
+2026-08-09 13:37:42,638 INFO  [io.quarkus] (Quarkus Main Thread) Profile dev activated. Live Coding activated.
+2026-08-09 13:37:42,639 INFO  [io.quarkus] (Quarkus Main Thread) Installed features: [agroal, cdi, compose, config-yaml, flyway, hibernate-orm, hibernate-orm-panache, jdbc-postgresql, kafka-client, messaging, messaging-kafka, narayana-jta, oidc, redis-client, rest, rest-jackson, security, smallrye-context-propagation, smallrye-health, smallrye-openapi, swagger-ui, vertx]
 Debugger failed to attach: handshake failed - connection prematurally closed

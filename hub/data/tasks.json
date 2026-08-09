@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "saved": "2026-08-09T10:32:19.311Z",
+  "saved": "2026-08-09T10:40:46.964Z",
   "tasks": [
     {
       "id": "T-101",
@@ -98,8 +98,8 @@
       "prio": "n",
       "biz": false,
       "title": "CI/CD pipeline: build, test, container images, deploy to staging",
-      "refs": "",
-      "status": "todo",
+      "refs": "GitHub Actions: platform build + node syntax checks on every push to phase1/dev/main",
+      "status": "done",
       "deps": [],
       "blockReason": ""
     },
@@ -180,8 +180,8 @@
       "prio": "h",
       "biz": false,
       "title": "Timeseries writer: batched hypertable inserts, ON CONFLICT dedup",
-      "refs": "FR-ING-08, NFR-01",
-      "status": "backlog",
+      "refs": "FR-ING-08, NFR-01 — PositionWriter: events.domain -> hypertable, ON CONFLICT dedup; micro-batching TODO before load test",
+      "status": "done",
       "deps": [
         "T-207"
       ],
@@ -193,8 +193,8 @@
       "prio": "h",
       "biz": false,
       "title": "Positions hypertable DDL + compression policy + indexes; Flyway baseline",
-      "refs": "NFR-06/07",
-      "status": "backlog",
+      "refs": "NFR-06/07 — positions hypertable: compression (segmentby imei, 7d), retention 12mo, vehicle+time index; verified with real chunk",
+      "status": "done",
       "deps": [],
       "blockReason": ""
     },
@@ -579,8 +579,8 @@
       "prio": "u",
       "biz": false,
       "title": "Trip engine: ignition+movement segmentation with hysteresis; trip/stop persistence",
-      "refs": "FR-TRP-01/03/04/08",
-      "status": "backlog",
+      "refs": "FR-TRP-01/03 — v1 streaming segmentation VERIFIED (open/accumulate/close, haversine distance, max speed); pending: stops table, per-tenant thresholds (settings), OSRM matching T-602, recompute T-603",
+      "status": "doing",
       "deps": [
         "T-501"
       ],

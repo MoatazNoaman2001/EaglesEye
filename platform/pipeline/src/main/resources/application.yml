@@ -41,6 +41,20 @@ mp:
         # unique group per instance: every pipeline instance needs the FULL registry
         group:
           id: ee-registry-cache-${quarkus.uuid}
+      positions-store-in:
+        connector: smallrye-kafka
+        topic: events.domain
+        value:
+          deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        group:
+          id: ee-pipeline-positions
+      trips-in:
+        connector: smallrye-kafka
+        topic: events.domain
+        value:
+          deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        group:
+          id: ee-pipeline-trips
     outgoing:
       telemetry-decoded:
         connector: smallrye-kafka
@@ -65,6 +79,9 @@ mp:
     directory:
       # dev: unregistered devices (phone, simulators) still flow with synthetic bindings
       allow-unknown: true
+    trips:
+      # dev: close trips quickly so tests do not wait 5 minutes
+      close-after-seconds: 30
   kafka:
     bootstrap:
       servers: localhost:9092
