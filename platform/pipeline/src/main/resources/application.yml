@@ -62,6 +62,13 @@ mp:
           deserializer: org.apache.kafka.common.serialization.StringDeserializer
         group:
           id: ee-pipeline-geofence
+      rules-in:
+        connector: smallrye-kafka
+        topic: events.domain
+        value:
+          deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        group:
+          id: ee-pipeline-rules
     outgoing:
       telemetry-decoded:
         connector: smallrye-kafka
@@ -77,6 +84,13 @@ mp:
         topic: events.domain
         # two producers: the enricher (positions) and the geofence evaluator (zone events)
         merge: true
+        key:
+          serializer: org.apache.kafka.common.serialization.StringSerializer
+        value:
+          serializer: org.apache.kafka.common.serialization.StringSerializer
+      alerts-out:
+        connector: smallrye-kafka
+        topic: alerts.outbound
         key:
           serializer: org.apache.kafka.common.serialization.StringSerializer
         value:

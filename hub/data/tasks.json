@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "saved": "2026-08-09T13:58:53.687Z",
+  "saved": "2026-08-09T14:23:47.835Z",
   "tasks": [
     {
       "id": "T-101",
@@ -674,8 +674,8 @@
       "prio": "u",
       "biz": false,
       "title": "Rules engine: all Must event types (speeding, idle, geofence, ignition, power, SOS, offline…)",
-      "refs": "FR-ALT-01",
-      "status": "backlog",
+      "refs": "FR-ALT-01 - engine LIVE: speeding, geofence entry/exit, idle, after-hours, low-battery VERIFIED. Pending: SOS, power-disconnect, unauthorized-movement (need real device attrs), offline (health watchdog T-801)",
+      "status": "doing",
       "deps": [],
       "blockReason": ""
     },
@@ -696,8 +696,8 @@
       "prio": "u",
       "biz": false,
       "title": "Cooldown + dedup via Valkey — mandatory, on by default",
-      "refs": "FR-ALT-06, RK-05",
-      "status": "backlog",
+      "refs": "FR-ALT-06 - mandatory Valkey cooldown VERIFIED: ~15 violations -> 2 alerts exactly one cooldown apart",
+      "status": "done",
       "deps": [],
       "blockReason": ""
     },
@@ -729,8 +729,8 @@
       "prio": "h",
       "biz": false,
       "title": "Alert history: searchable, acknowledgement; per-user subscriptions",
-      "refs": "FR-ALT-07/08",
-      "status": "backlog",
+      "refs": "FR-ALT-07 - history persisted + list/ack API live; console UI + search pending",
+      "status": "doing",
       "deps": [],
       "blockReason": ""
     },
