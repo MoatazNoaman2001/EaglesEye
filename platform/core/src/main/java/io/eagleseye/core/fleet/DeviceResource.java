@@ -34,6 +34,9 @@ public class DeviceResource {
     @Inject
     TraccarBridgeClient bridge;
 
+    @Inject
+    RegistryPublisher registry;
+
     @GET
     public List<Device> list() {
         return Device.listAll();
@@ -67,6 +70,7 @@ public class DeviceResource {
         // reconciliation (T-301) repairs it — our registry is the truth
         d.traccarId = bridge.createDevice(imei, imei).orElse(null);
         d.persist();
+        registry.publish(d);
         return Response.status(Response.Status.CREATED).entity(d).build();
     }
 
@@ -82,6 +86,7 @@ public class DeviceResource {
         a.deviceId = d.id;
         a.vehicleId = vehicleId;
         a.persist();
+        registry.publish(d);
         return d;
     }
 
@@ -92,6 +97,7 @@ public class DeviceResource {
         Device d = active(id);
         closeOpenAssignment(d);
         d.vehicleId = null;
+        registry.publish(d);
         return d;
     }
 
@@ -108,6 +114,7 @@ public class DeviceResource {
             bridge.deleteDevice(d.traccarId);   // bridge stops accepting it (FR-ING-06)
             d.traccarId = null;
         }
+        registry.publish(d);
         return d;
     }
 

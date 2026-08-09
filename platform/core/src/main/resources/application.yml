@@ -10,8 +10,23 @@ quarkus:
   flyway:
     migrate-at-start: true
 
+# channels
+mp:
+  messaging:
+    outgoing:
+      registry-devices:
+        connector: smallrye-kafka
+        topic: registry.devices
+        key:
+          serializer: org.apache.kafka.common.serialization.StringSerializer
+        value:
+          serializer: org.apache.kafka.common.serialization.StringSerializer
+
 # dev profile: talks to the local stack (infra/dev/docker-compose.yml)
 "%dev":
+  kafka:
+    bootstrap:
+      servers: localhost:9092
   eagleseye:
     traccar:
       url: http://localhost:8083

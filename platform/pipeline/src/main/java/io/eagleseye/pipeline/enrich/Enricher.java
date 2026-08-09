@@ -53,6 +53,7 @@ public class Enricher {
             String eventType,       // "position" — events.domain later carries more types
             String vehicleId,
             String tenantId,
+            String vehicleLabel,    // what humans see: plate or vehicle name
             VehicleStatus status,
             Telemetry telemetry) {}
 
@@ -71,7 +72,8 @@ public class Enricher {
             }
 
             VehicleStatus status = deriveStatus(t);
-            EnrichedPosition event = new EnrichedPosition("position", binding.vehicleId(), binding.tenantId(), status, t);
+            EnrichedPosition event = new EnrichedPosition("position", binding.vehicleId(), binding.tenantId(),
+                    binding.vehicleLabel(), status, t);
             String eventJson = mapper.writeValueAsString(event);
 
             updateLiveState(event);
@@ -96,6 +98,7 @@ public class Enricher {
         Telemetry t = e.telemetry();
         Map<String, String> state = new HashMap<>();
         state.put("vehicleId", e.vehicleId());
+        state.put("vehicleLabel", e.vehicleLabel() != null ? e.vehicleLabel() : e.vehicleId());
         state.put("tenantId", e.tenantId());
         state.put("imei", t.imei());
         state.put("status", e.status().name());

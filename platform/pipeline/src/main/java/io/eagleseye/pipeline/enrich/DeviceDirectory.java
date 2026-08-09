@@ -11,7 +11,8 @@ import java.util.Optional;
  */
 public interface DeviceDirectory {
 
-    record Binding(String vehicleId, String tenantId) {}
+    /** vehicleLabel is what humans see on the map (plate or vehicle name); may equal the IMEI for unassigned devices. */
+    record Binding(String vehicleId, String tenantId, String vehicleLabel) {}
 
     Optional<Binding> resolve(String imei);
 }

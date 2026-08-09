@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "saved": "2026-08-08T07:34:29.834Z",
+  "saved": "2026-08-09T10:32:19.311Z",
   "tasks": [
     {
       "id": "T-101",
@@ -471,8 +471,8 @@
       "prio": "u",
       "biz": false,
       "title": "Enricher: IMEI→device→vehicle→tenant, status derivation, Valkey live state",
-      "refs": "FR-TRK-03, Arch §6 - enricher LIVE: status derivation + Valkey live state (TTL 10min) + pub/sub + events.domain keyed by vehicle. Stub directory until registry (T-205/T-404)",
-      "status": "doing",
+      "refs": "FR-TRK-03, FR-ING-06 — COMPLETE: Kafka-backed DeviceDirectory (registry.devices compacted), real vehicle labels on map, decommissioned devices rejected, dev allow-unknown for phone/sims",
+      "status": "done",
       "deps": [
         "T-208"
       ],

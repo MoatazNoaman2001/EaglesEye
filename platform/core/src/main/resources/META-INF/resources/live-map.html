@@ -69,7 +69,7 @@ async function refresh() {
       if (!id || isNaN(lat) || isNaN(lon)) continue;
       seen.add(id);
 
-      const popupHtml = `<b>${id}</b><br>` +
+      const popupHtml = `<b>${v.vehicleLabel || id}</b><br>` +
         `status: ${v.status}<br>` +
         `speed: ${v.speedKmh ?? "0"} km/h · heading: ${v.headingDeg ?? "-"}<br>` +
         `imei: ${v.imei} · ${v.protocol}<br>` +

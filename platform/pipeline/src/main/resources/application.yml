@@ -30,6 +30,17 @@ mp:
         topic: owntracks/#
         host: localhost
         port: 1883
+      registry-devices:
+        connector: smallrye-kafka
+        topic: registry.devices
+        value:
+          deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        auto:
+          offset:
+            reset: earliest
+        # unique group per instance: every pipeline instance needs the FULL registry
+        group:
+          id: ee-registry-cache-${quarkus.uuid}
     outgoing:
       telemetry-decoded:
         connector: smallrye-kafka
@@ -50,6 +61,10 @@ mp:
 
 # dev profile: talks to the local stack (infra/dev/docker-compose.yml)
 "%dev":
+  eagleseye:
+    directory:
+      # dev: unregistered devices (phone, simulators) still flow with synthetic bindings
+      allow-unknown: true
   kafka:
     bootstrap:
       servers: localhost:9092
