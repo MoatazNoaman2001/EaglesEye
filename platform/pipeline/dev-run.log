@@ -37,3 +37,4 @@ __  ____  __  _____   ___  __ ____  ______
 2026-08-09 12:44:26,670 INFO  [io.quarkus] (Quarkus Main Thread) eagleseye-pipeline 0.1.0-SNAPSHOT on JVM (powered by Quarkus 3.38.1) started in 4.131s. Listening on: http://localhost:8082
 2026-08-09 12:44:26,670 INFO  [io.quarkus] (Quarkus Main Thread) Profile dev activated. Live Coding activated.
 2026-08-09 12:44:26,670 INFO  [io.quarkus] (Quarkus Main Thread) Installed features: [agroal, cdi, compose, config-yaml, jdbc-postgresql, kafka-client, messaging, messaging-kafka, messaging-mqtt, narayana-jta, redis-client, smallrye-context-propagation, smallrye-health, vertx]
+2026-08-09 12:44:54,115 INFO  [io.smallrye.reactive.messaging.kafka] (vert.x-eventloop-thread-4) SRMSG18256: Initialize record store for topic-partition 'telemetry.decoded-5' at position -1.

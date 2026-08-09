@@ -1,0 +1,26 @@
+kallum@askjules.co.uk
+megan@askjules.co.uk
+
+oliver@askjules.co.uk
+
+
+I build complete products like mobile apps, web platforms, and the backends that power then, so you hire one developer instead of three. 2.5+ years shipping production software with Flutter, NextJS, and NodeJS
+Most freelancers handle one layer. I own the whole stack, which means your mobile app, web dashboard, and API actually fit together, same data, same logic, no integration headaches.
+WHAT I BUILD
+
+• Mobile: Flutter & Dart (iOS, Android, desktop, web), Clean Architecture + BLoC. Currently building CQC, a large-scale SaaS platform, owning the Flutter app end-to-end.
+
+• Web: NextJS, React & TypeScript front ends on NodeJS / NestJS APIs. Shipped a live accounting PWA and a multi-tenant WhatsApp CRM.
+
+• Backends & APIs: NodeJS/NestJS, Laravel, and Java (Spring Boot/Quarkus). REST, real-time (SocketIO/WebRTC), PostgreSQL/MongoDB, Redis queues, auth & encryption.
+
+• Cloud & real-time: Supabase, Firebase, Google Cloud Functions; push notifications, live sync, WebSockets.
+RECENT RESULTS
+
+• Sprint Skills: a Laravel exam platform live in production with 500+ users.
+
+• EasyDo CRM: primary backend dev on a WhatsApp Business CRM with encrypted flows and Redis/BullMQ campaign queues.
+
+• 10+ mobile apps delivered to freelance clients on Upwork & Mostaql.
+HOW I WORK: clear written English, clean and tested code, Git / CI-CD workflows, and regular updates. I treat your project like a product I own, not a ticket I close.
+If you need someone who can take an idea from a Figma screen to a deployed mobile + web product without juggling three contractors, send me the details and I'll tell you honestly how I'd build it.
