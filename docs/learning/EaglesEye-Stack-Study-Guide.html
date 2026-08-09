@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>EaglesEye — Stack Study Guide</title>
+<style>
+:root{
+  --navy:#1f3a5f; --cyan:#14a8d6; --text:#1c2733; --muted:#5b6b7d;
+  --border:#dfe5ec; --bg-soft:#f4f6f9; --code-bg:#f0f3f7;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--text);line-height:1.6;
+  max-width:860px;margin:0 auto;padding:40px 30px;font-size:14px}
+h1{color:var(--navy);font-size:1.9rem;margin-bottom:4px}
+.subtitle{color:var(--muted);margin-bottom:8px;font-size:1rem}
+.meta{color:var(--muted);font-size:.8rem;margin-bottom:30px;padding-bottom:16px;border-bottom:2px solid var(--navy)}
+h2{color:var(--navy);font-size:1.35rem;margin:38px 0 4px;padding-top:14px;border-top:1px solid var(--border)}
+h2 .n{color:var(--cyan)}
+.role{color:var(--cyan);font-weight:600;font-size:.92rem;margin-bottom:12px}
+h3{color:var(--navy);font-size:1.02rem;margin:20px 0 8px}
+p{margin-bottom:10px}
+ul,ol{margin:0 0 12px 22px}
+li{margin-bottom:5px}
+code{background:var(--code-bg);border:1px solid var(--border);border-radius:4px;
+  padding:1px 5px;font-family:Consolas,monospace;font-size:.85em}
+pre{background:var(--code-bg);border:1px solid var(--border);border-radius:8px;
+  padding:12px 15px;margin:10px 0 14px;overflow-x:auto;page-break-inside:avoid}
+pre code{background:none;border:none;padding:0;font-size:.82rem;line-height:1.5}
+table{border-collapse:collapse;width:100%;margin:10px 0 16px;font-size:.85rem}
+th{background:var(--bg-soft);color:var(--navy);text-align:left;padding:7px 10px;border:1px solid var(--border)}
+td{padding:6px 10px;border:1px solid var(--border);vertical-align:top}
+a{color:var(--cyan);text-decoration:none}
+.why{background:#f2f7f3;border:1px solid #d3e5d8;border-radius:8px;padding:10px 14px;margin:10px 0 14px;font-size:.88rem}
+.why b{color:#1c4730}
+.warn{background:#fdf3dd;border:1px solid #ecd9ad;border-radius:8px;padding:10px 14px;margin:10px 0 14px;font-size:.88rem}
+.tasks{font-size:.82rem;color:var(--muted);font-style:italic;margin-bottom:12px}
+.pagebreak{page-break-before:always}
+@media print{ body{padding:20px 10px} h2{page-break-after:avoid} h3{page-break-after:avoid} }
+</style>
+</head>
+<body>
+
+<h1>EaglesEye — Stack Study Guide</h1>
+<div class="subtitle">The four technologies you don't know yet, taught against your own running dev stack</div>
+<div class="meta">For: Moataz · Skipped: Kafka, Keycloak (you know them) · Prereq: <code>cd infra\dev &amp;&amp; docker compose up -d</code> · Version 1.0 — 07 Aug 2026</div>
+
+<p><b>How to use this guide:</b> each chapter has four parts — <i>what it is</i>, <i>the 20% you actually need</i>,
+<i>hands-on exercises that run against your real EaglesEye containers</i>, and <i>ordered study links</i> for going deeper.
+Do the hands-on parts in order; each takes 20–40 minutes. Everything here is traced to the sprint task where you'll use it.</p>
+
+<table>
+  <tr><th>Chapter</th><th>Technology</th><th>Role in EaglesEye</th><th>Needed by</th></tr>
+  <tr><td>1</td><td>TimescaleDB</td><td>positions storage: hypertables, compression, retention</td><td>Sprint 2 (T-206, T-207)</td></tr>
+  <tr><td>2</td><td>PostGIS</td><td>geofences: geometry, spatial indexes, point-in-polygon</td><td>Sprint 6 (T-605, T-606)</td></tr>
+  <tr><td>3</td><td>Valkey</td><td>live vehicle state, alert cooldowns, pub/sub fan-out</td><td>Sprint 5 (T-501), Sprint 7 (T-703)</td></tr>
+  <tr><td>4</td><td>MQTT / Mosquitto</td><td>generic JSON device path + your phone (OwnTracks)</td><td>Now (T-110), Sprint 3 (T-303)</td></tr>
+  <tr><td>5</td><td>Later stack</td><td>OSRM, MapLibre, OwnTracks — links only for now</td><td>Sprints 5–6</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2><span class="n">1.</span> TimescaleDB — time-series on PostgreSQL</h2>
+<div class="role">Where every GPS position lives · Sprint 2 · tasks T-206, T-207</div>
+
+<h3>What it is</h3>
+<p>TimescaleDB is a PostgreSQL extension — not a separate database. You keep normal SQL, joins, indexes and tools,
+and it adds one core concept: the <b>hypertable</b>. A hypertable looks like an ordinary table but is automatically
+partitioned behind the scenes into <b>chunks</b> by time (e.g. one chunk per week). Inserts land in the small "hot"
+chunk, old chunks get compressed ~10×, and dropping old data is instant (drop the chunk, no DELETE scan).</p>
+<div class="why"><b>Why EaglesEye uses it:</b> at 500 vehicles × 1 position/10 s you write ~4M rows/day.
+A plain table slows down and can't drop 12-month-old data cheaply (NFR-06). A hypertable keeps inserts fast forever,
+makes "last 30 days for vehicle X" a near-sequential read (NFR-07: &lt;3 s), and gives retention for free.</div>
+
+<h3>The 20% you need</h3>
+<ul>
+  <li><code>create_hypertable('positions','device_time')</code> — turns a table into a hypertable</li>
+  <li>Chunks — you almost never touch them directly; know they exist and that queries which filter on time only scan relevant chunks</li>
+  <li>Compression policy — <code>segmentby = device_id</code> is the key decision: rows of the same device compress together, making per-vehicle history reads fast</li>
+  <li>Retention — <code>add_retention_policy</code> drops chunks older than N months automatically</li>
+  <li><code>time_bucket('1 hour', device_time)</code> — GROUP BY for time; powers daily distance/utilisation reports</li>
+  <li>Continuous aggregates — materialized views that update incrementally; you'll use them in Sprint 8 for report speed</li>
+</ul>
+
+<h3>Hands-on — against your ee-timescaledb container</h3>
+<pre><code>docker exec -it ee-timescaledb psql -U eagleseye -d eagleseye</code></pre>
+<pre><code>-- 1. a mini positions hypertable
+CREATE TABLE demo_positions (
+  device_id   TEXT NOT NULL,
+  device_time TIMESTAMPTZ NOT NULL,
+  lat DOUBLE PRECISION, lon DOUBLE PRECISION,
+  speed_kmh REAL
+);
+SELECT create_hypertable('demo_positions', 'device_time');
+
+-- 2. insert 3 days of fake data for 2 devices (~5,000 rows)
+INSERT INTO demo_positions
+SELECT 'IMEI-' || d, now() - (i || ' minutes')::interval,
+       30.0 + random()*0.2, 31.2 + random()*0.2, random()*90
+FROM generate_series(1,2) d, generate_series(1,2500) i;
+
+-- 3. the report query shape you'll write constantly
+SELECT device_id, time_bucket('1 hour', device_time) AS hour,
+       avg(speed_kmh)::int AS avg_speed, count(*) AS points
+FROM demo_positions
+WHERE device_time > now() - interval '1 day'
+GROUP BY device_id, hour ORDER BY hour DESC LIMIT 10;
+
+-- 4. see the chunks Timescale created for you
+SELECT show_chunks('demo_positions');
+
+-- 5. compression: THE production setting for EaglesEye
+ALTER TABLE demo_positions SET (
+  timescaledb.compress,
+  timescaledb.compress_segmentby = 'device_id',
+  timescaledb.compress_orderby   = 'device_time DESC');
+SELECT add_compression_policy('demo_positions', INTERVAL '7 days');
+
+-- 6. retention = NFR-06 (12 months) in one line
+SELECT add_retention_policy('demo_positions', INTERVAL '12 months');
+
+-- cleanup when done
+DROP TABLE demo_positions;</code></pre>
+
+<h3>Study links, in order</h3>
+<ol>
+  <li><a href="https://docs.timescale.com/getting-started/latest/">Timescale — Getting Started</a> — official, ~1 hour, do it once</li>
+  <li><a href="https://docs.timescale.com/use-timescale/latest/hypertables/">Hypertables explained</a> — the mental model</li>
+  <li><a href="https://docs.timescale.com/use-timescale/latest/compression/">Compression</a> — read "About compression"; segmentby/orderby is exactly our T-207 decision</li>
+  <li><a href="https://docs.timescale.com/use-timescale/latest/continuous-aggregates/">Continuous aggregates</a> — skim now, needed in Sprint 8 (reports)</li>
+  <li><a href="https://docs.timescale.com/tutorials/latest/">Tutorials</a> — the "transport/IoT" ones mirror our exact workload</li>
+</ol>
+
+<!-- ============================================================ -->
+<h2 class="pagebreak"><span class="n">2.</span> PostGIS — geospatial SQL</h2>
+<div class="role">How geofences work · Sprint 6 · tasks T-605, T-606 · also map queries everywhere</div>
+
+<h3>What it is</h3>
+<p>PostGIS is the geospatial extension for PostgreSQL — the industry standard for 20+ years. It adds a
+<code>geometry</code> column type (points, polygons, lines), spatial functions (<code>ST_Contains</code>,
+<code>ST_Distance</code>, <code>ST_Buffer</code>…), and spatial indexes (GiST) that make "which geofence contains
+this point" fast even with thousands of zones. Traccar does its geofencing in application code; we do it in the
+database — stronger and simpler.</p>
+<div class="why"><b>Why EaglesEye uses it:</b> geofences (FR-GEO) are polygons/circles; every incoming position may
+need "is this point inside any assigned zone?" answered. PostGIS + GiST index answers that in microseconds, and the
+same machinery later powers "vehicles near customer site" API queries.</div>
+
+<h3>The 20% you need</h3>
+<ul>
+  <li><b>SRID 4326</b> = plain GPS lat/lon (WGS-84). Every geometry we store uses it. Beware: PostGIS point order is <code>(lon, lat)</code> — longitude FIRST. This is the #1 beginner bug.</li>
+  <li><code>geometry</code> vs <code>geography</code>: geometry = fast planar math (fine for zone containment);
+      geography = accurate metres over the earth (use for distances). Rule of thumb: containment → geometry; distance in metres → cast <code>::geography</code></li>
+  <li><code>ST_Contains(zone, point)</code> / <code>ST_Within</code> — the geofence check</li>
+  <li><code>ST_DWithin(a, b, metres)</code> — "within X metres", uses the index (never write <code>ST_Distance &lt; x</code>)</li>
+  <li><code>ST_GeomFromText('POINT(31.23 30.04)', 4326)</code> and <code>ST_AsGeoJSON()</code> — in and out</li>
+  <li>GiST index: <code>CREATE INDEX ON geofences USING GIST (geom);</code> — without it everything is a full scan</li>
+</ul>
+
+<h3>Hands-on — a real Cairo geofence</h3>
+<pre><code>docker exec -it ee-timescaledb psql -U eagleseye -d eagleseye</code></pre>
+<pre><code>-- 1. a geofence table like Sprint 6 will have
+CREATE TABLE demo_geofences (
+  id SERIAL PRIMARY KEY, name TEXT,
+  geom geometry(Polygon, 4326)
+);
+CREATE INDEX ON demo_geofences USING GIST (geom);
+
+-- 2. a polygon roughly around Downtown Cairo (lon lat pairs!)
+INSERT INTO demo_geofences (name, geom) VALUES ('Downtown Cairo',
+  ST_GeomFromText('POLYGON((31.22 30.03, 31.26 30.03, 31.26 30.06,
+                            31.22 30.06, 31.22 30.03))', 4326));
+
+-- 3. the geofence evaluator check (T-606): is a vehicle inside?
+SELECT name,
+  ST_Contains(geom, ST_SetSRID(ST_MakePoint(31.24, 30.045), 4326)) AS tahrir_inside,
+  ST_Contains(geom, ST_SetSRID(ST_MakePoint(31.40, 30.10 ), 4326)) AS airport_inside
+FROM demo_geofences;
+
+-- 4. distance in metres: geometry vs geography (see the difference!)
+SELECT
+  ST_Distance(ST_SetSRID(ST_MakePoint(31.24,30.045),4326),
+              ST_SetSRID(ST_MakePoint(31.40,30.10),4326))             AS degrees_meaningless,
+  ST_Distance(ST_SetSRID(ST_MakePoint(31.24,30.045),4326)::geography,
+              ST_SetSRID(ST_MakePoint(31.40,30.10),4326)::geography)::int AS metres_real;
+
+-- 5. "within 500 m of the depot" — the index-friendly way
+SELECT name FROM demo_geofences
+WHERE ST_DWithin(geom::geography,
+      ST_SetSRID(ST_MakePoint(31.245, 30.05),4326)::geography, 500);
+
+DROP TABLE demo_geofences;</code></pre>
+
+<h3>Study links, in order</h3>
+<ol>
+  <li><a href="https://postgis.net/workshops/postgis-intro/">Introduction to PostGIS workshop</a> — THE resource; free, excellent, do sections 1–17 (skip loading/projection deep-dives on first pass)</li>
+  <li><a href="https://postgis.net/docs/reference.html">PostGIS reference</a> — bookmark; you'll grep it for ST_ functions</li>
+  <li><a href="https://postgis.net/workshops/postgis-intro/geography.html">Geometry vs geography chapter</a> — reread before Sprint 6</li>
+</ol>
+
+<!-- ============================================================ -->
+<h2 class="pagebreak"><span class="n">3.</span> Valkey — in-memory data store (the Redis fork)</h2>
+<div class="role">Live vehicle state, alert cooldowns, WebSocket fan-out · Sprints 5 &amp; 7 · tasks T-501, T-503, T-703</div>
+
+<h3>What it is</h3>
+<p>Valkey is the Linux Foundation's open-source fork of Redis (BSD licence — kept for our CN-02 rule), fully
+Redis-compatible: same commands, same clients, same docs. It's an in-memory key-value store with rich data types
+(strings, hashes, sets, sorted sets) plus pub/sub and per-key expiry (TTL). Think of it as a shared, blazing-fast
+scratchpad between services — <b>never</b> the source of truth. In EaglesEye, losing Valkey means the live map is
+stale for a few seconds until the enricher repopulates it; nothing is lost.</p>
+<div class="why"><b>Why EaglesEye uses it:</b> the live map (FR-TRK) must read "current state of 500 vehicles"
+hundreds of times per second — that never touches PostgreSQL; it reads Valkey hashes. Alert cooldowns (FR-ALT-06,
+the anti-noise rule) are one atomic command. And pub/sub fans positions out to WebSocket sessions (T-503).</div>
+
+<h3>The 20% you need</h3>
+<ul>
+  <li><b>Hashes</b> — one hash per vehicle: <code>HSET vehicle:123 lat 30.04 lon 31.23 status moving</code>, read with <code>HGETALL</code></li>
+  <li><b>TTL</b> — <code>EXPIRE key seconds</code> / <code>SET key val EX 300</code>; keys vanish automatically</li>
+  <li><b>The cooldown pattern</b> (memorise this one): <code>SET cooldown:speeding:veh123 1 NX EX 600</code> —
+      NX = only if not exists. Returns OK → first alert, send it. Returns nil → suppressed duplicate. Atomic, no race conditions.</li>
+  <li><b>Pub/sub</b> — <code>SUBSCRIBE positions</code> / <code>PUBLISH positions "…"</code>; fire-and-forget (no replay — that's Kafka's job; know the difference)</li>
+  <li><b>Sorted sets</b> — <code>ZADD last_seen &lt;timestamp&gt; &lt;device&gt;</code> then <code>ZRANGEBYSCORE</code>: "devices silent &gt; 10 min" for the health module</li>
+  <li>Single-threaded mental model: every command is atomic; don't store big blobs; everything is O(small)</li>
+</ul>
+
+<h3>Hands-on — against your ee-valkey container</h3>
+<pre><code>docker exec -it ee-valkey valkey-cli</code></pre>
+<pre><code># 1. live vehicle state (what T-501 enricher will write)
+HSET vehicle:TRK-102 lat 30.044 lon 31.235 speed 62 status moving ignition 1
+HGETALL vehicle:TRK-102
+HSET vehicle:TRK-102 speed 0 status idle     # partial update
+HGET vehicle:TRK-102 status
+
+# 2. offline detection with TTL
+SET heartbeat:TRK-102 1 EX 10       # device pings every 10 s
+TTL heartbeat:TRK-102               # watch it count down
+EXISTS heartbeat:TRK-102            # 0 after expiry = device offline
+
+# 3. THE cooldown pattern (T-703, FR-ALT-06)
+SET cooldown:speeding:TRK-102 1 NX EX 600    # -> OK    (send alert)
+SET cooldown:speeding:TRK-102 1 NX EX 600    # -> (nil) (suppress!)
+
+# 4. pub/sub — open a SECOND terminal:
+#    docker exec -it ee-valkey valkey-cli
+#    SUBSCRIBE positions
+# then in the first one:
+PUBLISH positions "TRK-102,30.044,31.235,62"
+
+# 5. staleness ranking (health module, T-801)
+ZADD last_seen 1754500000 dev-a 1754590000 dev-b
+ZRANGEBYSCORE last_seen -inf 1754550000      # devices not seen since cutoff</code></pre>
+
+<h3>Study links, in order</h3>
+<ol>
+  <li><a href="https://valkey.io/topics/data-types/">Valkey — data types intro</a> — core reading, ~40 min</li>
+  <li><a href="https://valkey.io/commands/">Valkey command reference</a> — bookmark; try commands in valkey-cli as you read</li>
+  <li><a href="https://valkey.io/topics/pubsub/">Pub/Sub explained</a> — short; note the "no delivery guarantee" part (that's why Kafka carries the truth)</li>
+  <li><a href="https://redis.io/docs/latest/develop/">Redis developer docs</a> — everything applies to Valkey; richer tutorials and patterns</li>
+</ol>
+
+<!-- ============================================================ -->
+<h2 class="pagebreak"><span class="n">4.</span> MQTT + Mosquitto — the lightweight IoT protocol</h2>
+<div class="role">Generic JSON device path + your phone · NOW (T-110), Sprint 3 (T-303) · FR-ING-04</div>
+
+<h3>What it is</h3>
+<p>MQTT is a tiny publish/subscribe protocol built for devices on bad networks — exactly the world GPS trackers live
+in. Devices <b>publish</b> messages to hierarchical <b>topics</b> (like <code>owntracks/moataz/phone1</code>);
+services <b>subscribe</b> to topic patterns. A <b>broker</b> (Mosquitto for us) sits in the middle and routes.
+Unlike your Teltonika/GT06 binary TCP protocols, modern and custom devices increasingly just publish JSON over
+MQTT — that's our fourth ingestion path, and it's how your phone becomes device #1 today.</p>
+<div class="why"><b>Why EaglesEye uses it:</b> FR-ING-04 requires a generic JSON/MQTT path so any modern or custom
+device can join without us writing a binary decoder. It's also the zero-budget door: OwnTracks on your phone speaks
+MQTT natively (T-110).</div>
+
+<h3>The 20% you need</h3>
+<ul>
+  <li><b>Topics</b> are just names with <code>/</code> hierarchy; nobody pre-creates them. Wildcards when subscribing:
+      <code>+</code> = one level (<code>owntracks/+/phone1</code>), <code>#</code> = everything below (<code>owntracks/#</code>)</li>
+  <li><b>QoS</b> 0 = fire and forget · 1 = at least once (duplicates possible — our dedup handles that) · 2 = exactly once (slow, skip).
+      EaglesEye ingests at QoS 1.</li>
+  <li><b>Retained message</b> — broker keeps the last message per topic; new subscribers get it immediately. OwnTracks uses this for "last known location".</li>
+  <li><b>Last Will &amp; Testament (LWT)</b> — broker publishes a message on behalf of a client that dies unexpectedly → free device-offline detection (feeds FR-HLT later)</li>
+  <li><b>Keep-alive</b> — client pings; broker declares death after 1.5× interval; that's what triggers LWT</li>
+  <li>Mosquitto tools: <code>mosquitto_sub</code> / <code>mosquitto_pub</code> — you'll use them constantly for debugging</li>
+</ul>
+
+<h3>Hands-on — against your ee-mosquitto container</h3>
+<pre><code># Terminal 1 — the spy: watch EVERYTHING crossing the broker
+docker exec -it ee-mosquitto mosquitto_sub -t '#' -v
+
+# Terminal 2 — publish like a device would
+docker exec -it ee-mosquitto mosquitto_pub -t devices/veh1/pos -m '{"lat":30.04,"lon":31.23,"spd":62}'
+
+# wildcards: subscribe to one level vs whole subtree (terminal 1, Ctrl+C first)
+docker exec -it ee-mosquitto mosquitto_sub -t 'devices/+/pos' -v      # any vehicle, pos only
+docker exec -it ee-mosquitto mosquitto_sub -t 'devices/#' -v          # everything under devices
+
+# retained message: publish with -r, then subscribe AFTER — you still get it
+docker exec -it ee-mosquitto mosquitto_pub -t devices/veh1/last -m '{"lat":30.05}' -r
+docker exec -it ee-mosquitto mosquitto_sub -t devices/veh1/last -C 1
+
+# QoS 1 publish
+docker exec -it ee-mosquitto mosquitto_pub -q 1 -t devices/veh1/pos -m 'qos1-msg'
+
+# and once OwnTracks is set up on your phone (T-110):
+docker exec -it ee-mosquitto mosquitto_sub -t 'owntracks/#' -v</code></pre>
+
+<h3>Study links, in order</h3>
+<ol>
+  <li><a href="https://www.hivemq.com/mqtt-essentials/">HiveMQ — MQTT Essentials</a> — THE course; 10 short parts; parts 1–9 cover everything above</li>
+  <li><a href="https://mosquitto.org/documentation/">Mosquitto documentation</a> — broker config reference (auth &amp; TLS matter in Sprint 3's hardening)</li>
+  <li><a href="https://owntracks.org/booklet/">OwnTracks Booklet</a> — the phone app's manual; the "MQTT mode" chapter is your T-110 reference, and its JSON payload format is documented here</li>
+</ol>
+
+<!-- ============================================================ -->
+<h2 class="pagebreak"><span class="n">5.</span> Coming later — bookmark, don't study yet</h2>
+<p>These arrive in Sprints 5–6. Save the links; reading them now would be premature.</p>
+<table>
+  <tr><th>Technology</th><th>Role</th><th>When</th><th>Start here</th></tr>
+  <tr><td>MapLibre GL JS</td><td>the live map in the console</td><td>Sprint 5 (T-502)</td><td><a href="https://maplibre.org/maplibre-gl-js/docs/">maplibre.org docs + examples</a></td></tr>
+  <tr><td>OSRM</td><td>snap GPS paths to roads; the 2% odometer target</td><td>Sprint 6 (T-602)</td><td><a href="https://project-osrm.org/">project-osrm.org</a> — see the /match service</td></tr>
+  <tr><td>Photon</td><td>reverse geocoding (coords → address)</td><td>Sprint 5 (T-505)</td><td><a href="https://github.com/komoot/photon">github.com/komoot/photon</a></td></tr>
+  <tr><td>Quarkus deep-dives</td><td>Kafka + Hibernate + scheduler patterns</td><td>ongoing</td><td><a href="https://quarkus.io/guides/">quarkus.io/guides</a> — read a guide when its task arrives</td></tr>
+</table>
+
+<h2>Suggested schedule</h2>
+<table>
+  <tr><th>When</th><th>Study</th><th>Hours</th><th>Because</th></tr>
+  <tr><td>This week</td><td>Ch. 4 — MQTT hands-on + HiveMQ parts 1–5</td><td>2–3</td><td>T-110 (phone) is today's task</td></tr>
+  <tr><td>Before Sprint 2 (Aug 23)</td><td>Ch. 1 — TimescaleDB hands-on + Getting Started</td><td>3–4</td><td>T-206/T-207 build the positions hypertable</td></tr>
+  <tr><td>Before Sprint 5 (Oct 04)</td><td>Ch. 3 — Valkey hands-on + data types</td><td>2</td><td>T-501 live state, T-503 fan-out</td></tr>
+  <tr><td>Before Sprint 6 (Oct 18)</td><td>Ch. 2 — PostGIS workshop</td><td>4–6</td><td>T-605/T-606 geofencing</td></tr>
+</table>
+<div class="warn"><b>Honest note:</b> links were curated as of Aug 2026 from official sources; if one moves,
+the project name + topic in a search engine finds the successor. The hands-on snippets in this guide run against
+your own containers, so they don't rot.</div>
+
+</body>
+</html>
