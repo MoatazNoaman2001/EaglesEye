@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>EaglesEye — Business Scenarios & Market Map</title>
+<style>
+:root{ --navy:#1f3a5f; --cyan:#14a8d6; --text:#1c2733; --muted:#5b6b7d;
+  --border:#dfe5ec; --bg-soft:#f4f6f9; --green:#2e8f57; --amber:#c98a1b; --red:#c93a2e; }
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--text);line-height:1.55;
+  max-width:900px;margin:0 auto;padding:40px 30px;font-size:13.5px}
+h1{color:var(--navy);font-size:1.8rem;margin-bottom:4px}
+.subtitle{color:var(--muted);margin-bottom:8px;font-size:.98rem}
+.meta{color:var(--muted);font-size:.78rem;margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid var(--navy)}
+h2{color:var(--navy);font-size:1.3rem;margin:36px 0 10px;padding-top:12px;border-top:1px solid var(--border)}
+h2 .n{color:var(--cyan)}
+h3{color:var(--navy);font-size:1rem;margin:18px 0 6px}
+p{margin-bottom:9px}
+ul,ol{margin:0 0 10px 20px}
+li{margin-bottom:4px}
+table{border-collapse:collapse;width:100%;margin:10px 0 16px;font-size:.8rem}
+th{background:var(--bg-soft);color:var(--navy);text-align:left;padding:7px 9px;border:1px solid var(--border);vertical-align:top}
+td{padding:6px 9px;border:1px solid var(--border);vertical-align:top}
+.seg{border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:12px;page-break-inside:avoid}
+.seg h3{margin-top:0;display:flex;align-items:baseline;gap:10px}
+.tier{font-size:.68rem;font-weight:800;padding:2px 10px;border-radius:12px;letter-spacing:.4px}
+.tier.now{background:#eaf5ee;color:var(--green)}
+.tier.soon{background:#fdf3dd;color:var(--amber)}
+.tier.later{background:#f0f3f7;color:var(--muted)}
+.seg .row{display:flex;gap:18px;flex-wrap:wrap;margin-top:6px}
+.seg .col{flex:1;min-width:240px}
+.seg .lbl{font-size:.7rem;font-weight:800;color:var(--cyan);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+.seg p{font-size:.82rem;margin-bottom:6px}
+.callout{background:#f2f7f3;border:1px solid #d3e5d8;border-radius:8px;padding:11px 15px;margin:12px 0;font-size:.86rem}
+.callout b{color:#1c4730}
+.warn{background:#fdf3dd;border:1px solid #ecd9ad;border-radius:8px;padding:11px 15px;margin:12px 0;font-size:.86rem}
+.score{font-weight:800}
+.s5{color:var(--green)} .s4{color:#4e9e43} .s3{color:var(--amber)} .s2{color:#c96a1b} .s1{color:var(--red)}
+a{color:var(--cyan);text-decoration:none}
+.pagebreak{page-break-before:always}
+.small{font-size:.78rem;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<h1>EaglesEye — Business Scenarios &amp; Market Map</h1>
+<div class="subtitle">Every way this industry makes money, who buys, what they need, and where EaglesEye should strike first</div>
+<div class="meta">Version 1.0 · 10 Aug 2026 · Research grounded in web sources (listed at the end) + industry knowledge · Figures marked (est.) are estimates to validate in sales conversations</div>
+
+<h2><span class="n">1.</span> The industry in one picture</h2>
+<p>Fleet telematics revenue flows through four layers. You can play in any or all of them:</p>
+<table>
+  <tr><th>Layer</th><th>What is sold</th><th>Typical economics</th><th>EaglesEye position</th></tr>
+  <tr><td><b>Hardware</b></td><td>GPS devices, sensors, dashcams, installation</td><td>One-time: $50–$500/vehicle globally; Chinese GT06-class units $15–40 in MENA (est.)</td><td>Deliberately NOT our business — "bring your own hardware" is the wedge; installer partners sell it</td></tr>
+  <tr><td><b>Connectivity</b></td><td>SIMs / data plans</td><td>$1–3/vehicle/month (est.)</td><td>Not our business (AS-03) — customer or installer procures</td></tr>
+  <tr><td><b>Software (SaaS)</b></td><td>The platform: tracking, trips, alerts, reports, API</td><td>US/EU: $25–45/vehicle/month; MENA reality: $3–10/vehicle/month (est.) — volume compensates</td><td><b>Core business</b></td></tr>
+  <tr><td><b>Services &amp; data</b></td><td>Compliance filing, integration projects, driver coaching, insurance data</td><td>Project fees or rev-share</td><td>Phase 2+ upsell on top of the data spine</td></tr>
+</table>
+<div class="callout"><b>Market context:</b> Saudi fleet management alone is ~$280–420M (2025) growing 9–15%/yr; Egypt is projected at ~14% CAGR. Growth is driven by e-commerce logistics, fuel-cost pressure, and — critically for you — <b>government mandates</b> (§4).</div>
+
+<h2><span class="n">2.</span> Customer segment catalog — who buys and why</h2>
+<p>Sixteen segments, each tagged with when EaglesEye can serve it: <span class="tier now">NOW — Phase 1</span> <span class="tier soon">SOON — Phase 2</span> <span class="tier later">LATER — Phase 3+</span></p>
+
+<div class="seg"><h3>2.1 Distribution &amp; last-mile delivery <span class="tier now">NOW</span></h3>
+<div class="row"><div class="col"><div class="lbl">Who</div><p>FMCG distributors, e-commerce couriers, food/beverage delivery fleets, pharma distributors. 10–300 vans and light trucks. Egypt/Gulf are dense with them.</p>
+<div class="lbl">Pains</div><p>"Where is my driver?", unauthorized side-trips and fuel burn, delivery-time disputes with customers, vehicles used after hours.</p></div>
+<div class="col"><div class="lbl">They need</div><p>Live map, trip history with trustworthy km (payroll/fuel reconciliation), geofences on customer sites (arrival proof), after-hours movement alerts, simple reports.</p>
+<div class="lbl">Notes</div><p>Exactly the BRD's target persona. Fast sales cycle (owner decides), price-sensitive, high referral density. <b>This is the classic beachhead.</b></p></div></div></div>
+
+<div class="seg"><h3>2.2 Heavy trucking &amp; general cargo <span class="tier now">NOW</span></h3>
+<div class="row"><div class="col"><div class="lbl">Who</div><p>Cement, steel, aggregate haulers; import/export truckers; 20–500 heavy trucks.</p>
+<div class="lbl">Pains</div><p>Fuel theft (their #1 cost), long-route deviations, driver hours, <b>and now regulatory mandates</b> (Egypt traffic-law GPS amendment; Saudi Wasl for &gt;3.5t; Abu Dhabi Asateel).</p></div>
+<div class="col"><div class="lbl">They need</div><p>Phase 1 covers tracking/trips/geofences; fuel sensors are Phase 2; <b>compliance connectors (Wasl/Asateel data push) are the Phase 3 item that regulation may pull forward</b>.</p>
+<div class="lbl">Notes</div><p>Mandates convert "nice to have" into "must buy by deadline" — the cheapest customer acquisition that exists.</p></div></div></div>
+
+<div class="seg"><h3>2.3 Contracted passenger transport &amp; staff buses <span class="tier now">NOW</span></h3>
+<div class="row"><div class="col"><div class="lbl">Who</div><p>Companies bussing employees (factories, call centers, tourism), B2B shuttle operators. Big sector in Egypt (compounds→offices) and Gulf (labor transport).</p>
+<div class="lbl">Pains</div><p>Route compliance, speeding with passengers aboard, proof-of-service to the paying corporate client, after-hours use.</p></div>
+<div class="col"><div class="lbl">They need</div><p>Live map shared with the corporate client (viewer role!), speeding alerts, route geofences, punctuality reports. Phase 1 RBAC covers the "give my client a read-only view" trick — a real differentiator.</p></div></div></div>
+
+<div class="seg"><h3>2.4 School transport <span class="tier soon">SOON</span></h3>
+<div class="row"><div class="col"><div class="lbl">Who</div><p>Private schools and school-bus operators. Gulf: regulated (Asateel covers school buses in Abu Dhabi).</p>
+<div class="lbl">Pains</div><p>Parent anxiety ("where is the bus?"), stop compliance, driver behavior with children aboard.</p></div>
+<div class="col"><div class="lbl">They need</div><p>Phase 1 tracking + a <b>parent-facing app/notifications</b> (Phase 2 — separate client surface) and student check-in (RFID) later. Sales via school administrations; longer cycle but sticky and premium-priced.</p></div></div></div>
+
+<div class="seg"><h3>2.5 Construction equipment &amp; heavy machinery <span class="tier now">NOW</span></h3>
+<div class="row"><div class="col"><div class="lbl">Who</div><p>Contractors and equipment owners: excavators, loaders, cranes, generators. Gulf mega-projects; Egypt's construction boom.</p>
+<div class="lbl">Pains</div><p>Theft (equipment worth $50k–500k), idle burn, knowing engine-hours for maintenance, machines "borrowed" between sites.</p></div>
+<div class="col"><div class="lbl">They need</div><p>Position + geofence (site boundaries) + ignition/engine-hours + battery-disconnect alerts — all Phase 1. Utilization and maintenance scheduling are Phase 2. Lower message rates, higher per-asset price tolerance (est. 2–3× a van).</p></div></div></div>
+
+<div class="seg"><h3>2.6 Equipment &amp; vehicle rental / leasing <span class="tier now">NOW</span></h3>
+<div class="row"><div class="col"><div class="lbl">Who</div><p>Car rental firms, equipment rental yards, leasing companies (banks' fleets under finance).</p>
+<div class="lbl">Pains</div><p>Where is my asset, is the renter abusing it, repossession on missed payments, cross-border movement, usage-based billing evidence.</p></div>
+<div class="col"><div class="lbl">They need</div><p>Tracking, geofence (allowed zone), speeding/abuse alerts, odometer/engine-hours for billing — Phase 1. Remote immobilization (relay control) is a Phase 2 device-command feature via Traccar's command support.</p></div></div></div>
+
+<div class="seg"><h3>2.7 Cold chain &amp; reefer transport <span class="tier soon">SOON</span></h3>
+<div class="row"><div class="col"><div class="lbl">Who</div><p>Food distribution, pharma logistics, supermarket chains' fleets.</p>
+<div class="lbl">Pains</div><p>Spoiled cargo = lost money + lost contracts; proof of temperature for audits (pharma GDP compliance); door-open events.</p></div>
+<div class="col"><div class="lbl">They need</div><p>Everything in Phase 1 <b>plus temperature sensor ingestion, threshold alerts, and temperature reports</b> — a thin Phase 2 layer over our attributes bag (Traccar already decodes temp sensors on Teltonika IO). Premium pricing; strong differentiation vs cheap portals.</p></div></div></div>
+
+<div class="seg"><h3>2.8 Field services &amp; sales forces <span class="tier now">NOW</span></h3>
+<div class="row"><div class="col"><div class="lbl">Who</div><p>Maintenance crews (elevators, ACs, telecom towers), medical reps, utility contractors — car/van fleets 10–100.</p>
+<div class="lbl">Pains</div><p>Visit verification ("was the technician actually at the client?"), route efficiency, private use of company cars.</p></div>
+<div class="col"><div class="lbl">They need</div><p>Geofence visit reports (dwell time at client sites = visit proof) — Phase 1 FR-GEO-05 is literally this. Job dispatch is Phase 3; don't lead with it.</p></div></div></div>
+
+<div class="seg"><h3>2.9 Waste management &amp; municipal services <span class="tier soon">SOON</span></h3>
+<div class="row"><div class="col"><div class="lbl">Who</div><p>Private waste contractors serving cities/compounds; street-cleaning fleets.</p>
+<div class="lbl">Pains</div><p>Proving route completion to the municipality (payment depends on it), missed pickups, fuel.</p></div>
+<div class="col"><div class="lbl">They need</div><p>Route/geofence compliance reports (Phase 1) + often government-tender requirements (certified reports, sometimes camera). Sales cycle is tender-driven — slower, but contracts are large and multi-year.</p></div></div></div>
+
+<div class="seg"><h3>2.10 Taxis, microbuses &amp; ride fleets <span class="tier now">NOW</span></h3>
+<div class="row"><div class="col"><div class="lbl">Who</div><p>Taxi cooperatives, microbus owners' associations, small ride-hailing fleet partners (Uber/Careem fleet owners run 10–200 cars).</p>
+<div class="lbl">Pains</div><p>Egypt's traffic-law amendment now mandates GPS for taxis and microbuses; fleet partners fight driver fraud and vehicle abuse.</p></div>
+<div class="col"><div class="lbl">They need</div><p>Cheap, simple tracking + the compliance checkbox. Price floor of the market (est. $2–4/vehicle/month) — win on volume and self-service, not features. Good filler, poor beachhead.</p></div></div></div>
+
+<div class="seg"><h3>2.11 Tourism transport <span class="tier now">NOW</span></h3>
+<div class="row"><div class="col"><div class="lbl">Who</div><p>Nile cruise transfer fleets, Red Sea resort shuttles, tour bus operators. Egypt-specific strength.</p>
+<div class="lbl">Pains</div><p>Safety reputation (accidents make international news), long-standing government tracking requirements for tourist transport, client-facing punctuality.</p></div>
+<div class="col"><div class="lbl">They need</div><p>Speeding/driver alerts, live view for operations, trip logs for the Ministry of Tourism. Phase 1 fits; Arabic-first UI matters here.</p></div></div></div>
+
+<div class="seg"><h3>2.12 Oil &amp; gas / mining contractors <span class="tier later">LATER</span></h3>
+<div class="row"><div class="col"><div class="lbl">Who</div><p>Contractors serving fields and mines (Gulf, Western Desert). Strict HSE regimes.</p>
+<div class="lbl">Pains</div><p>IVMS (in-vehicle monitoring system) is contractually REQUIRED by operators (Aramco, ADNOC…): harsh braking/acceleration, seatbelt, fatigue, certified reports.</p></div>
+<div class="col"><div class="lbl">They need</div><p>Accelerometer-grade driver behavior + certifications + auditor-ready reports — Phase 2 safety scoring at minimum, plus formal IVMS certification per operator. Premium prices; heavy compliance lift. Park it until the platform matures.</p></div></div></div>
+
+<div class="seg"><h3>2.13 Agriculture <span class="tier later">LATER</span></h3>
+<div class="row"><div class="col"><div class="lbl">Who</div><p>Large farms (Egypt's reclaimed-land agribusiness), tractor/harvester owners.</p></div>
+<div class="col"><div class="lbl">They need</div><p>Hours, field coverage maps, fuel. Niche protocols and low connectivity; weak willingness to pay locally (est.). Opportunistic only.</p></div></div></div>
+
+<div class="seg"><h3>2.14 Trailers &amp; non-powered assets <span class="tier soon">SOON</span></h3>
+<div class="row"><div class="col"><div class="lbl">Who</div><p>Trucking firms tracking trailers separately; container/chassis owners.</p></div>
+<div class="col"><div class="lbl">They need</div><p>Battery-powered trackers reporting sparsely (1–24 pings/day). Mostly works in Phase 1 (device health must tolerate sparse reporting); pairing trailer↔truck is a small Phase 2 feature.</p></div></div></div>
+
+<div class="seg"><h3>2.15 Insurance (usage-based / recovery) <span class="tier later">LATER</span></h3>
+<div class="row"><div class="col"><div class="lbl">Who</div><p>Motor insurers and banks (financed vehicles) wanting tracking as a condition or a discount driver; stolen-vehicle recovery services.</p></div>
+<div class="col"><div class="lbl">They need</div><p>Driver scoring data (Phase 2), APIs (Phase 1!), recovery workflows. In MENA this is partnership-driven, not product-driven — a distribution channel to court once you have volume, not a first customer.</p></div></div></div>
+
+<div class="seg"><h3>2.16 Resellers &amp; installers (the channel AS a customer) <span class="tier soon">SOON</span></h3>
+<div class="row"><div class="col"><div class="lbl">Who</div><p>Hardware importers and installation workshops who sell devices but have no software of their own — today they resell Wialon/Navixy white-labels.</p>
+<div class="lbl">Pains</div><p>Foreign platforms priced in USD/EUR per device, no Arabic-first UX, no local support, data abroad.</p></div>
+<div class="col"><div class="lbl">They need</div><p>White-label EaglesEye: their logo, their customers, wholesale per-device pricing. <b>Our AO-01/AO-02 (tenant hierarchy + branding fields) was designed for exactly this.</b> One reseller = tens of end fleets — the multiplier that lets a solo founder scale sales without a sales team.</p></div></div></div>
+
+<h2 class="pagebreak"><span class="n">3.</span> Cross-cutting use-case scenarios</h2>
+<p>These are the "jobs to be done" that cut across segments — the language customers actually use:</p>
+<table>
+  <tr><th>Scenario</th><th>Trigger to buy</th><th>EaglesEye today?</th></tr>
+  <tr><td><b>Where is everything right now</b></td><td>Owner's baseline anxiety</td><td>Yes — live map</td></tr>
+  <tr><td><b>Trustworthy km for payroll/fuel</b></td><td>Driver disputes, fuel reconciliation</td><td>Yes — trips (2% odometer goal via OSRM pending)</td></tr>
+  <tr><td><b>After-hours / unauthorized use</b></td><td>"My van was in another city on Friday"</td><td>Phase 1 alerts (T-7xx upcoming)</td></tr>
+  <tr><td><b>Theft recovery</b></td><td>One stolen vehicle pays for years of subscriptions</td><td>Yes — live tracking + power-cut alert (upcoming)</td></tr>
+  <tr><td><b>Site arrival/departure proof</b></td><td>Customer disputes, SLA billing</td><td>Yes — geofences (T-6xx upcoming)</td></tr>
+  <tr><td><b>Speeding &amp; safety</b></td><td>Accidents, insurance, HSE contracts</td><td>Phase 1 speeding alerts; scoring Phase 2</td></tr>
+  <tr><td><b>Fuel theft detection</b></td><td>#1 cost leak in trucking</td><td>Phase 2 (fuel sensors) — most-requested upsell</td></tr>
+  <tr><td><b>Temperature compliance</b></td><td>Spoiled cargo, pharma audits</td><td>Phase 2 thin layer (sensors decode already)</td></tr>
+  <tr><td><b>Regulatory compliance</b></td><td>Egypt GPS law, Wasl, Asateel deadlines</td><td>Tracking yes; official data-push connectors Phase 3 (pull forward if sales demand)</td></tr>
+  <tr><td><b>Maintenance by km/hours</b></td><td>Breakdowns, warranty</td><td>Phase 2 (odometer/engine-hours data already flows)</td></tr>
+  <tr><td><b>ERP integration</b></td><td>IT departments, larger fleets</td><td>API foundation Phase 1; connectors Phase 3</td></tr>
+</table>
+
+<h2><span class="n">4.</span> Regulatory tailwinds — MENA's gift to you</h2>
+<div class="callout"><b>This is the single most important commercial fact in this document:</b> all three of your target markets now have GPS mandates. Regulation creates deadline-driven buyers who must purchase something — the question is only from whom.</div>
+<table>
+  <tr><th>Market</th><th>Mandate</th><th>Who must comply</th><th>Opportunity for EaglesEye</th></tr>
+  <tr><td><b>Egypt</b></td><td>Traffic-law amendment requiring GPS trackers</td><td>Heavy trucks, taxis, microbuses</td><td>Home-market wave of first-time buyers; be the Arabic-first, locally-supported option</td></tr>
+  <tr><td><b>Saudi Arabia</b></td><td>Wasl platform (TGA): approved GPS pushing location/speed/ignition ≤30s intervals</td><td>Commercial vehicles &gt;3.5t, buses, logistics</td><td>Phase 3 Wasl connector = market entry ticket; partner with a KSA-certified provider earlier</td></tr>
+  <tr><td><b>UAE (Abu Dhabi)</b></td><td>Asateel platform, ITC-approved devices</td><td>Freight, passenger buses, school buses</td><td>Same pattern; certification needed before entry</td></tr>
+</table>
+<p class="small">Caveat: certification (device + platform) is a real barrier in KSA/UAE — plan it as a Phase 3 project with a local partner. Egypt's regime is younger and looser: verify the implementing regulations' exact requirements (open question for your lawyer alongside T-108).</p>
+
+<h2><span class="n">5.</span> Business models — how EaglesEye charges</h2>
+<table>
+  <tr><th>Model</th><th>Mechanics</th><th>When</th></tr>
+  <tr><td><b>Direct SaaS</b></td><td>Per vehicle per month, tiered (Track / Operate / Comply). MENA benchmarks (est.): $3–5 basic, $6–10 with alerts+reports, premium verticals 2–3×. Annual prepay discounts.</td><td>Phase 1 — the pilot model</td></tr>
+  <tr><td><b>White-label / reseller</b></td><td>Wholesale per-device price to installers/resellers ($1.5–3/mo est.); they own the customer and margin. Tenant hierarchy + branding already in the schema.</td><td>Phase 3 UI, but pilotable manually earlier</td></tr>
+  <tr><td><b>Compliance package</b></td><td>Base SaaS + certified mandate connector at premium; deadline-driven sales</td><td>Phase 3 (Egypt first)</td></tr>
+  <tr><td><b>Module marketplace — your "IaaS" vision</b></td><td>Client enables and pays for exactly the modules they need: base tracking + toggles for cold-chain, maintenance, safety, parent-app, ERP connector… Architecture already supports it: modules are event-bus consumers (AO-03), so a "module" = a consumer + UI pages + a billing flag per tenant. Later still: dedicated single-tenant deployments for enterprises ("deploy what they need" literally).</td><td>North star for Phase 2+ packaging — design pricing around modules from day one</td></tr>
+  <tr><td><b>Integration services</b></td><td>Paid ERP/ops integrations on top of the public API</td><td>Opportunistic from Phase 1 API</td></tr>
+  <tr><td><b>Data products</b></td><td>Anonymized mobility/insurance scoring data</td><td>Far future; requires scale + legal care</td></tr>
+</table>
+
+<h2><span class="n">6.</span> Competitive landscape — who you actually fight</h2>
+<table>
+  <tr><th>Tier</th><th>Players</th><th>Reality for you</th></tr>
+  <tr><td>Global integrated</td><td>Samsara, Motive, Geotab, Verizon Connect ($25–45+/veh/mo)</td><td>Not your fight — they ignore SMB MENA and force their hardware; their pricing is your umbrella</td></tr>
+  <tr><td>White-label platforms</td><td>Wialon (Gurtam), Navixy, GpsGate, GPSWOX</td><td><b>The real competition</b> — most regional "providers" are resellers of these. Your edge: own stack (no per-device platform fee to a vendor), Arabic-first, modern API, local data residency. Their edge: 10+ years of protocol maturity — which the Traccar bridge neutralizes</td></tr>
+  <tr><td>Regional providers</td><td>Cartrack ME, Location Solutions, Sicuro (UAE); Land-Fleet and dozens of small portals (Egypt)</td><td>Fragmented, aging UX, weak APIs — exactly the "weak local portals" the BRD targets. Compete on product quality + support</td></tr>
+  <tr><td>DIY / open source</td><td>Self-hosted Traccar (free)</td><td>The tech-savvy fleet's option. Your answer: EaglesEye is the managed, multi-tenant, Arabic, supported product — and you know Traccar better than they do</td></tr>
+</table>
+
+<h2 class="pagebreak"><span class="n">7.</span> Where to strike first — scored and ranked</h2>
+<p>Scoring 1–5 for a solo founder in Egypt with a working Phase-1 platform and no capital:</p>
+<table>
+  <tr><th>Segment</th><th>Phase-1 fit</th><th>Sales access</th><th>Willingness to pay</th><th>Regulatory push</th><th>Verdict</th></tr>
+  <tr><td><b>Distribution / last-mile</b></td><td class="score s5">5</td><td class="score s4">4</td><td class="score s3">3</td><td class="score s2">2</td><td><b>BEACHHEAD #1</b> — the BRD pilot persona; referral-dense</td></tr>
+  <tr><td><b>Heavy trucking (Egypt)</b></td><td class="score s4">4</td><td class="score s3">3</td><td class="score s4">4</td><td class="score s5">5</td><td><b>BEACHHEAD #2</b> — mandate deadline sells for you</td></tr>
+  <tr><td><b>Staff/passenger transport</b></td><td class="score s5">5</td><td class="score s3">3</td><td class="score s4">4</td><td class="score s3">3</td><td><b>BEACHHEAD #3</b> — client-viewer trick differentiates</td></tr>
+  <tr><td>Construction equipment</td><td class="score s4">4</td><td class="score s3">3</td><td class="score s4">4</td><td class="score s1">1</td><td>Strong 4th — theft stories close deals</td></tr>
+  <tr><td>Rental / leasing</td><td class="score s4">4</td><td class="score s3">3</td><td class="score s4">4</td><td class="score s1">1</td><td>Good — immobilization ask comes fast</td></tr>
+  <tr><td>Field services</td><td class="score s5">5</td><td class="score s3">3</td><td class="score s3">3</td><td class="score s1">1</td><td>Good filler; small fleets</td></tr>
+  <tr><td>Tourism transport</td><td class="score s4">4</td><td class="score s3">3</td><td class="score s3">3</td><td class="score s3">3</td><td>Egypt niche worth one reference client</td></tr>
+  <tr><td>Taxis / microbuses</td><td class="score s5">5</td><td class="score s2">2</td><td class="score s1">1</td><td class="score s5">5</td><td>Volume game later; self-service needed</td></tr>
+  <tr><td>Cold chain</td><td class="score s3">3</td><td class="score s2">2</td><td class="score s5">5</td><td class="score s2">2</td><td>First Phase-2 vertical — premium prices</td></tr>
+  <tr><td>School transport</td><td class="score s3">3</td><td class="score s2">2</td><td class="score s4">4</td><td class="score s3">3</td><td>Needs parent app (Phase 2)</td></tr>
+  <tr><td>Resellers (white-label)</td><td class="score s3">3</td><td class="score s3">3</td><td class="score s4">4</td><td class="score s2">2</td><td>THE scale channel — court from day one, sell manually first</td></tr>
+  <tr><td>Waste / municipal</td><td class="score s4">4</td><td class="score s2">2</td><td class="score s3">3</td><td class="score s3">3</td><td>Tender-driven; slow</td></tr>
+  <tr><td>Oil &amp; gas IVMS</td><td class="score s2">2</td><td class="score s1">1</td><td class="score s5">5</td><td class="score s4">4</td><td>Park until Phase 2+ certifications</td></tr>
+</table>
+
+<div class="callout"><b>Recommended play:</b> pilot with <b>one distribution fleet</b> (proves the product) + <b>one trucking fleet facing the Egyptian mandate</b> (proves compliance value) — both match BG-01's "two pilots". Keep <b>one installer/reseller</b> relationship warm (DP-02 requires it anyway) as the future white-label channel. First Phase-2 investment: <b>fuel + temperature sensors</b> — they unlock trucking premium and cold chain, the two highest willingness-to-pay upsells.</div>
+
+<div class="warn"><b>What NOT to do:</b> don't chase oil &amp; gas IVMS, government tenders, or KSA/UAE certification before you have Egyptian reference customers — each is a 6–12 month distraction with certification/relationship barriers. And don't compete on price against Wialon resellers at the taxi floor of the market; you'll win those on self-service volume later or not at all.</div>
+
+<h2><span class="n">8.</span> What this means for the roadmap</h2>
+<ul>
+  <li><b>Phase 1 as planned serves beachheads 1–3.</b> The alerts engine (T-7xx) and geofence events (T-6xx) are the two unfinished pieces those sales conversations will hit first — they outrank everything else now.</li>
+  <li><b>Sensor ingestion (fuel, temperature) should be the first Phase-2 commitment</b> — it doubles addressable premium segments with modest work (the attribute pipeline already carries them).</li>
+  <li><b>The module-marketplace ("client deploys what they need") vision shapes packaging now:</b> keep every new capability behind a per-tenant flag from birth (the settings service is the natural home), so "modules" become sellable units without re-architecture.</li>
+  <li><b>Compliance connectors</b> (Egypt first) deserve a research spike when the implementing regulations publish — being early to a mandate is a land-grab.</li>
+  <li>Sales materials needed before client meetings: a one-page Arabic pitch per beachhead scenario (say the word and I'll draft them).</li>
+</ul>
+
+<h2><span class="n">9.</span> Sources</h2>
+<ul class="small">
+  <li>Market size/growth: <a href="https://www.imarcgroup.com/saudi-arabia-fleet-management-market">IMARC — Saudi fleet management market</a> · <a href="https://www.gminsights.com/industry-analysis/fleet-management-market">GM Insights — global market</a> · <a href="https://www.cognitivemarketresearch.com/fleet-management-market-report">Cognitive Market Research</a> · <a href="https://www.pheonixresearch.com/market-report/saudi-arabia-fleet-management-market-2025-2033/">Pheonix Research — KSA</a></li>
+  <li>Regulation: <a href="https://en.yuweitek.com/saudi-arabia-commercial-fleet-gps-regulations.html">YUWEI — Saudi fleet GPS regulations</a> · <a href="https://safee.com/fleet-management-regulations-gcc-compliance-guide/">Safee — GCC compliance guide</a> · <a href="https://www.fleet-books.com/features/saudi-tga-wasl-compliance">Fleetbooks — TGA/WASL</a> · <a href="https://cairoscene.com/buzz/car-rentals-hotel-guests">CairoScene — Egypt GPS trackers law</a> · <a href="https://speed.resolute-dynamics.com/blog/egypt-speed-limiter-laws-certification/">Resolute — Egypt road safety rules</a></li>
+  <li>Pricing: <a href="https://www.gpsinsight.com/blog/gps-fleet-tracking-pricing-cost-per-vehicle/">GPS Insight</a> · <a href="https://spytec.com/blogs/news/fleet-tracking-pricing-comparison">Spytec comparison</a> · <a href="https://www.geotab.com/blog/fleet-gps-tracking-systems-cost/">Geotab</a> · <a href="https://momentumiot.com/cost-of-gps-fleet-tracking/">Momentum IoT</a></li>
+  <li>Competition/verticals: <a href="https://wialon.com/">Wialon</a> · <a href="https://gurtam.com/">Gurtam</a> · <a href="https://www.navixy.com/">Navixy</a> · <a href="https://skywondergps.com/top-white-label-gps-tracking-platforms-2026/">White-label platform survey</a> · <a href="https://ensun.io/search/gps-fleet-tracking/egypt">ensun — Egypt providers</a> · <a href="https://www.vzoneinternational.com/blog/ai-powered-gps-tracking-companies-uae/">UAE providers</a> · <a href="https://navixy.com/blog/telematics-for-construction-leasing-and-renting-companies/">Navixy — construction rental</a> · <a href="https://acropolium.com/blog/the-power-of-telematic-systems-in-transportation-benefits-challenges-and-use-cases/">Acropolium — use cases</a></li>
+</ul>
+<p class="small">MENA per-vehicle price points marked (est.) are informed estimates — validate them in your first ten sales conversations; they are the most important numbers this document cannot give you from a desk.</p>
+
+</body>
+</html>
