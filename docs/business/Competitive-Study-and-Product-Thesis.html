@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>EaglesEye — Competitive Study &amp; Product Thesis</title>
+<style>
+:root{ --navy:#1f3a5f; --cyan:#14a8d6; --text:#1c2733; --muted:#5b6b7d;
+  --border:#dfe5ec; --bg-soft:#f4f6f9; --green:#2e8f57; --amber:#c98a1b; --red:#c93a2e; }
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--text);line-height:1.55;
+  max-width:900px;margin:0 auto;padding:40px 30px;font-size:13.5px}
+h1{color:var(--navy);font-size:1.8rem;margin-bottom:4px}
+.subtitle{color:var(--muted);margin-bottom:8px;font-size:.98rem}
+.meta{color:var(--muted);font-size:.78rem;margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid var(--navy)}
+h2{color:var(--navy);font-size:1.3rem;margin:36px 0 10px;padding-top:12px;border-top:1px solid var(--border)}
+h2 .n{color:var(--cyan)}
+h3{color:var(--navy);font-size:1rem;margin:18px 0 6px}
+p{margin-bottom:9px}
+ul,ol{margin:0 0 10px 20px}
+li{margin-bottom:4px}
+table{border-collapse:collapse;width:100%;margin:10px 0 16px;font-size:.79rem}
+th{background:var(--bg-soft);color:var(--navy);text-align:left;padding:7px 9px;border:1px solid var(--border);vertical-align:top}
+td{padding:6px 9px;border:1px solid var(--border);vertical-align:top}
+.callout{background:#f2f7f3;border:1px solid #d3e5d8;border-radius:8px;padding:12px 16px;margin:12px 0;font-size:.88rem}
+.callout b{color:#1c4730}
+.warn{background:#fdf3dd;border:1px solid #ecd9ad;border-radius:8px;padding:12px 16px;margin:12px 0;font-size:.88rem}
+.thesis{background:#eef6fb;border:2px solid var(--cyan);border-radius:10px;padding:16px 20px;margin:16px 0}
+.thesis h3{margin-top:0;color:var(--navy)}
+.yes{color:var(--green);font-weight:700}
+.no{color:var(--red);font-weight:700}
+.part{color:var(--amber);font-weight:700}
+.skip{color:var(--muted);font-weight:700}
+a{color:var(--cyan);text-decoration:none}
+.pagebreak{page-break-before:always}
+.small{font-size:.78rem;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<h1>Competitive Study &amp; Product Thesis</h1>
+<div class="subtitle">What Wialon, Navixy and GPSWOX sell · why fleet platforms become shelfware · the different way EaglesEye gets used</div>
+<div class="meta">Version 1.0 · 10 Aug 2026 · Sources: vendor sites fetched directly (listed at end)</div>
+
+<h2><span class="n">1.</span> The three platforms in one look</h2>
+<table>
+  <tr><th></th><th>Wialon (Gurtam)</th><th>Navixy</th><th>GPSWOX</th></tr>
+  <tr><td><b>Identity</b></td><td>The industry's ecosystem giant — sells THROUGH telematics service providers (TSPs), 4,100+ device models, millions of vehicles</td><td>The modern engineer's platform — API-symmetric, no-code automation, first mover on AI agents (MCP server)</td><td>The budget commodity — white-label from $99/mo unlimited, 1,500+ tiny tracking businesses run on it</td></tr>
+  <tr><td><b>Sold to</b></td><td>TSPs/resellers who serve fleets</td><td>TSPs + tech-savvy fleets</td><td>Micro-entrepreneurs, price hunters</td></tr>
+  <tr><td><b>Weakness we can use</b></td><td>Complexity — literally sells "project implementation assistance"; per-device fees in hard currency; dashboards need trained operators</td><td>Priced/positioned above MENA SMB; English-engineer culture</td><td>Feature-shallow, generic, no depth in trips accuracy or ops workflows</td></tr>
+</table>
+
+<h2><span class="n">2.</span> Master feature map — everything they offer, grouped</h2>
+<p>Union of all three platforms' offerings, grouped into 12 families. The right columns show where EaglesEye stands.</p>
+<table>
+  <tr><th>Feature family</th><th>What the incumbents ship</th><th>EaglesEye status</th><th>Verdict</th></tr>
+  <tr><td><b>1. Live monitoring</b></td><td>Real-time map, statuses, clustering, custom widgets/dashboards, sensor value display</td><td class="part">PARTIAL — live map done; clustering, widgets pending</td><td>Table stakes — finish in plan (S5 scope)</td></tr>
+  <tr><td><b>2. Trips &amp; history</b></td><td>Trip detection, route replay, mileage reports</td><td class="part">PARTIAL — engine v1 done; replay UI, stops pending</td><td>Table stakes — our 2%-odometer bet makes it a differentiator</td></tr>
+  <tr><td><b>3. Geofencing</b></td><td>Zones, POIs, entry/exit events, zone reports</td><td class="no">PLANNED (S6)</td><td>Table stakes</td></tr>
+  <tr><td><b>4. Alerts &amp; automation</b></td><td>Rule-based notifications; Navixy: visual flow builder (IoT Logic); SMS gateways</td><td class="no">PLANNED (S7)</td><td>Table stakes — but see thesis: we build it as the INSIGHT engine, not a rule list</td></tr>
+  <tr><td><b>5. Fuel</b></td><td>Consumption calc, drain detection, fuel reports</td><td class="no">Phase 2</td><td>The #1 upsell in trucking — first Phase-2 module</td></tr>
+  <tr><td><b>6. Driver behavior &amp; video</b></td><td>Penalty scoring (speed/brake/corner), driver ID (iButton), dashcam video</td><td class="no">Phase 2 (scoring); video Phase 4</td><td>Scoring: later. Video: deliberately skip for years</td></tr>
+  <tr><td><b>7. Maintenance</b></td><td>Service schedules by km/hours, expense logs</td><td class="no">Phase 2</td><td>Fast follower — data already flows</td></tr>
+  <tr><td><b>8. Field service / tasks</b></td><td>Navixy: task dispatch, mobile forms, driver chat, route optimization</td><td class="skip">NOT PLANNED</td><td><b>Deliberately skip</b> — different product; don't dilute</td></tr>
+  <tr><td><b>9. Reports &amp; BI</b></td><td>Template reports, exports, scheduled email; Navixy: SQL access (IoT Query)</td><td class="no">PLANNED (S8)</td><td>Table stakes; our angle = fewer, money-framed reports (thesis)</td></tr>
+  <tr><td><b>10. Sensors / cold chain</b></td><td>Temperature, humidity, door, weight; cold-chain dashboards</td><td class="part">Attributes flow through; no UI/alerts yet</td><td>Phase-2 module #2 — premium segments</td></tr>
+  <tr><td><b>11. Client-facing apps</b></td><td>Driver apps, client portals, family locator (GPSWOX), white-label mobile apps</td><td class="no">Phase 2+</td><td>Parent/portal apps per vertical later; viewer role covers B2B now</td></tr>
+  <tr><td><b>12. TSP tooling</b></td><td>White-label branding, per-client billing, marketplace of integrations, SDK/APIs; Navixy: MCP server for AI agents</td><td class="part">Tenant hierarchy + branding in schema; API foundation</td><td>Phase-3 monetisation; AI-agent angle noted below</td></tr>
+</table>
+<div class="warn"><b>Honest read:</b> on features, we will not out-build Wialon or Navixy — ever. They have decade head-starts and hundreds of engineers. If the plan is "reach feature parity," the plan is wrong. That is exactly your instinct, and it is correct.</div>
+
+<h2 class="pagebreak"><span class="n">3.</span> Why these platforms become shelfware</h2>
+<p>You named the industry's dirty secret: <b>most fleet-tracking subscriptions stop being used within weeks.</b> The reasons are structural, not accidental:</p>
+<ol>
+  <li><b>Dashboard-first design assumes a watcher.</b> Wialon-class UIs are built for a trained dispatcher staring at screens. Your beachhead customers (10–100 vehicle SMBs) have no dispatcher — the owner IS operations, and owners don't sit watching maps.</li>
+  <li><b>Data is not a decision.</b> A map with 40 dots and 30 report templates answers questions nobody asked. The owner's real questions: "Did anything bad happen yesterday? Am I losing money? Which driver should I talk to?" No incumbent leads with answers.</li>
+  <li><b>Pull, not push.</b> Value requires logging in, navigating, exporting. Every login is friction; usage decays exponentially after week two.</li>
+  <li><b>Noise kills the one push channel they have.</b> Untuned alerts spam until the user mutes everything (the BRD's RK-05 — you knew this already). A muted platform is a cancelled platform.</li>
+  <li><b>ROI is invisible.</b> The subscription is a visible monthly cost; the savings (fuel not stolen, overtime km prevented) are never shown. At renewal, cost is provable and value is a feeling.</li>
+  <li><b>Setup requires a project.</b> Wialon sells implementation assistance as a service — a confession that the product needs one. SMBs never finish setup, so the platform never reflects their reality (no zones defined, no working hours set → no meaningful alerts possible).</li>
+</ol>
+
+<div class="thesis">
+<h3>The EaglesEye thesis: "Don't watch the map. Get the verdict."</h3>
+<p>Incumbents sell a <b>surveillance window</b> you must stare at. EaglesEye is a <b>fleet supervisor that reports to you</b> — on WhatsApp, in Arabic, in money terms — even if you never open the console.</p>
+<p><b>The product's heartbeat is the Daily Digest,</b> one message every morning:</p>
+<p style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:.85rem">
+صباح الخير. تقرير أمس لأسطولك (١٢ مركبة):<br>
+• كل المركبات عادت للمخزن قبل ٧ مساءً ما عدا <b>شاحنة ٥</b> — تحركت ١١:٤٠ مساءً لمدة ٤٣ دقيقة (١٨ كم خارج ساعات العمل)<br>
+• تكدس بلا حركة: <b>فان ٣</b> — ساعتان و١٠ دقائق تشغيل واقف ≈ ٩٥ جنيه وقود<br>
+• أسرع قائد: فان ٧ — ١٣٢ كم/س على الدائري الإقليمي<br>
+• إجمالي أمس: ١٬٤٤٠ كم · ٩ رحلات · كل الأجهزة تعمل ✓
+</p>
+<p>Everything else supports this loop:</p>
+<ul>
+  <li><b>Exception-based operations:</b> onboarding = define "normal" (working hours, home zones, speed policy) in 10 minutes. From then on the platform speaks only when reality deviates — and says "all normal" otherwise (reassurance is also value).</li>
+  <li><b>Money framing everywhere:</b> idle hours × fuel price = pounds lost; after-hours km = pounds; a monthly "what EaglesEye caught" statement — the anti-shelfware receipt that survives renewal conversations.</li>
+  <li><b>WhatsApp as the primary surface for owners</b> (the console remains for dispatchers and deep dives). MENA owners live in WhatsApp; this answers OQ-06 strategically: WhatsApp is not a notification channel, it is <b>the product</b>. (Delivery starts with email/in-app in the same digest format — the WhatsApp Business API needs Meta approval; we design for it from day one and switch the transport when approved.)</li>
+  <li><b>Self-onboarding in minutes, Arabic-first</b> — versus platforms that need implementation projects.</li>
+  <li><b>Later, the same spine powers "ask your fleet"</b> — an AI assistant over our API ("وين شاحنة ٥؟ كم صرفنا بنزين الأسبوع ده؟"). Navixy's MCP move validates the direction; our event-bus + API architecture makes it cheap when the time comes.</li>
+</ul>
+<p><b>Why we can win this way:</b> the incumbents cannot pivot to verdict-first without cannibalizing the dashboard-operator workflows their TSP channel is trained on. A solo founder with a clean event-driven spine can make the digest the organizing principle from day one.</p>
+</div>
+
+<h2><span class="n">4.</span> The reorganized plan — proposal</h2>
+<p>No sprint dates change; the emphasis inside Sprints 7–8 does, and a new epic appears:</p>
+<table>
+  <tr><th>Change</th><th>Detail</th></tr>
+  <tr><td><b>Reframe S7 from "alerts" to "Insight Engine"</b></td><td>T-701..T-709 stay (rules, cooldown, delivery) but gain a sibling epic: <b>T-711 Daily Digest generator</b> (nightly rollup per tenant from events.domain + trips), <b>T-712 "Normal profile" onboarding</b> (working hours, home zones, speed policy per vehicle/group — reuses settings + geofences), <b>T-713 Money model</b> (fuel price + idle burn settings → EGP framing in digests/reports), <b>T-714 Digest delivery</b> (email + in-app now, WhatsApp-ready template design, Business API application started early — lead time is months)</td></tr>
+  <tr><td><b>Reports (S8) become money-framed</b></td><td>Same report suite, but the headline report is the monthly "what EaglesEye caught" statement (T-806 note)</td></tr>
+  <tr><td><b>Explicit non-goals adopted</b></td><td>Field-service/task dispatch, video telematics, route optimization — written into the architecture doc as out-of-scope so feature-envy never creeps in</td></tr>
+  <tr><td><b>Phase-2 module order fixed by market</b></td><td>1) Fuel, 2) Temperature/cold chain, 3) Maintenance, 4) Driver scoring, 5) Client apps — each behind a per-tenant flag (module marketplace packaging)</td></tr>
+  <tr><td><b>Pitch language changes</b></td><td>We stop selling "a tracking platform" and start selling "a supervisor for your fleet that texts you what matters" — pilot demos open with the digest, not the map</td></tr>
+</table>
+
+<div class="callout"><b>What stays true:</b> the map, trips, geofences, health console and API remain table stakes — customers won't buy without them, and they feed the digest. Nothing built so far is wasted; the digest is a consumer of exactly the event spine we already have.</div>
+
+<h2><span class="n">5.</span> Sources</h2>
+<ul class="small">
+  <li><a href="https://wialon.com/">wialon.com</a> — features, product variants, TSP offering (fetched 10 Aug 2026)</li>
+  <li><a href="https://www.navixy.com/">navixy.com</a> — platform modules incl. IoT Logic, IoT Query, Agent Gateway/MCP, white-label (fetched 10 Aug 2026)</li>
+  <li><a href="https://www.gpswox.com/en">gpswox.com</a> — features and pricing (fetched 10 Aug 2026)</li>
+</ul>
+
+</body>
+</html>
