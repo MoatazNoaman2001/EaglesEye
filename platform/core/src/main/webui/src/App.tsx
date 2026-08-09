@@ -4,6 +4,8 @@ import { toggleLanguage } from "./i18n";
 import LiveMapPage from "./pages/LiveMapPage";
 import VehiclesPage from "./pages/VehiclesPage";
 import TripsPage from "./pages/TripsPage";
+import AlertsPage from "./pages/AlertsPage";
+import RulesPage from "./pages/RulesPage";
 import SettingsPage from "./pages/SettingsPage";
 
 function Logo() {
@@ -31,6 +33,8 @@ export default function App() {
           <NavLink to="/" end>{t("nav.liveMap")}</NavLink>
           <NavLink to="/vehicles">{t("nav.vehicles")}</NavLink>
           <NavLink to="/trips">{t("nav.trips")}</NavLink>
+          <NavLink to="/alerts">{t("nav.alerts")}</NavLink>
+          <NavLink to="/rules">{t("nav.rules")}</NavLink>
           <NavLink to="/settings">{t("nav.settings")}</NavLink>
         </nav>
         <div className="foot">
@@ -42,6 +46,8 @@ export default function App() {
           <Route path="/" element={<LiveMapPage />} />
           <Route path="/vehicles" element={<VehiclesPage />} />
           <Route path="/trips" element={<TripsPage />} />
+          <Route path="/alerts" element={<AlertsPage />} />
+          <Route path="/rules" element={<RulesPage />} />
           <Route path="/settings" element={<SettingsPage />} />
         </Routes>
       </main>
