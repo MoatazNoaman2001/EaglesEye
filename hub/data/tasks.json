@@ -1,0 +1,983 @@
+{
+  "v": 1,
+  "saved": "2026-08-08T07:34:29.834Z",
+  "tasks": [
+    {
+      "id": "T-101",
+      "sprint": 1,
+      "prio": "h",
+      "biz": true,
+      "title": "Procure 3–5 GPS devices (Teltonika, GT06 family, third per pilot) + activate SIMs",
+      "refs": "DP-01, OQ-02",
+      "status": "todo",
+      "blockReason": "Zero-budget start: phone GPS first (see T-110); buy one used GT06 clone (~$15) when possible; ask installer candidates for demo/loan units",
+      "deps": []
+    },
+    {
+      "id": "T-102",
+      "sprint": 1,
+      "prio": "u",
+      "biz": true,
+      "title": "Confirm pilot customers & device models; signed pilot agreements",
+      "refs": "OQ-01, OQ-02, DP-03",
+      "status": "todo",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-103",
+      "sprint": 1,
+      "prio": "h",
+      "biz": true,
+      "title": "Open installer / workshop partner conversations",
+      "refs": "DP-02, RK-07",
+      "status": "todo",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-104",
+      "sprint": 1,
+      "prio": "u",
+      "biz": false,
+      "title": "Raw traffic capture listener; capture & document live byte streams per device model",
+      "refs": "M0 exit, RK-06 — tool built & tested (tools/capture-listener); real captures await hardware",
+      "status": "doing",
+      "deps": [
+        "T-101"
+      ],
+      "blockReason": ""
+    },
+    {
+      "id": "T-105",
+      "sprint": 1,
+      "prio": "h",
+      "biz": false,
+      "title": "Scaffold Quarkus multi-module repo (decoder-api, gateway, pipeline, core) + ArchUnit boundary rules in CI",
+      "refs": "ADR-1, RK-A10",
+      "status": "doing",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-106",
+      "sprint": 1,
+      "prio": "h",
+      "biz": false,
+      "title": "Dev environment: Docker Compose with Kafka, Timescale+PostGIS, Valkey, Keycloak",
+      "refs": "DP-04",
+      "status": "done",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-107",
+      "sprint": 1,
+      "prio": "h",
+      "biz": true,
+      "title": "Provision cloud VMs for staging (region per OQ-05 default)",
+      "refs": "DP-04, OA-1",
+      "status": "todo",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-108",
+      "sprint": 1,
+      "prio": "n",
+      "biz": true,
+      "title": "Open-source component + licence register; send for legal review",
+      "refs": "DP-06, RK-08, RK-A9",
+      "status": "todo",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-109",
+      "sprint": 1,
+      "prio": "n",
+      "biz": false,
+      "title": "CI/CD pipeline: build, test, container images, deploy to staging",
+      "refs": "",
+      "status": "todo",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-110",
+      "sprint": 1,
+      "prio": "u",
+      "biz": false,
+      "title": "Phone as device #1: stream live GPS as JSON (OwnTracks over MQTT) into the capture listener",
+      "refs": "FR-ING-04, zero-budget — platform side DONE and verified; waiting on phone: OwnTracks MQTT to 192.168.100.5:1883",
+      "status": "review",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-201",
+      "sprint": 2,
+      "prio": "h",
+      "biz": false,
+      "title": "Kafka topic design + provisioning (raw/decoded/rejected/domain/alerts/registry)",
+      "refs": "Arch §4, AO-03 — kafka-init one-shot provisioner in compose; 6 topics, auto-create OFF; verified",
+      "status": "done",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-202",
+      "sprint": 2,
+      "prio": "u",
+      "biz": false,
+      "title": "Decoder SPI: ProtocolDecoder, TelemetryRecord, SessionContext, framing contract",
+      "refs": "BR-02, AO-04 — SPI built; DORMANT escape hatch per ADR-9 (Traccar bridge adopted)",
+      "status": "done",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-203",
+      "sprint": 2,
+      "prio": "u",
+      "biz": false,
+      "title": "Deploy Traccar bridge: headless Docker in dev stack, protocol ports, raw hex logging, version pinned",
+      "refs": "ADR-9 — Traccar 6.14 in dev stack, ports 5023/5027/5055, web 8083; verified",
+      "status": "done",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-204",
+      "sprint": 2,
+      "prio": "u",
+      "biz": false,
+      "title": "Traccar forwarding to Kafka: positions + events into telemetry.decoded / events.domain; schema adapter to TelemetryRecord",
+      "refs": "ADR-9 - VERIFIED end-to-end: device -> Traccar -> traccar.positions -> adapter -> telemetry.decoded (canonical, keyed by IMEI, knots->km/h)",
+      "status": "done",
+      "deps": [
+        "T-201",
+        "T-203"
+      ],
+      "blockReason": ""
+    },
+    {
+      "id": "T-205",
+      "sprint": 2,
+      "prio": "u",
+      "biz": false,
+      "title": "Device registry sync: core registers/decommissions devices in Traccar via REST API; unknown-device policy",
+      "refs": "ADR-9 — registry sync LIVE: device register/decommission mirrors into Traccar via service token; traccar-init bootstraps dev; registerUnknown stays on in dev only",
+      "status": "done",
+      "deps": [
+        "T-203"
+      ],
+      "blockReason": ""
+    },
+    {
+      "id": "T-206",
+      "sprint": 2,
+      "prio": "h",
+      "biz": false,
+      "title": "Timeseries writer: batched hypertable inserts, ON CONFLICT dedup",
+      "refs": "FR-ING-08, NFR-01",
+      "status": "backlog",
+      "deps": [
+        "T-207"
+      ],
+      "blockReason": ""
+    },
+    {
+      "id": "T-207",
+      "sprint": 2,
+      "prio": "h",
+      "biz": false,
+      "title": "Positions hypertable DDL + compression policy + indexes; Flyway baseline",
+      "refs": "NFR-06/07",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-208",
+      "sprint": 2,
+      "prio": "h",
+      "biz": false,
+      "title": "Device registry: CRUD + compacted-topic publication + gateway cache with fallback",
+      "refs": "FR-DEV-01, RK-A5",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-209",
+      "sprint": 2,
+      "prio": "n",
+      "biz": false,
+      "title": "End-to-end replay harness: captured raw frames -> Traccar -> Kafka assertions (regression per bridge upgrade)",
+      "refs": "RK-06, RK-A12",
+      "status": "backlog",
+      "deps": [
+        "T-104",
+        "T-204"
+      ],
+      "blockReason": ""
+    },
+    {
+      "id": "T-210",
+      "sprint": 2,
+      "prio": "h",
+      "biz": false,
+      "title": "Runtime settings service: platform_settings table + admin API; retention/compression appliers hook in with T-207",
+      "refs": "OQ-07, FR-TRP-08, Arch §7 runtime config",
+      "status": "doing",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-301",
+      "sprint": 3,
+      "prio": "u",
+      "biz": false,
+      "title": "Reconciliation job: detect forwarding gaps (Traccar DB vs Timescale), backfill, alert; Traccar purge window config",
+      "refs": "ADR-9, RK-A12, NFR-04",
+      "status": "todo",
+      "deps": [
+        "T-204"
+      ],
+      "blockReason": ""
+    },
+    {
+      "id": "T-302",
+      "sprint": 3,
+      "prio": "h",
+      "biz": false,
+      "title": "Bridge validation with real devices: phone via OwnTracks->Traccar? + GT06 clone + simulator frames end-to-end",
+      "refs": "ADR-9, RK-06, OQ-02",
+      "status": "todo",
+      "deps": [
+        "T-204"
+      ],
+      "blockReason": ""
+    },
+    {
+      "id": "T-303",
+      "sprint": 3,
+      "prio": "h",
+      "biz": false,
+      "title": "Generic MQTT/JSON ingestion: Mosquitto bridge + published telemetry schema",
+      "refs": "FR-ING-04 — generic MQTT/JSON lane LIVE: Mosquitto -> OwnTracksAdapter -> telemetry.decoded (merge with Traccar lane); verified end-to-end",
+      "status": "done",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-304",
+      "sprint": 3,
+      "prio": "u",
+      "biz": false,
+      "title": "Out-of-order / backlog handling: device-timestamp placement + dirty vehicle-day marking",
+      "refs": "FR-ING-07, BR-10",
+      "status": "backlog",
+      "deps": [
+        "T-206"
+      ],
+      "blockReason": ""
+    },
+    {
+      "id": "T-305",
+      "sprint": 3,
+      "prio": "u",
+      "biz": false,
+      "title": "Device simulator: N virtual devices per protocol, backlog-burst mode",
+      "refs": "NFR-01, RK-03",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-306",
+      "sprint": 3,
+      "prio": "u",
+      "biz": false,
+      "title": "Load test: 2,000 msg/s sustained, 5,000 burst, reconnect storm — capture evidence",
+      "refs": "SM-07, NFR-01, RK-A4",
+      "status": "backlog",
+      "deps": [
+        "T-305"
+      ],
+      "blockReason": ""
+    },
+    {
+      "id": "T-307",
+      "sprint": 3,
+      "prio": "n",
+      "biz": false,
+      "title": "Raw payload archive: telemetry.raw → object storage after retention window",
+      "refs": "FR-ING-09",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-308",
+      "sprint": 3,
+      "prio": "h",
+      "biz": false,
+      "title": "Observability v1: Prometheus/Grafana/Loki, ingestion dashboards, lag alerting",
+      "refs": "NFR-10, RK-A1",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-309",
+      "sprint": 3,
+      "prio": "n",
+      "biz": false,
+      "title": "Decoder developer guide (the 'new protocol in 2 weeks' doc)",
+      "refs": "BG-03, Acceptance #10",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-401",
+      "sprint": 4,
+      "prio": "u",
+      "biz": false,
+      "title": "Tenant model + hierarchy + branding fields; RLS on all tenant tables + migration lint",
+      "refs": "FR-SEC-01/02/08, AO-01/02/05",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-402",
+      "sprint": 4,
+      "prio": "u",
+      "biz": false,
+      "title": "Cross-tenant leak test in CI: two tenants, zero mutual visibility",
+      "refs": "RK-A2",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-403",
+      "sprint": 4,
+      "prio": "h",
+      "biz": false,
+      "title": "Keycloak: OIDC, 5 roles, sessions, password policy, 2FA",
+      "refs": "FR-SEC-03/05/06",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-404",
+      "sprint": 4,
+      "prio": "h",
+      "biz": false,
+      "title": "Vehicle/asset CRUD + groups + group-scoped visibility",
+      "refs": "FR-DEV-03 — vehicle CRUD live; groups + visibility scoping pending",
+      "status": "doing",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-405",
+      "sprint": 4,
+      "prio": "h",
+      "biz": false,
+      "title": "Device lifecycle: register, assign (history kept), unassign, decommission",
+      "refs": "FR-DEV-01/02/06 — register/assign(history)/unassign/decommission verified incl. bridge sync",
+      "status": "done",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-406",
+      "sprint": 4,
+      "prio": "n",
+      "biz": false,
+      "title": "Bulk import vehicles + devices via spreadsheet",
+      "refs": "FR-DEV-05",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-407",
+      "sprint": 4,
+      "prio": "n",
+      "biz": false,
+      "title": "Audit log for administrative actions",
+      "refs": "FR-SEC-07",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-408",
+      "sprint": 4,
+      "prio": "u",
+      "biz": true,
+      "title": "Fit validation vehicle & START 30-day odometer capture (drives M3 gate)",
+      "refs": "RK-01, SM-02",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-409",
+      "sprint": 4,
+      "prio": "h",
+      "biz": false,
+      "title": "Arabic PDF rendering spike: pick engine, real report, native-speaker review",
+      "refs": "RK-A6, FR-LOC-04, OA-4",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-410",
+      "sprint": 4,
+      "prio": "h",
+      "biz": false,
+      "title": "Frontend scaffold: React+TS+Vite, i18next AR/EN RTL, auth flow, app shell",
+      "refs": "FR-LOC-01/02",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-411",
+      "sprint": 4,
+      "prio": "n",
+      "biz": false,
+      "title": "Console admin settings screen: edit retention, cooldowns, trip thresholds from the frontend",
+      "refs": "Arch §7 runtime config, OQ-07",
+      "status": "backlog",
+      "deps": [
+        "T-210",
+        "T-410"
+      ],
+      "blockReason": ""
+    },
+    {
+      "id": "T-501",
+      "sprint": 5,
+      "prio": "u",
+      "biz": false,
+      "title": "Enricher: IMEI→device→vehicle→tenant, status derivation, Valkey live state",
+      "refs": "FR-TRK-03, Arch §6 - enricher LIVE: status derivation + Valkey live state (TTL 10min) + pub/sub + events.domain keyed by vehicle. Stub directory until registry (T-205/T-404)",
+      "status": "doing",
+      "deps": [
+        "T-208"
+      ],
+      "blockReason": ""
+    },
+    {
+      "id": "T-502",
+      "sprint": 5,
+      "prio": "u",
+      "biz": false,
+      "title": "Live map: MapLibre, all-vehicle view, clustering, status colouring",
+      "refs": "FR-TRK-01 — dev live map v0 (MapLibre + polling + status colors) at /live-map.html; real console with clustering/self-hosted tiles in S5",
+      "status": "doing",
+      "deps": [
+        "T-410"
+      ],
+      "blockReason": ""
+    },
+    {
+      "id": "T-503",
+      "sprint": 5,
+      "prio": "u",
+      "biz": false,
+      "title": "WebSocket/SSE live push with tenant+group filtering and throttle",
+      "refs": "FR-TRK-02, NFR-02, RK-A8",
+      "status": "backlog",
+      "deps": [
+        "T-501"
+      ],
+      "blockReason": ""
+    },
+    {
+      "id": "T-504",
+      "sprint": 5,
+      "prio": "h",
+      "biz": false,
+      "title": "Vehicle detail panel: speed, heading, last update, ignition, voltage, address",
+      "refs": "FR-TRK-04",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-505",
+      "sprint": 5,
+      "prio": "h",
+      "biz": false,
+      "title": "Self-hosted geo stack: tile server + Photon reverse geocoding + cache",
+      "refs": "FR-TRK-05, AS-06, ADR-6",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-506",
+      "sprint": 5,
+      "prio": "n",
+      "biz": false,
+      "title": "Map search/filter by group, status, plate, driver; follow-vehicle mode",
+      "refs": "FR-TRK-06/08",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-507",
+      "sprint": 5,
+      "prio": "h",
+      "biz": false,
+      "title": "Installer flow: registration + live 'device reporting valid GPS' confirmation",
+      "refs": "FR-DEV-08",
+      "status": "backlog",
+      "deps": [
+        "T-208",
+        "T-503"
+      ],
+      "blockReason": ""
+    },
+    {
+      "id": "T-508",
+      "sprint": 5,
+      "prio": "h",
+      "biz": false,
+      "title": "Device-to-map latency measured continuously in Grafana",
+      "refs": "NFR-02, SM-03",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-509",
+      "sprint": 5,
+      "prio": "h",
+      "biz": true,
+      "title": "Installer partner signed; installation checklist + standard config profiles",
+      "refs": "DP-02, RK-04",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-601",
+      "sprint": 6,
+      "prio": "u",
+      "biz": false,
+      "title": "Trip engine: ignition+movement segmentation with hysteresis; trip/stop persistence",
+      "refs": "FR-TRP-01/03/04/08",
+      "status": "backlog",
+      "deps": [
+        "T-501"
+      ],
+      "blockReason": ""
+    },
+    {
+      "id": "T-602",
+      "sprint": 6,
+      "prio": "u",
+      "biz": false,
+      "title": "OSRM deployment + /match integration; matched distance; confidence fallback",
+      "refs": "FR-TRP-02, RK-A3",
+      "status": "backlog",
+      "deps": [
+        "T-601"
+      ],
+      "blockReason": ""
+    },
+    {
+      "id": "T-603",
+      "sprint": 6,
+      "prio": "h",
+      "biz": false,
+      "title": "Dirty vehicle-day recompute: rate-limited queue, idempotent, live-edge priority",
+      "refs": "FR-TRP-07, RK-A7",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-604",
+      "sprint": 6,
+      "prio": "h",
+      "biz": false,
+      "title": "History replay UI: date-range path + playback controls; daily summary",
+      "refs": "FR-TRP-05/06",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-605",
+      "sprint": 6,
+      "prio": "h",
+      "biz": false,
+      "title": "Geofence CRUD: draw circle/polygon, categories, assignment; PostGIS storage",
+      "refs": "FR-GEO-01/02/03",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-606",
+      "sprint": 6,
+      "prio": "u",
+      "biz": false,
+      "title": "Geofence evaluator: enter/exit hysteresis, dwell time, time-window rules",
+      "refs": "FR-GEO-04/05/06",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-607",
+      "sprint": 6,
+      "prio": "u",
+      "biz": false,
+      "title": "Mid-gate check: odometer-validation data vs computed distance; tune matching",
+      "refs": "RK-01, SM-02",
+      "status": "backlog",
+      "deps": [
+        "T-408",
+        "T-602"
+      ],
+      "blockReason": ""
+    },
+    {
+      "id": "T-608",
+      "sprint": 6,
+      "prio": "l",
+      "biz": false,
+      "title": "GeoJSON geofence import",
+      "refs": "FR-GEO-07",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-701",
+      "sprint": 7,
+      "prio": "u",
+      "biz": false,
+      "title": "Rules engine: all Must event types (speeding, idle, geofence, ignition, power, SOS, offline…)",
+      "refs": "FR-ALT-01",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-702",
+      "sprint": 7,
+      "prio": "h",
+      "biz": false,
+      "title": "Rule configuration per vehicle/group: thresholds, active time windows",
+      "refs": "FR-ALT-02",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-703",
+      "sprint": 7,
+      "prio": "u",
+      "biz": false,
+      "title": "Cooldown + dedup via Valkey — mandatory, on by default",
+      "refs": "FR-ALT-06, RK-05",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-704",
+      "sprint": 7,
+      "prio": "h",
+      "biz": false,
+      "title": "Notification outbox + delivery: email (SMTP) + in-app notification centre",
+      "refs": "FR-ALT-03",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-705",
+      "sprint": 7,
+      "prio": "h",
+      "biz": false,
+      "title": "Webhook delivery: retry, exponential backoff, dead-letter visible to tenant",
+      "refs": "FR-ALT-04, FR-API-03",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-706",
+      "sprint": 7,
+      "prio": "h",
+      "biz": false,
+      "title": "Alert history: searchable, acknowledgement; per-user subscriptions",
+      "refs": "FR-ALT-07/08",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-707",
+      "sprint": 7,
+      "prio": "n",
+      "biz": false,
+      "title": "NotificationChannel interface + WhatsApp/SMS decision spike",
+      "refs": "FR-ALT-05, OQ-06",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-708",
+      "sprint": 7,
+      "prio": "u",
+      "biz": false,
+      "title": "M3 GATE: 30-day odometer validation review — distance within 2%",
+      "refs": "SM-02, Acceptance #3",
+      "status": "backlog",
+      "deps": [
+        "T-408",
+        "T-607"
+      ],
+      "blockReason": ""
+    },
+    {
+      "id": "T-709",
+      "sprint": 7,
+      "prio": "n",
+      "biz": true,
+      "title": "Tune alert thresholds with pilot users (week-one plan)",
+      "refs": "RK-05",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-801",
+      "sprint": 8,
+      "prio": "u",
+      "biz": false,
+      "title": "Health dashboard: devices by staleness; GSM/GPS/voltage/battery/firmware per device",
+      "refs": "FR-HLT-01/02",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-802",
+      "sprint": 8,
+      "prio": "u",
+      "biz": false,
+      "title": "Non-reporting cause classifier: no network / no fix / power / silent",
+      "refs": "FR-HLT-03, BR-06",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-803",
+      "sprint": 8,
+      "prio": "h",
+      "biz": false,
+      "title": "Internal alerting on non-reporting devices; connection history log",
+      "refs": "FR-HLT-04/05",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-804",
+      "sprint": 8,
+      "prio": "h",
+      "biz": false,
+      "title": "Cross-tenant health view for support; config-drift flagging",
+      "refs": "FR-HLT-06/07",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-805",
+      "sprint": 8,
+      "prio": "u",
+      "biz": false,
+      "title": "Seeded-failure test: pull SIM/antenna/power — classifier ≥80% correct",
+      "refs": "Acceptance #6",
+      "status": "backlog",
+      "deps": [
+        "T-801",
+        "T-802"
+      ],
+      "blockReason": ""
+    },
+    {
+      "id": "T-806",
+      "sprint": 8,
+      "prio": "h",
+      "biz": false,
+      "title": "Report suite: trips, distance/utilisation, stops/idle, speeding, geofence, inactivity",
+      "refs": "FR-RPT-01…06",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-807",
+      "sprint": 8,
+      "prio": "h",
+      "biz": false,
+      "title": "Excel + PDF export (Arabic-correct) + scheduled email delivery",
+      "refs": "FR-RPT-07/08, FR-LOC-04",
+      "status": "backlog",
+      "deps": [
+        "T-409",
+        "T-806"
+      ],
+      "blockReason": ""
+    },
+    {
+      "id": "T-808",
+      "sprint": 8,
+      "prio": "n",
+      "biz": false,
+      "title": "Voltage-drain monitoring alerts (battery protection)",
+      "refs": "RK-04",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-901",
+      "sprint": 9,
+      "prio": "u",
+      "biz": false,
+      "title": "Public REST API v1: vehicles, devices, positions, trips, geofences, events + OpenAPI",
+      "refs": "FR-API-01/04",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-902",
+      "sprint": 9,
+      "prio": "h",
+      "biz": false,
+      "title": "API tokens: tenant-scoped, hashed, revocable; per-tenant rate limiting",
+      "refs": "FR-API-02/05",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-903",
+      "sprint": 9,
+      "prio": "h",
+      "biz": true,
+      "title": "One external integration consuming API + webhooks successfully",
+      "refs": "Acceptance #7, OQ-08",
+      "status": "backlog",
+      "deps": [
+        "T-901"
+      ],
+      "blockReason": ""
+    },
+    {
+      "id": "T-904",
+      "sprint": 9,
+      "prio": "u",
+      "biz": false,
+      "title": "Arabic end-to-end verification by native pilot user incl. exported reports; fix pass",
+      "refs": "Acceptance #8",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-905",
+      "sprint": 9,
+      "prio": "u",
+      "biz": false,
+      "title": "Backup/restore: pgBackRest + WAL archiving; restore rehearsal executed",
+      "refs": "NFR-11, Acceptance #9",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-906",
+      "sprint": 9,
+      "prio": "u",
+      "biz": false,
+      "title": "Production deployment in target region; TLS, secrets, hardening pass",
+      "refs": "NFR-08/09, OA-1/2",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-907",
+      "sprint": 9,
+      "prio": "u",
+      "biz": true,
+      "title": "Pilot #1 onboarding: tenant provisioning, device registration, installer scheduling, training",
+      "refs": "SM-01",
+      "status": "backlog",
+      "deps": [
+        "T-509",
+        "T-906"
+      ],
+      "blockReason": ""
+    },
+    {
+      "id": "T-908",
+      "sprint": 9,
+      "prio": "h",
+      "biz": false,
+      "title": "Availability monitoring + on-call runbooks (99.5% ingestion measurement live)",
+      "refs": "NFR-03, SM-04",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-909",
+      "sprint": 9,
+      "prio": "n",
+      "biz": false,
+      "title": "Decoder acceptance test: new developer adds decoder from docs alone < 2 weeks",
+      "refs": "BG-03, Acceptance #10",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    },
+    {
+      "id": "T-910",
+      "sprint": 9,
+      "prio": "l",
+      "biz": false,
+      "title": "Bulk historical export endpoint",
+      "refs": "FR-API-06",
+      "status": "backlog",
+      "deps": [],
+      "blockReason": ""
+    }
+  ]
+}
