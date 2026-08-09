@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EaglesEye — Live Map (dev)</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><path d='M16 76 L22 44 L40 24 L62 18 L86 28 L112 50 L96 56 L102 64 L86 62 L74 66 L66 74 L56 68 L50 80 L40 74 L34 86 L24 80 Z' fill='%231f3a5f'/><circle cx='64' cy='46' r='14' fill='none' stroke='%231fc3f0' stroke-width='6'/><circle cx='64' cy='46' r='5' fill='%231fc3f0'/></svg>">
+<!-- DEV PAGE ONLY: MapLibre from CDN + public OSM raster tiles.
+     Production console self-hosts tiles and libraries (ADR-6, AS-06). -->
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
+<style>
+  :root{ --navy:#1f3a5f; --cyan:#14a8d6; --border:#dfe5ec; --muted:#5b6b7d; }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Segoe UI',system-ui,sans-serif;height:100vh;display:flex;flex-direction:column}
+  header{display:flex;align-items:center;gap:12px;padding:8px 18px;background:#fff;border-bottom:1px solid var(--border);z-index:10}
+  header svg{width:30px;height:30px}
+  header .name{font-weight:700;color:var(--navy)}
+  header .name span{color:var(--cyan)}
+  header .tag{font-size:.72rem;color:var(--muted);margin-left:4px}
+  header .count{margin-left:auto;font-size:.8rem;color:var(--muted)}
+  header .count b{color:var(--navy)}
+  #map{flex:1}
+  .veh-marker{width:16px;height:16px;border-radius:50%;border:2.5px solid #fff;box-shadow:0 1px 5px rgba(0,0,0,.4);cursor:pointer}
+  .maplibregl-popup-content{font-family:'Segoe UI',system-ui,sans-serif;font-size:.8rem;line-height:1.5}
+  .maplibregl-popup-content b{color:var(--navy)}
+</style>
+</head>
+<body>
+<header>
+  <svg viewBox="0 0 120 120"><path d="M16 76 L22 44 L40 24 L62 18 L86 28 L112 50 L96 56 L102 64 L86 62 L74 66 L66 74 L56 68 L50 80 L40 74 L34 86 L24 80 Z" fill="#1f3a5f"/><circle cx="64" cy="46" r="12" fill="none" stroke="#1fc3f0" stroke-width="3"/><circle cx="64" cy="46" r="4.5" fill="#1fc3f0"/></svg>
+  <div class="name">Eagles<span>Eye</span></div>
+  <div class="tag">LIVE MAP — dev preview</div>
+  <div class="count" id="count">connecting…</div>
+</header>
+<div id="map"></div>
+
+<script>
+const STATUS_COLORS = { MOVING:"#2e8f57", IDLING:"#c98a1b", STOPPED:"#5b6b7d", NO_FIX:"#c93a2e" };
+
+const map = new maplibregl.Map({
+  container: "map",
+  style: {
+    version: 8,
+    sources: { osm: { type: "raster",
+      tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
+      tileSize: 256, attribution: "© OpenStreetMap contributors" } },
+    layers: [{ id: "osm", type: "raster", source: "osm" }]
+  },
+  center: [31.235, 30.045],   // Cairo
+  zoom: 11
+});
+map.addControl(new maplibregl.NavigationControl());
+
+const markers = new Map();   // vehicleId -> {marker, popup}
+let fitted = false;
+
+async function refresh() {
+  try {
+    const res = await fetch("/api/v1/live/vehicles");
+    if (!res.ok) throw new Error(res.status);
+    const vehicles = await res.json();
+    document.getElementById("count").innerHTML = "<b>" + vehicles.length + "</b> vehicle(s) live";
+
+    const seen = new Set();
+    for (const v of vehicles) {
+      const id = v.vehicleId;
+      const lat = parseFloat(v.lat), lon = parseFloat(v.lon);
+      if (!id || isNaN(lat) || isNaN(lon)) continue;
+      seen.add(id);
+
+      const popupHtml = `<b>${id}</b><br>` +
+        `status: ${v.status}<br>` +
+        `speed: ${v.speedKmh ?? "0"} km/h · heading: ${v.headingDeg ?? "-"}<br>` +
+        `imei: ${v.imei} · ${v.protocol}<br>` +
+        `time: ${(v.deviceTime || "").replace("T", " ").slice(0, 19)}`;
+
+      if (markers.has(id)) {
+        const m = markers.get(id);
+        m.marker.setLngLat([lon, lat]);
+        m.marker.getElement().style.background = STATUS_COLORS[v.status] || "#5b6b7d";
+        m.popup.setHTML(popupHtml);
+      } else {
+        const el = document.createElement("div");
+        el.className = "veh-marker";
+        el.style.background = STATUS_COLORS[v.status] || "#5b6b7d";
+        const popup = new maplibregl.Popup({ offset: 12 }).setHTML(popupHtml);
+        const marker = new maplibregl.Marker({ element: el }).setLngLat([lon, lat]).setPopup(popup).addTo(map);
+        markers.set(id, { marker, popup });
+      }
+    }
+    // drop markers for vehicles whose live state expired (Valkey TTL)
+    for (const [id, m] of markers) if (!seen.has(id)) { m.marker.remove(); markers.delete(id); }
+
+    if (!fitted && vehicles.length) {
+      const b = new maplibregl.LngLatBounds();
+      vehicles.forEach(v => b.extend([parseFloat(v.lon), parseFloat(v.lat)]));
+      map.fitBounds(b, { padding: 80, maxZoom: 14 });
+      fitted = true;
+    }
+  } catch (e) {
+    document.getElementById("count").textContent = "connection lost — retrying";
+  }
+}
+refresh();
+setInterval(refresh, 2000);
+</script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>io.eagleseye</groupId>
+    <artifactId>eagleseye-platform</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>decoder-api</artifactId>
+  <name>EaglesEye :: Decoder API</name>
+  <description>
+    The protocol decoder SPI. Decoder plugins implement these interfaces and may depend
+    on NOTHING else from the platform. This module must stay free of Quarkus, Kafka,
+    database and business-logic dependencies — that isolation is what makes
+    "new protocol in under two weeks" possible (BRD BG-03, AO-04).
+  </description>
+
+  <dependencies>
+    <!-- Netty types are part of the SPI surface (framing + buffers); nothing else is allowed. -->
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-buffer</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-transport</artifactId>
+    </dependency>
+  </dependencies>
+</project>

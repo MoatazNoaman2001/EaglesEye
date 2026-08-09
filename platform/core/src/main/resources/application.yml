@@ -1,0 +1,29 @@
+# EaglesEye Core — API, tenancy, settings, reports
+quarkus:
+  application:
+    name: eagleseye-core
+  http:
+    port: 8080
+  # OIDC (Keycloak) not wired yet — enabled with T-403
+  oidc:
+    enabled: false
+  flyway:
+    migrate-at-start: true
+
+# dev profile: talks to the local stack (infra/dev/docker-compose.yml)
+"%dev":
+  eagleseye:
+    traccar:
+      url: http://localhost:8083
+      token: ${EE_TRACCAR_TOKEN:ee-dev-service-token}
+  quarkus:
+    redis:
+      hosts: redis://localhost:6379
+    datasource:
+      db-kind: postgresql
+      # env-first (matches infra/dev/.env), dev fallback so quarkus:dev works out of the box
+      username: ${EE_DB_USER:eagleseye}
+      password: ${EE_DB_PASSWORD:eagleseye-dev}
+      jdbc:
+        # host port 5433 — native PostgreSQL owns 5432 on this machine
+        url: jdbc:postgresql://localhost:5433/${EE_DB_NAME:eagleseye}

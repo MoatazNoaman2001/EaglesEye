@@ -1,0 +1,66 @@
+# EaglesEye Pipeline — stream processors (bridge adapter, enricher, trips, geofences, rules, health)
+quarkus:
+  application:
+    name: eagleseye-pipeline
+  http:
+    port: 8082
+
+# channels
+mp:
+  messaging:
+    incoming:
+      traccar-positions:
+        connector: smallrye-kafka
+        topic: traccar.positions
+        value:
+          deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        auto:
+          offset:
+            reset: earliest
+      telemetry-decoded-in:
+        connector: smallrye-kafka
+        topic: telemetry.decoded
+        value:
+          deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        auto:
+          offset:
+            reset: earliest
+      owntracks:
+        connector: smallrye-mqtt
+        topic: owntracks/#
+        host: localhost
+        port: 1883
+    outgoing:
+      telemetry-decoded:
+        connector: smallrye-kafka
+        topic: telemetry.decoded
+        # two producers feed this channel (Traccar adapter + OwnTracks adapter)
+        merge: true
+        key:
+          serializer: org.apache.kafka.common.serialization.StringSerializer
+        value:
+          serializer: org.apache.kafka.common.serialization.StringSerializer
+      events-domain:
+        connector: smallrye-kafka
+        topic: events.domain
+        key:
+          serializer: org.apache.kafka.common.serialization.StringSerializer
+        value:
+          serializer: org.apache.kafka.common.serialization.StringSerializer
+
+# dev profile: talks to the local stack (infra/dev/docker-compose.yml)
+"%dev":
+  kafka:
+    bootstrap:
+      servers: localhost:9092
+  quarkus:
+    redis:
+      hosts: redis://localhost:6379
+    datasource:
+      db-kind: postgresql
+      # env-first (matches infra/dev/.env), dev fallback so quarkus:dev works out of the box
+      username: ${EE_DB_USER:eagleseye}
+      password: ${EE_DB_PASSWORD:eagleseye-dev}
+      jdbc:
+        # host port 5433 — native PostgreSQL owns 5432 on this machine
+        url: jdbc:postgresql://localhost:5433/${EE_DB_NAME:eagleseye}

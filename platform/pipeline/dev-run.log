@@ -1,0 +1,39 @@
+﻿[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------------< io.eagleseye:pipeline >------------------------
+[INFO] Building pipeline 0.1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[WARNING] The artifact io.quarkus:quarkus-junit5:jar:3.38.1 has been relocated to io.quarkus:quarkus-junit:jar:3.38.1: Update the artifactId in your project build file. Refer to https://github.com/quarkusio/quarkus/wiki/Migration-Guide-3.31 for more information.
+[INFO] 
+[INFO] --- quarkus:3.38.1:dev (default-cli) @ pipeline ---
+[INFO] Invoking resources:3.3.1:resources (default-resources) @ pipeline
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Invoking quarkus:3.38.1:generate-code (default) @ pipeline
+[INFO] Invoking compiler:3.15.0:compile (default-compile) @ pipeline
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] Invoking resources:3.3.1:testResources (default-testResources) @ pipeline
+[INFO] skip non existing resourceDirectory C:\Users\moata\Documents\EaglesEye\platform\pipeline\src\test\resources
+[INFO] Invoking quarkus:3.38.1:generate-code-tests (default) @ pipeline
+[INFO] Invoking compiler:3.15.0:testCompile (default-testCompile) @ pipeline
+[INFO] No sources to compile
+[WARNING] [io.quarkus.deployment.dev.DevModeCommandLineBuilder] Changed debug port to 60431 because of a port conflict
+Listening for transport dt_socket at address: 60431
+__  ____  __  _____   ___  __ ____  ______ 
+ --/ __ \/ / / / _ | / _ \/ //_/ / / / __/ 
+ -/ /_/ / /_/ / __ |/ , _/ ,< / /_/ /\ \   
+--\___\_\____/_/ |_/_/|_/_/|_|\____/___/   
+2026-08-09 12:44:26,281 INFO  [io.smallrye.reactive.messaging.kafka] (Quarkus Main Thread) SRMSG18229: Configured topics for channel 'traccar-positions': [traccar.positions]
+2026-08-09 12:44:26,289 INFO  [io.smallrye.reactive.messaging.kafka] (Quarkus Main Thread) SRMSG18214: Key deserializer omitted, using String as default
+2026-08-09 12:44:26,488 INFO  [io.smallrye.reactive.messaging.mqtt] (Quarkus Main Thread) Create MQTT Client for null@localhost:1883<>-[]
+2026-08-09 12:44:26,498 INFO  [io.smallrye.reactive.messaging.kafka] (Quarkus Main Thread) SRMSG18229: Configured topics for channel 'telemetry-decoded-in': [telemetry.decoded]
+2026-08-09 12:44:26,501 INFO  [io.smallrye.reactive.messaging.kafka] (Quarkus Main Thread) SRMSG18214: Key deserializer omitted, using String as default
+2026-08-09 12:44:26,537 INFO  [io.smallrye.reactive.messaging.kafka] (smallrye-kafka-producer-thread-0) SRMSG18258: Kafka producer kafka-producer-events-domain, connected to Kafka brokers 'localhost:9092', is configured to write records to 'events.domain'
+2026-08-09 12:44:26,551 INFO  [io.smallrye.reactive.messaging.kafka] (smallrye-kafka-producer-thread-1) SRMSG18258: Kafka producer kafka-producer-telemetry-decoded, connected to Kafka brokers 'localhost:9092', is configured to write records to 'telemetry.decoded'
+2026-08-09 12:44:26,556 INFO  [io.vertx.mqtt.impl.MqttClientImpl] (vert.x-eventloop-thread-0) Connection with localhost:1883 established successfully
+2026-08-09 12:44:26,585 INFO  [io.smallrye.reactive.messaging.kafka] (smallrye-kafka-consumer-thread-0) SRMSG18257: Kafka consumer kafka-consumer-traccar-positions, connected to Kafka brokers 'localhost:9092', belongs to the 'eagleseye-pipeline' consumer group and is configured to poll records from [traccar.positions]
+2026-08-09 12:44:26,593 INFO  [io.smallrye.reactive.messaging.kafka] (smallrye-kafka-consumer-thread-1) SRMSG18257: Kafka consumer kafka-consumer-telemetry-decoded-in, connected to Kafka brokers 'localhost:9092', belongs to the 'eagleseye-pipeline' consumer group and is configured to poll records from [telemetry.decoded]
+2026-08-09 12:44:26,602 INFO  [io.smallrye.reactive.messaging.mqtt] (vert.x-eventloop-thread-0) Subscription success on topic owntracks/#, Max QoS 0.
+2026-08-09 12:44:26,670 INFO  [io.quarkus] (Quarkus Main Thread) eagleseye-pipeline 0.1.0-SNAPSHOT on JVM (powered by Quarkus 3.38.1) started in 4.131s. Listening on: http://localhost:8082
+2026-08-09 12:44:26,670 INFO  [io.quarkus] (Quarkus Main Thread) Profile dev activated. Live Coding activated.
+2026-08-09 12:44:26,670 INFO  [io.quarkus] (Quarkus Main Thread) Installed features: [agroal, cdi, compose, config-yaml, jdbc-postgresql, kafka-client, messaging, messaging-kafka, messaging-mqtt, narayana-jta, redis-client, smallrye-context-propagation, smallrye-health, vertx]

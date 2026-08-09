@@ -1,0 +1,12 @@
+# EaglesEye Gateway — device listeners + decoder plugins
+quarkus:
+  application:
+    name: eagleseye-gateway
+  http:
+    port: 8081
+
+# dev profile: talks to the local stack (infra/dev/docker-compose.yml)
+"%dev":
+  kafka:
+    bootstrap:
+      servers: localhost:9092
