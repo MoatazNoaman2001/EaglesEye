@@ -1,0 +1,155 @@
+# EaglesEye — local development stack (T-106)
+# One command: docker compose up -d
+# Services: Kafka (KRaft), TimescaleDB+PostGIS, Valkey, Keycloak, Mosquitto (MQTT)
+name: eagleseye-dev
+
+services:
+
+  kafka:
+    image: apache/kafka:3.8.0
+    container_name: ee-kafka
+    restart: unless-stopped
+    ports:
+      - "9092:9092"
+    # broker topology/tuning lives in its own file — see kafka/kafka.env
+    env_file:
+      - ./kafka/kafka.env
+    volumes:
+      - kafka-data:/var/lib/kafka/data
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --list >/dev/null 2>&1"]
+      interval: 10s
+      timeout: 10s
+      retries: 12
+
+  kafka-init:
+    # T-201: explicit topic provisioning — the single source of truth for topics,
+    # partitions and retention in dev. Prod uses the same list with replication-factor 3.
+    image: apache/kafka:3.8.0
+    container_name: ee-kafka-init
+    depends_on:
+      kafka:
+        condition: service_healthy
+    entrypoint: ["/bin/bash", "-c"]
+    command:
+      - |
+        set -e
+        KT=/opt/kafka/bin/kafka-topics.sh
+        B="--bootstrap-server kafka:19092"
+        D7=604800000
+        D30=2592000000
+        # bridge output (Traccar dialect)
+        $$KT $$B --create --if-not-exists --topic traccar.positions --partitions 3 --replication-factor 1 --config retention.ms=$$D7
+        $$KT $$B --create --if-not-exists --topic traccar.events    --partitions 3 --replication-factor 1 --config retention.ms=$$D7
+        # canonical telemetry (keyed by IMEI)
+        $$KT $$B --create --if-not-exists --topic telemetry.decoded --partitions 6 --replication-factor 1 --config retention.ms=$$D7
+        # enriched domain events (keyed by vehicle) — 30d for recompute/replay
+        $$KT $$B --create --if-not-exists --topic events.domain     --partitions 6 --replication-factor 1 --config retention.ms=$$D30
+        # alerts pending delivery (keyed by tenant)
+        $$KT $$B --create --if-not-exists --topic alerts.outbound   --partitions 3 --replication-factor 1 --config retention.ms=$$D7
+        # device registry snapshot (compacted)
+        $$KT $$B --create --if-not-exists --topic registry.devices  --partitions 3 --replication-factor 1 --config cleanup.policy=compact
+        echo "topics provisioned:"
+        $$KT $$B --list
+
+  timescaledb:
+    # TimescaleDB + PostGIS on PostgreSQL 16 — one database for positions, geofences, everything (ADR-3)
+    image: timescale/timescaledb-ha:pg16
+    container_name: ee-timescaledb
+    restart: unless-stopped
+    ports:
+      # host 5433: a native PostgreSQL service already owns 5432 on this machine
+      - "5433:5432"
+    environment:
+      # values come from ./.env (gitignored) — see .env.example for the contract (NFR-08)
+      POSTGRES_DB: ${EE_DB_NAME:?missing .env — copy .env.example to .env}
+      POSTGRES_USER: ${EE_DB_USER:?}
+      POSTGRES_PASSWORD: ${EE_DB_PASSWORD:?}
+    volumes:
+      - timescale-data:/home/postgres/pgdata/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  valkey:
+    # live vehicle state + alert cooldowns (ADR-7)
+    image: valkey/valkey:8-alpine
+    container_name: ee-valkey
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+
+  keycloak:
+    # identity provider (ADR-5) — dev mode, admin console at http://localhost:8090
+    image: quay.io/keycloak/keycloak:26.0
+    container_name: ee-keycloak
+    restart: unless-stopped
+    command: start-dev
+    ports:
+      - "8090:8080"
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${EE_KC_ADMIN_USER:?missing .env — copy .env.example to .env}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${EE_KC_ADMIN_PASSWORD:?}
+    volumes:
+      - keycloak-data:/opt/keycloak/data
+
+  traccar:
+    # protocol bridge (ADR-9): decodes all device protocols, forwards to Kafka
+    image: traccar/traccar:6.14
+    container_name: ee-traccar
+    restart: unless-stopped
+    depends_on:
+      kafka-init:
+        condition: service_completed_successfully
+    ports:
+      - "8083:8082"   # Traccar web/API (host 8083; 8082 belongs to our pipeline service)
+      - "5023:5023"   # Concox/GT06 family
+      - "5027:5027"   # Teltonika
+      - "5055:5055"   # OsmAnd protocol (HTTP) — phones and simple apps
+    volumes:
+      - ./traccar/traccar.xml:/opt/traccar/conf/traccar.xml:ro
+      - traccar-data:/opt/traccar/data
+      - traccar-logs:/opt/traccar/logs
+
+  traccar-init:
+    # one-shot bootstrap (like kafka-init): dev admin account + device linking, idempotent
+    image: node:22-alpine
+    container_name: ee-traccar-init
+    depends_on:
+      traccar:
+        condition: service_started
+    environment:
+      TRACCAR_URL: http://traccar:8082
+      TRACCAR_TOKEN: ${EE_TRACCAR_TOKEN:?missing .env — copy .env.example to .env}
+      TRACCAR_ADMIN_NAME: Moataz
+      TRACCAR_ADMIN_EMAIL: ${EE_TRACCAR_ADMIN_EMAIL:?}
+      TRACCAR_ADMIN_PASSWORD: ${EE_TRACCAR_ADMIN_PASSWORD:?}
+    volumes:
+      - ./traccar/init.mjs:/init.mjs:ro
+    command: ["node", "/init.mjs"]
+
+  mosquitto:
+    # generic MQTT/JSON ingestion path (FR-ING-04) — also how the phone (OwnTracks) connects, T-110
+    image: eclipse-mosquitto:2
+    container_name: ee-mosquitto
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - mosquitto-data:/mosquitto/data
+
+volumes:
+  kafka-data:
+  timescale-data:
+  keycloak-data:
+  mosquitto-data:
+  traccar-data:
+  traccar-logs:
