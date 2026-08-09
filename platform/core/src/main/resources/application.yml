@@ -9,6 +9,15 @@ quarkus:
     enabled: false
   flyway:
     migrate-at-start: true
+  # the web console (React+Vite) lives in src/main/webui, served by Quinoa;
+  # dev mode proxies Vite's hot-reload server, prod builds it into the jar
+  quinoa:
+    enable-spa-routing: true
+    ignored-path-prefixes:
+      - /api
+      - /q
+    dev-server:
+      port: 5173
 
 # channels
 mp:

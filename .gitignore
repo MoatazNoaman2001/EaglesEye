@@ -19,3 +19,7 @@ hub/data/backups/
 *.env
 !.env.example
 secrets/
+
+# Frontend
+platform/core/src/main/webui/node_modules/
+platform/core/src/main/webui/dist/

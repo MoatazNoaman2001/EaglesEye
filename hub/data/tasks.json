@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "saved": "2026-08-09T10:40:46.964Z",
+  "saved": "2026-08-09T11:14:17.248Z",
   "tasks": [
     {
       "id": "T-101",
@@ -446,8 +446,8 @@
       "prio": "h",
       "biz": false,
       "title": "Frontend scaffold: React+TS+Vite, i18next AR/EN RTL, auth flow, app shell",
-      "refs": "FR-LOC-01/02",
-      "status": "backlog",
+      "refs": "FR-LOC-01/02 - React+Vite+TS console via Quinoa in core: shell, AR/EN with RTL flip, Live Map, Vehicles, Trips, Settings pages. Pending: auth flow (T-403), TanStack Query, design polish",
+      "status": "doing",
       "deps": [],
       "blockReason": ""
     },
@@ -457,8 +457,8 @@
       "prio": "n",
       "biz": false,
       "title": "Console admin settings screen: edit retention, cooldowns, trip thresholds from the frontend",
-      "refs": "Arch §7 runtime config, OQ-07",
-      "status": "backlog",
+      "refs": "Arch runtime-config - settings editable from the console UI, verified against admin API",
+      "status": "done",
       "deps": [
         "T-210",
         "T-410"
@@ -484,7 +484,7 @@
       "prio": "u",
       "biz": false,
       "title": "Live map: MapLibre, all-vehicle view, clustering, status colouring",
-      "refs": "FR-TRK-01 — dev live map v0 (MapLibre + polling + status colors) at /live-map.html; real console with clustering/self-hosted tiles in S5",
+      "refs": "FR-TRK-01 - map now lives in the React console (was dev html page); clustering + self-hosted tiles pending",
       "status": "doing",
       "deps": [
         "T-410"
