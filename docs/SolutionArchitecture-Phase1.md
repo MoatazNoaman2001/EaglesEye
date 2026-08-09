@@ -28,6 +28,19 @@ Derived directly from the BRD's constraints and architectural obligations:
 
 ---
 
+### Product thesis and non-goals (added 10 Aug 2026)
+
+> **"Don't watch the map — get the verdict."** EaglesEye is not a surveillance dashboard; it is a fleet
+> supervisor that reports to the owner: the **Daily Digest** (exceptions only, framed in money, Arabic-first,
+> WhatsApp-ready) is the product's heartbeat, and the console is the deep-dive surface for dispatchers.
+> Every capability ships behind a per-tenant flag so Phase-2+ modules become sellable units (module
+> marketplace). Full reasoning: `docs/business/Competitive-Study-and-Product-Thesis`.
+>
+> **Explicit non-goals** (we refuse these fights — Wialon/Navixy territory): field-service task dispatch
+> and mobile forms; video telematics; routing/dispatch optimisation beyond the BRD's Phase-3 note.
+> **Phase-2 module order, fixed by market pull:** 1) fuel, 2) temperature/cold chain, 3) maintenance,
+> 4) driver scoring, 5) client-facing apps.
+
 ## 2. System Overview
 
 ```mermaid

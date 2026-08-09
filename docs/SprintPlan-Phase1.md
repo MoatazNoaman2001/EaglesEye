@@ -147,9 +147,20 @@ Task IDs are `T-<sprint><seq>` (e.g. T-304 = Sprint 3, task 4). 🏢 = business/
 
 ---
 
-## Sprint 7 — Rules, Alerts & Notifications *(Nov 01 – Nov 12)* → **M3**
+## Sprint 7 — Insight Engine: Rules, Alerts & Digest *(Nov 01 – Nov 12)* → **M3**
 
-**Sprint goal:** all Must alert types firing with mandatory dedup; M3 odometer gate passes.
+> Reframed 10 Aug 2026 per the product thesis (docs/business/Competitive-Study-and-Product-Thesis):
+> the alerts machinery gains the **Daily Digest** — one verdict message per morning, exceptions only,
+> framed in money. WhatsApp is the owner surface (OQ-06 answered); transport starts as email/in-app.
+
+**Sprint goal:** all Must alert types firing with mandatory dedup; the Daily Digest loop live; M3 odometer gate passes.
+
+| ID | Task | Refs | Priority |
+|---|---|---|---|
+| T-711 | **Daily Digest generator**: nightly per-tenant rollup of events+trips into one verdict message | Thesis | Urgent |
+| T-712 | Normal-profile onboarding: working hours, home zones, speed policy (10-minute setup) | Thesis, FR-GEO-06 | High |
+| T-713 | Money model: fuel price + idle-burn settings; currency framing in digest and reports | Thesis | High |
+| T-714 | Digest delivery: email + in-app in WhatsApp-ready template; WhatsApp Business API application started early | Thesis, OQ-06 | High |
 
 | ID | Task | Refs | Priority |
 |---|---|---|---|

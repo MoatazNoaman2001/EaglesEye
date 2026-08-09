@@ -768,10 +768,10 @@ const SPRINTS = {
     goal:"Raw positions become trustworthy trips snapped to real roads, and geofences fire accurate events.",
     get:"Trip history with road-matched distance, replay with playback, geofence enter/exit/dwell events — the data customers bill and pay against.",
     flow:["Trip segmentation engine","OSRM road matching","Late-data recompute","History replay UI","Geofence CRUD + evaluator"]},
-  7:{name:"Rules, Alerts & Notifications", dates:"Nov 01 – Nov 12", mile:"M3",
-    goal:"Operations staff stop watching screens: the platform tells them what matters, without noise. The odometer gate is judged.",
-    get:"M3: every Must alert type firing with mandatory dedup, delivered by email, in-app and webhook — and distance proven within 2% of a real odometer.",
-    flow:["Rules engine for all event types","Cooldown + dedup layer","Email + in-app delivery","Webhooks with retry","Judge the 30-day odometer gate"]},
+  7:{name:"Insight Engine — Rules, Alerts & Digest", dates:"Nov 01 – Nov 12", mile:"M3",
+    goal:"The platform starts speaking for itself: only exceptions, framed in money, one verdict message per morning. The odometer gate is judged.",
+    get:"M3 proven — plus the anti-shelfware loop live: rules with mandatory dedup, the Daily Digest reporting to the owner, money-framed insights.",
+    flow:["Rules engine for all event types","Cooldown + dedup layer","Normal profile + money model","Daily Digest generator","Delivery: email/in-app, WhatsApp-ready"]},
   8:{name:"Device Health & Reports", dates:"Nov 15 – Nov 26", mile:"M4",
     goal:"The support-cost killer: every silent device diagnosed remotely, and the report suite customers judge us by.",
     get:"M4: a health console that names the probable cause for non-reporting devices (proven on seeded failures) and six report types exporting to Excel and Arabic PDF.",
@@ -804,7 +804,15 @@ const GUIDE = {
 "T-109":{flow:["Set up CI: build + test on every push (GitHub Actions or similar)","Build container images per deployable","Push to a registry; auto-deploy to staging","Add a build badge and branch protection"],
   get:"Every commit is tested and deployable — the safety net for everything that follows."},
 "T-110":{flow:["Install OwnTracks (free, open source) on your Android/iPhone","Run a local MQTT broker (Mosquitto in Docker, one line)","Point OwnTracks at your broker; watch JSON location messages arrive","Log the messages: this is your first live telemetry stream, and it exercises the same generic MQTT/JSON path as FR-ING-04"],
-  get:"A real moving GPS device for zero money — validates the whole spine (ingest, live map, trips) while binary-protocol devices wait for budget."}
+  get:"A real moving GPS device for zero money — validates the whole spine (ingest, live map, trips) while binary-protocol devices wait for budget."},
+"T-711":{flow:["Nightly job per tenant: aggregate yesterday from trips + events.domain","Detect exceptions vs each vehicle's normal profile (T-712)","Frame costs via the money model (T-713)","Render one verdict message (Arabic-first template): exceptions, costs, reassurance line","Store digest + hand to delivery (T-714)"],
+  get:"The product heartbeat: owners get the verdict every morning without opening anything — the anti-shelfware loop."},
+"T-712":{flow:["Extend settings/vehicle model: working hours, home zone (geofence ref), speed policy per vehicle/group","Console onboarding screen: define normal in under 10 minutes","Expose profile to pipeline so rules + digest evaluate deviations"],
+  get:"The platform knows what normal looks like — the prerequisite for speaking only when reality deviates."},
+"T-713":{flow:["Add tenant settings: fuel price per litre, idle burn rate, cost per km","Convert idle time and after-hours km into currency in digest + reports"],
+  get:"Invisible losses become visible pounds — the number that survives renewal conversations."},
+"T-714":{flow:["Digest template designed for WhatsApp constraints (plain text, RTL, emoji-free)","Deliver via email + in-app notification centre now","Apply for WhatsApp Business API immediately (approval takes months)","Swap transport when approved — template unchanged"],
+  get:"The digest reaches owners where they live; WhatsApp-ready from day one."}
 };
 
 /* ================= Known hard dependencies between tasks =================

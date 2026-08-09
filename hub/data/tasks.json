@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "saved": "2026-08-09T11:14:17.248Z",
+  "saved": "2026-08-09T13:29:04.010Z",
   "tasks": [
     {
       "id": "T-101",
@@ -771,6 +771,60 @@
       "blockReason": ""
     },
     {
+      "id": "T-711",
+      "sprint": 7,
+      "prio": "u",
+      "biz": false,
+      "title": "Daily Digest generator: nightly per-tenant rollup of events+trips into one verdict message (the product heartbeat)",
+      "refs": "Thesis - verdict-first; consumes events.domain + trips",
+      "status": "backlog",
+      "deps": [
+        "T-601",
+        "T-701"
+      ],
+      "blockReason": ""
+    },
+    {
+      "id": "T-712",
+      "sprint": 7,
+      "prio": "h",
+      "biz": false,
+      "title": "Normal-profile onboarding: working hours, home zones, speed policy per vehicle/group - 10-minute setup",
+      "refs": "Thesis - exception-based ops; FR-GEO-06, FR-ALT-02",
+      "status": "backlog",
+      "deps": [
+        "T-605"
+      ],
+      "blockReason": ""
+    },
+    {
+      "id": "T-713",
+      "sprint": 7,
+      "prio": "h",
+      "biz": false,
+      "title": "Money model: fuel price + idle-burn settings; EGP framing in digest and reports",
+      "refs": "Thesis - visible ROI; extends T-210 settings",
+      "status": "backlog",
+      "deps": [
+        "T-210"
+      ],
+      "blockReason": ""
+    },
+    {
+      "id": "T-714",
+      "sprint": 7,
+      "prio": "h",
+      "biz": false,
+      "title": "Digest delivery: email + in-app in WhatsApp-ready template; start WhatsApp Business API application early (months of lead time)",
+      "refs": "Thesis; OQ-06 answered - WhatsApp is the owner surface",
+      "status": "backlog",
+      "deps": [
+        "T-704",
+        "T-711"
+      ],
+      "blockReason": ""
+    },
+    {
       "id": "T-801",
       "sprint": 8,
       "prio": "u",
@@ -834,7 +888,7 @@
       "prio": "h",
       "biz": false,
       "title": "Report suite: trips, distance/utilisation, stops/idle, speeding, geofence, inactivity",
-      "refs": "FR-RPT-01…06",
+      "refs": "FR-RPT-01…06 - headline: monthly money statement (what EaglesEye caught)",
       "status": "backlog",
       "deps": [],
       "blockReason": ""
