@@ -1,0 +1,31 @@
+# EaglesEye CI (T-109): every push is compiled and tested.
+name: CI
+
+on:
+  push:
+    branches: [phase1, dev, main]
+  pull_request:
+    branches: [dev, main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: maven
+
+      - name: Build and test platform
+        working-directory: platform
+        run: mvn -B -ntp verify
+
+      - name: Syntax-check Node tools
+        run: |
+          node --check hub/server.mjs
+          node --check tools/capture-listener/capture.mjs
+          node --check tools/drive-sim.mjs
+          node --check infra/dev/traccar/init.mjs
