@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "saved": "2026-08-09T13:29:04.010Z",
+  "saved": "2026-08-09T13:49:53.701Z",
   "tasks": [
     {
       "id": "T-101",
@@ -627,8 +627,8 @@
       "prio": "h",
       "biz": false,
       "title": "Geofence CRUD: draw circle/polygon, categories, assignment; PostGIS storage",
-      "refs": "FR-GEO-01/02/03",
-      "status": "backlog",
+      "refs": "FR-GEO-01/02 - API CRUD live (circle via geography buffer, polygon WKT, PostGIS GiST); console drawing UI pending",
+      "status": "doing",
       "deps": [],
       "blockReason": ""
     },
@@ -638,8 +638,8 @@
       "prio": "u",
       "biz": false,
       "title": "Geofence evaluator: enter/exit hysteresis, dwell time, time-window rules",
-      "refs": "FR-GEO-04/05/06",
-      "status": "backlog",
+      "refs": "FR-GEO-04/05 - evaluator LIVE: enter/exit/dwell events on events.domain, JTS prepared geoms, 60s zone cache. Pending: two-fix hysteresis (flapping observed at boundaries!), time-window rules",
+      "status": "doing",
       "deps": [],
       "blockReason": ""
     },
