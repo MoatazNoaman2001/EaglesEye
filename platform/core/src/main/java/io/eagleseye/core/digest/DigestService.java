@@ -68,9 +68,11 @@ public class DigestService {
             Map<String, VehicleDay> perVehicle = new LinkedHashMap<>();
             double totalKm = 0;
             int totalTrips = 0;
+            long totalIdleSeconds = 0;
             try (PreparedStatement ps = c.prepareStatement("""
                     SELECT t.vehicle_id, COALESCE(NULLIF(v.name,''), v.plate, t.vehicle_id) AS label,
-                           count(*), COALESCE(sum(t.distance_km),0), COALESCE(max(t.max_speed_kmh),0)
+                           count(*), COALESCE(sum(t.distance_km),0), COALESCE(max(t.max_speed_kmh),0),
+                           COALESCE(sum(t.idle_seconds),0)
                     FROM trips t
                     LEFT JOIN vehicles v ON v.id::text = t.vehicle_id
                     WHERE t.tenant_id = ? AND t.start_time >= ? AND t.start_time < ?
@@ -85,6 +87,7 @@ public class DigestService {
                         perVehicle.put(rs.getString(1), day);
                         totalKm += day.km();
                         totalTrips += day.trips();
+                        totalIdleSeconds += rs.getLong(6);
                     }
                 }
             }
@@ -110,17 +113,24 @@ public class DigestService {
 
             double fuelPrice = settingDouble(c, "money.fuel.price.per.liter", 15.0);
             double per100 = settingDouble(c, "money.fuel.consumption.l.per.100km", 12.0);
+            double idleBurn = settingDouble(c, "money.idle.burn.l.per.hour", 2.5);
             double fuelCost = totalKm * per100 / 100.0 * fuelPrice;
+            double idleCost = totalIdleSeconds / 3600.0 * idleBurn * fuelPrice;
+            long idleMin = totalIdleSeconds / 60;
 
             List<VehicleDay> vehicles = List.copyOf(perVehicle.values());
-            String ar = composeAr(date, vehicles, totalTrips, totalKm, fuelCost, alerts, reported, registered);
-            String en = composeEn(date, vehicles, totalTrips, totalKm, fuelCost, alerts, reported, registered);
+            String ar = composeAr(date, vehicles, totalTrips, totalKm, fuelCost, alerts, reported, registered)
+                    + (idleMin > 0 ? String.format(Locale.US, "تكدس بلا حركة: %d دقيقة ≈ %.0f جنيه\n", idleMin, idleCost) : "");
+            String en = composeEn(date, vehicles, totalTrips, totalKm, fuelCost, alerts, reported, registered)
+                    + (idleMin > 0 ? String.format(Locale.US, "Idle: %d min ≈ %.0f EGP wasted\n", idleMin, idleCost) : "");
 
             ObjectNode stats = mapper.createObjectNode();
             stats.put("totalKm", round1(totalKm));
             stats.put("totalTrips", totalTrips);
             stats.put("alerts", alerts.size());
             stats.put("fuelCostEstimate", round1(fuelCost));
+            stats.put("idleSeconds", totalIdleSeconds);
+            stats.put("idleCostEstimate", round1(idleCost));
             stats.put("devicesReported", reported);
             stats.put("devicesRegistered", registered);
 

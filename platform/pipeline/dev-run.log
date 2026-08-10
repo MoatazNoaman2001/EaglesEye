@@ -11,61 +11,60 @@
 [INFO] Copying 1 resource from src\main\resources to target\classes
 [INFO] Invoking quarkus:3.38.1:generate-code (default) @ pipeline
 [INFO] Invoking compiler:3.15.0:compile (default-compile) @ pipeline
-[INFO] Recompiling the module because of added or removed source files.
-[INFO] Compiling 13 source files with javac [debug parameters release 21] to target\classes
+[INFO] Nothing to compile - all classes are up to date.
 [INFO] Invoking resources:3.3.1:testResources (default-testResources) @ pipeline
 [INFO] skip non existing resourceDirectory C:\Users\moata\Documents\EaglesEye\platform\pipeline\src\test\resources
 [INFO] Invoking quarkus:3.38.1:generate-code-tests (default) @ pipeline
 [INFO] Invoking compiler:3.15.0:testCompile (default-testCompile) @ pipeline
 [INFO] No sources to compile
-[WARNING] [io.quarkus.deployment.dev.DevModeCommandLineBuilder] Changed debug port to 53281 because of a port conflict
-Listening for transport dt_socket at address: 53281
+[WARNING] [io.quarkus.deployment.dev.DevModeCommandLineBuilder] Changed debug port to 59872 because of a port conflict
+Listening for transport dt_socket at address: 59872
 __  ____  __  _____   ___  __ ____  ______ 
  --/ __ \/ / / / _ | / _ \/ //_/ / / / __/ 
  -/ /_/ / /_/ / __ |/ , _/ ,< / /_/ /\ \   
 --\___\_\____/_/ |_/_/|_/_/|_|\____/___/   
-2026-08-09 17:10:57,558 INFO  [io.smallrye.reactive.messaging.kafka] (Quarkus Main Thread) SRMSG18229: Configured topics for channel 'traccar-positions': [traccar.positions]
-2026-08-09 17:10:57,566 INFO  [io.smallrye.reactive.messaging.kafka] (Quarkus Main Thread) SRMSG18214: Key deserializer omitted, using String as default
-2026-08-09 17:10:57,731 INFO  [io.smallrye.reactive.messaging.kafka] (Quarkus Main Thread) SRMSG18229: Configured topics for channel 'positions-store-in': [events.domain]
-2026-08-09 17:10:57,733 INFO  [io.smallrye.reactive.messaging.kafka] (Quarkus Main Thread) SRMSG18214: Key deserializer omitted, using String as default
-2026-08-09 17:10:57,742 INFO  [io.smallrye.reactive.messaging.kafka] (Quarkus Main Thread) SRMSG18229: Configured topics for channel 'registry-devices': [registry.devices]
-2026-08-09 17:10:57,745 INFO  [io.smallrye.reactive.messaging.kafka] (Quarkus Main Thread) SRMSG18214: Key deserializer omitted, using String as default
-2026-08-09 17:10:57,758 INFO  [io.smallrye.reactive.messaging.mqtt] (Quarkus Main Thread) Create MQTT Client for null@localhost:1883<>-[]
-2026-08-09 17:10:57,767 INFO  [io.smallrye.reactive.messaging.kafka] (Quarkus Main Thread) SRMSG18229: Configured topics for channel 'rules-in': [events.domain]
-2026-08-09 17:10:57,770 INFO  [io.smallrye.reactive.messaging.kafka] (Quarkus Main Thread) SRMSG18214: Key deserializer omitted, using String as default
-2026-08-09 17:10:57,778 INFO  [io.smallrye.reactive.messaging.kafka] (Quarkus Main Thread) SRMSG18229: Configured topics for channel 'telemetry-decoded-in': [telemetry.decoded]
-2026-08-09 17:10:57,780 INFO  [io.smallrye.reactive.messaging.kafka] (Quarkus Main Thread) SRMSG18214: Key deserializer omitted, using String as default
-2026-08-09 17:10:57,787 INFO  [io.smallrye.reactive.messaging.kafka] (Quarkus Main Thread) SRMSG18229: Configured topics for channel 'trips-in': [events.domain]
-2026-08-09 17:10:57,790 INFO  [io.smallrye.reactive.messaging.kafka] (Quarkus Main Thread) SRMSG18214: Key deserializer omitted, using String as default
-2026-08-09 17:10:57,796 INFO  [io.smallrye.reactive.messaging.kafka] (Quarkus Main Thread) SRMSG18229: Configured topics for channel 'geofence-in': [events.domain]
-2026-08-09 17:10:57,798 INFO  [io.smallrye.reactive.messaging.kafka] (Quarkus Main Thread) SRMSG18214: Key deserializer omitted, using String as default
-2026-08-09 17:10:57,823 INFO  [io.vertx.mqtt.impl.MqttClientImpl] (vert.x-eventloop-thread-0) Connection with localhost:1883 established successfully
-2026-08-09 17:10:57,829 INFO  [io.smallrye.reactive.messaging.kafka] (smallrye-kafka-producer-thread-0) SRMSG18258: Kafka producer kafka-producer-alerts-out, connected to Kafka brokers 'localhost:9092', is configured to write records to 'alerts.outbound'
-2026-08-09 17:10:57,840 INFO  [io.smallrye.reactive.messaging.kafka] (smallrye-kafka-producer-thread-1) SRMSG18258: Kafka producer kafka-producer-events-domain, connected to Kafka brokers 'localhost:9092', is configured to write records to 'events.domain'
-2026-08-09 17:10:57,849 INFO  [io.smallrye.reactive.messaging.kafka] (smallrye-kafka-producer-thread-2) SRMSG18258: Kafka producer kafka-producer-telemetry-decoded, connected to Kafka brokers 'localhost:9092', is configured to write records to 'telemetry.decoded'
-2026-08-09 17:10:57,859 INFO  [io.smallrye.reactive.messaging.mqtt] (vert.x-eventloop-thread-0) Subscription success on topic owntracks/#, Max QoS 0.
-2026-08-09 17:10:57,882 INFO  [io.smallrye.reactive.messaging.kafka] (smallrye-kafka-consumer-thread-1) SRMSG18257: Kafka consumer kafka-consumer-positions-store-in, connected to Kafka brokers 'localhost:9092', belongs to the 'ee-pipeline-positions' consumer group and is configured to poll records from [events.domain]
-2026-08-09 17:10:57,882 INFO  [io.smallrye.reactive.messaging.kafka] (smallrye-kafka-consumer-thread-2) SRMSG18257: Kafka consumer kafka-consumer-registry-devices, connected to Kafka brokers 'localhost:9092', belongs to the 'ee-registry-cache-4147aa5f-46e9-43e0-aaa2-62321c344418' consumer group and is configured to poll records from [registry.devices]
-2026-08-09 17:10:57,882 INFO  [io.smallrye.reactive.messaging.kafka] (smallrye-kafka-consumer-thread-6) SRMSG18257: Kafka consumer kafka-consumer-geofence-in, connected to Kafka brokers 'localhost:9092', belongs to the 'ee-pipeline-geofence' consumer group and is configured to poll records from [events.domain]
-2026-08-09 17:10:57,885 INFO  [io.smallrye.reactive.messaging.kafka] (smallrye-kafka-consumer-thread-3) SRMSG18257: Kafka consumer kafka-consumer-rules-in, connected to Kafka brokers 'localhost:9092', belongs to the 'ee-pipeline-rules' consumer group and is configured to poll records from [events.domain]
-2026-08-09 17:10:57,885 INFO  [io.smallrye.reactive.messaging.kafka] (smallrye-kafka-consumer-thread-5) SRMSG18257: Kafka consumer kafka-consumer-trips-in, connected to Kafka brokers 'localhost:9092', belongs to the 'ee-pipeline-trips' consumer group and is configured to poll records from [events.domain]
-2026-08-09 17:10:57,891 INFO  [io.smallrye.reactive.messaging.kafka] (smallrye-kafka-consumer-thread-4) SRMSG18257: Kafka consumer kafka-consumer-telemetry-decoded-in, connected to Kafka brokers 'localhost:9092', belongs to the 'eagleseye-pipeline' consumer group and is configured to poll records from [telemetry.decoded]
-2026-08-09 17:10:57,891 INFO  [io.smallrye.reactive.messaging.kafka] (smallrye-kafka-consumer-thread-0) SRMSG18257: Kafka consumer kafka-consumer-traccar-positions, connected to Kafka brokers 'localhost:9092', belongs to the 'eagleseye-pipeline' consumer group and is configured to poll records from [traccar.positions]
-2026-08-09 17:10:57,961 INFO  [io.quarkus] (Quarkus Main Thread) eagleseye-pipeline 0.1.0-SNAPSHOT on JVM (powered by Quarkus 3.38.1) started in 3.677s. Listening on: http://localhost:8082
-2026-08-09 17:10:57,961 INFO  [io.quarkus] (Quarkus Main Thread) Profile dev activated. Live Coding activated.
-2026-08-09 17:10:57,961 INFO  [io.quarkus] (Quarkus Main Thread) Installed features: [agroal, cdi, compose, config-yaml, jdbc-postgresql, kafka-client, messaging, messaging-kafka, messaging-mqtt, narayana-jta, redis-client, smallrye-context-propagation, smallrye-health, vertx]
-2026-08-09 17:10:59,192 INFO  [io.smallrye.reactive.messaging.kafka] (vert.x-eventloop-thread-10) SRMSG18256: Initialize record store for topic-partition 'registry.devices-2' at position -1.
-2026-08-09 17:11:00,194 INFO  [io.smallrye.reactive.messaging.kafka] (vert.x-eventloop-thread-10) SRMSG18256: Initialize record store for topic-partition 'registry.devices-1' at position -1.
-2026-08-09 17:21:40,247 INFO  [io.smallrye.reactive.messaging.kafka] (vert.x-eventloop-thread-6) SRMSG18256: Initialize record store for topic-partition 'traccar.positions-1' at position 226.
-2026-08-09 17:21:41,254 INFO  [io.smallrye.reactive.messaging.kafka] (vert.x-eventloop-thread-7) SRMSG18256: Initialize record store for topic-partition 'telemetry.decoded-4' at position 227.
-2026-08-09 17:21:41,335 INFO  [io.smallrye.reactive.messaging.kafka] (vert.x-eventloop-thread-5) SRMSG18256: Initialize record store for topic-partition 'events.domain-0' at position 386.
-2026-08-09 17:21:41,335 INFO  [io.smallrye.reactive.messaging.kafka] (vert.x-eventloop-thread-8) SRMSG18256: Initialize record store for topic-partition 'events.domain-0' at position 386.
-2026-08-09 17:21:41,336 INFO  [io.smallrye.reactive.messaging.kafka] (vert.x-eventloop-thread-4) SRMSG18256: Initialize record store for topic-partition 'events.domain-0' at position 386.
-2026-08-09 17:21:41,336 INFO  [io.smallrye.reactive.messaging.kafka] (vert.x-eventloop-thread-9) SRMSG18256: Initialize record store for topic-partition 'events.domain-0' at position -1.
-2026-08-09 17:21:41,376 INFO  [io.eagleseye.pipeline.trips.TripEngine] (vert.x-worker-thread-4) Trip opened for 5cbea04a-7bf7-425d-9ac3-3f5101187023 at (30.0444, 31.2357)
-2026-08-09 17:21:41,390 INFO  [io.eagleseye.pipeline.rules.RulesEngine] (vert.x-worker-thread-3) ALERT [warning] Delivery Van 1 at 58 km/h (limit 50)
-2026-08-09 17:21:59,473 INFO  [io.eagleseye.pipeline.geofence.GeofenceEvaluator] (vert.x-worker-thread-4) 5cbea04a-7bf7-425d-9ac3-3f5101187023 ENTERED North Corridor
-2026-08-09 17:21:59,496 ERROR [io.eagleseye.pipeline.store.PositionWriter] (vert.x-worker-thread-5) Failed to store position, dropping: {"eventType":"geofence.entered","vehicleId":"5cbea04a-7bf7-425d-9ac3-3f5101187023","vehicleLabel":"Delivery Van 1","tenantId":"dev-tenant","zoneId":"cbef1a6e-aba6-4427-8b7b-9437a2bed746","zoneName":"N: org.postgresql.util.PSQLException: ERROR: invalid input syntax for type json
+2026-08-10 16:39:56,466 INFO  [io.smallrye.reactive.messaging.kafka] (Quarkus Main Thread) SRMSG18229: Configured topics for channel 'traccar-positions': [traccar.positions]
+2026-08-10 16:39:56,475 INFO  [io.smallrye.reactive.messaging.kafka] (Quarkus Main Thread) SRMSG18214: Key deserializer omitted, using String as default
+2026-08-10 16:39:56,673 INFO  [io.smallrye.reactive.messaging.kafka] (Quarkus Main Thread) SRMSG18229: Configured topics for channel 'positions-store-in': [events.domain]
+2026-08-10 16:39:56,676 INFO  [io.smallrye.reactive.messaging.kafka] (Quarkus Main Thread) SRMSG18214: Key deserializer omitted, using String as default
+2026-08-10 16:39:56,690 INFO  [io.smallrye.reactive.messaging.kafka] (Quarkus Main Thread) SRMSG18229: Configured topics for channel 'registry-devices': [registry.devices]
+2026-08-10 16:39:56,693 INFO  [io.smallrye.reactive.messaging.kafka] (Quarkus Main Thread) SRMSG18214: Key deserializer omitted, using String as default
+2026-08-10 16:39:56,720 INFO  [io.smallrye.reactive.messaging.mqtt] (Quarkus Main Thread) Create MQTT Client for null@localhost:1883<>-[]
+2026-08-10 16:39:56,732 INFO  [io.smallrye.reactive.messaging.kafka] (Quarkus Main Thread) SRMSG18229: Configured topics for channel 'rules-in': [events.domain]
+2026-08-10 16:39:56,737 INFO  [io.smallrye.reactive.messaging.kafka] (Quarkus Main Thread) SRMSG18214: Key deserializer omitted, using String as default
+2026-08-10 16:39:56,746 INFO  [io.smallrye.reactive.messaging.kafka] (Quarkus Main Thread) SRMSG18229: Configured topics for channel 'telemetry-decoded-in': [telemetry.decoded]
+2026-08-10 16:39:56,751 INFO  [io.smallrye.reactive.messaging.kafka] (Quarkus Main Thread) SRMSG18214: Key deserializer omitted, using String as default
+2026-08-10 16:39:56,762 INFO  [io.smallrye.reactive.messaging.kafka] (Quarkus Main Thread) SRMSG18229: Configured topics for channel 'trips-in': [events.domain]
+2026-08-10 16:39:56,767 INFO  [io.smallrye.reactive.messaging.kafka] (Quarkus Main Thread) SRMSG18214: Key deserializer omitted, using String as default
+2026-08-10 16:39:56,776 INFO  [io.smallrye.reactive.messaging.kafka] (Quarkus Main Thread) SRMSG18229: Configured topics for channel 'geofence-in': [events.domain]
+2026-08-10 16:39:56,781 INFO  [io.smallrye.reactive.messaging.kafka] (Quarkus Main Thread) SRMSG18214: Key deserializer omitted, using String as default
+2026-08-10 16:39:56,813 INFO  [io.vertx.mqtt.impl.MqttClientImpl] (vert.x-eventloop-thread-0) Connection with localhost:1883 established successfully
+2026-08-10 16:39:56,821 INFO  [io.smallrye.reactive.messaging.kafka] (smallrye-kafka-producer-thread-0) SRMSG18258: Kafka producer kafka-producer-alerts-out, connected to Kafka brokers 'localhost:9092', is configured to write records to 'alerts.outbound'
+2026-08-10 16:39:56,841 INFO  [io.smallrye.reactive.messaging.kafka] (smallrye-kafka-producer-thread-1) SRMSG18258: Kafka producer kafka-producer-events-domain, connected to Kafka brokers 'localhost:9092', is configured to write records to 'events.domain'
+2026-08-10 16:39:56,852 INFO  [io.smallrye.reactive.messaging.kafka] (smallrye-kafka-producer-thread-2) SRMSG18258: Kafka producer kafka-producer-telemetry-decoded, connected to Kafka brokers 'localhost:9092', is configured to write records to 'telemetry.decoded'
+2026-08-10 16:39:56,866 INFO  [io.smallrye.reactive.messaging.mqtt] (vert.x-eventloop-thread-0) Subscription success on topic owntracks/#, Max QoS 0.
+2026-08-10 16:39:56,891 INFO  [io.smallrye.reactive.messaging.kafka] (smallrye-kafka-consumer-thread-2) SRMSG18257: Kafka consumer kafka-consumer-registry-devices, connected to Kafka brokers 'localhost:9092', belongs to the 'ee-registry-cache-ff6d861a-c009-4f7e-abe8-96599963c46b' consumer group and is configured to poll records from [registry.devices]
+2026-08-10 16:39:56,892 INFO  [io.smallrye.reactive.messaging.kafka] (smallrye-kafka-consumer-thread-3) SRMSG18257: Kafka consumer kafka-consumer-rules-in, connected to Kafka brokers 'localhost:9092', belongs to the 'ee-pipeline-rules' consumer group and is configured to poll records from [events.domain]
+2026-08-10 16:39:56,892 INFO  [io.smallrye.reactive.messaging.kafka] (smallrye-kafka-consumer-thread-5) SRMSG18257: Kafka consumer kafka-consumer-trips-in, connected to Kafka brokers 'localhost:9092', belongs to the 'ee-pipeline-trips' consumer group and is configured to poll records from [events.domain]
+2026-08-10 16:39:56,894 INFO  [io.smallrye.reactive.messaging.kafka] (smallrye-kafka-consumer-thread-1) SRMSG18257: Kafka consumer kafka-consumer-positions-store-in, connected to Kafka brokers 'localhost:9092', belongs to the 'ee-pipeline-positions' consumer group and is configured to poll records from [events.domain]
+2026-08-10 16:39:56,897 INFO  [io.smallrye.reactive.messaging.kafka] (smallrye-kafka-consumer-thread-6) SRMSG18257: Kafka consumer kafka-consumer-geofence-in, connected to Kafka brokers 'localhost:9092', belongs to the 'ee-pipeline-geofence' consumer group and is configured to poll records from [events.domain]
+2026-08-10 16:39:56,904 INFO  [io.smallrye.reactive.messaging.kafka] (smallrye-kafka-consumer-thread-4) SRMSG18257: Kafka consumer kafka-consumer-telemetry-decoded-in, connected to Kafka brokers 'localhost:9092', belongs to the 'eagleseye-pipeline' consumer group and is configured to poll records from [telemetry.decoded]
+2026-08-10 16:39:56,904 INFO  [io.smallrye.reactive.messaging.kafka] (smallrye-kafka-consumer-thread-0) SRMSG18257: Kafka consumer kafka-consumer-traccar-positions, connected to Kafka brokers 'localhost:9092', belongs to the 'eagleseye-pipeline' consumer group and is configured to poll records from [traccar.positions]
+2026-08-10 16:39:56,984 INFO  [io.quarkus] (Quarkus Main Thread) eagleseye-pipeline 0.1.0-SNAPSHOT on JVM (powered by Quarkus 3.38.1) started in 6.501s. Listening on: http://localhost:8082
+2026-08-10 16:39:56,984 INFO  [io.quarkus] (Quarkus Main Thread) Profile dev activated. Live Coding activated.
+2026-08-10 16:39:56,984 INFO  [io.quarkus] (Quarkus Main Thread) Installed features: [agroal, cdi, compose, config-yaml, jdbc-postgresql, kafka-client, messaging, messaging-kafka, messaging-mqtt, narayana-jta, redis-client, smallrye-context-propagation, smallrye-health, vertx]
+2026-08-10 16:39:57,730 INFO  [io.smallrye.reactive.messaging.kafka] (vert.x-eventloop-thread-9) SRMSG18256: Initialize record store for topic-partition 'registry.devices-2' at position -1.
+2026-08-10 16:39:58,742 INFO  [io.smallrye.reactive.messaging.kafka] (vert.x-eventloop-thread-9) SRMSG18256: Initialize record store for topic-partition 'registry.devices-1' at position -1.
+2026-08-10 16:40:25,413 INFO  [io.smallrye.reactive.messaging.kafka] (vert.x-eventloop-thread-7) SRMSG18256: Initialize record store for topic-partition 'traccar.positions-1' at position 262.
+2026-08-10 16:40:26,475 INFO  [io.smallrye.reactive.messaging.kafka] (vert.x-eventloop-thread-5) SRMSG18256: Initialize record store for topic-partition 'telemetry.decoded-4' at position 263.
+2026-08-10 16:40:27,649 INFO  [io.smallrye.reactive.messaging.kafka] (vert.x-eventloop-thread-8) SRMSG18256: Initialize record store for topic-partition 'events.domain-0' at position 425.
+2026-08-10 16:40:27,651 INFO  [io.smallrye.reactive.messaging.kafka] (vert.x-eventloop-thread-6) SRMSG18256: Initialize record store for topic-partition 'events.domain-0' at position 425.
+2026-08-10 16:40:27,651 INFO  [io.smallrye.reactive.messaging.kafka] (vert.x-eventloop-thread-10) SRMSG18256: Initialize record store for topic-partition 'events.domain-0' at position 425.
+2026-08-10 16:40:27,652 INFO  [io.smallrye.reactive.messaging.kafka] (vert.x-eventloop-thread-4) SRMSG18256: Initialize record store for topic-partition 'events.domain-0' at position 425.
+2026-08-10 16:40:27,680 INFO  [io.eagleseye.pipeline.trips.TripEngine] (vert.x-worker-thread-1) Trip opened for 5cbea04a-7bf7-425d-9ac3-3f5101187023 at (30.0444, 31.2357)
+2026-08-10 16:40:32,802 INFO  [io.eagleseye.pipeline.geofence.GeofenceEvaluator] (vert.x-worker-thread-3) 5cbea04a-7bf7-425d-9ac3-3f5101187023 ENTERED North Corridor
+2026-08-10 16:40:32,839 INFO  [io.eagleseye.pipeline.rules.RulesEngine] (vert.x-worker-thread-2) ALERT [critical] Delivery Van 1 entered North Corridor
+2026-08-10 16:40:32,844 ERROR [io.eagleseye.pipeline.store.PositionWriter] (vert.x-worker-thread-1) Failed to store position, dropping: {"eventType":"geofence.entered","vehicleId":"5cbea04a-7bf7-425d-9ac3-3f5101187023","vehicleLabel":"Delivery Van 1","tenantId":"dev-tenant","zoneId":"cbef1a6e-aba6-4427-8b7b-9437a2bed746","zoneName":"N: org.postgresql.util.PSQLException: ERROR: invalid input syntax for type json
   Detail: The input string ended unexpectedly.
   Where: JSON data, line 1: 
 	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2993)
@@ -102,81 +101,6 @@ __  ____  __  _____   ___  __ ____  ______
 	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
 	at java.base/java.lang.Thread.run(Thread.java:1583)
 
-2026-08-09 17:21:59,500 INFO  [io.eagleseye.pipeline.rules.RulesEngine] (vert.x-worker-thread-3) ALERT [critical] Delivery Van 1 entered North Corridor
-2026-08-09 17:22:27,579 INFO  [io.eagleseye.pipeline.geofence.GeofenceEvaluator] (vert.x-worker-thread-3) 5cbea04a-7bf7-425d-9ac3-3f5101187023 EXITED North Corridor after 28s
-2026-08-09 17:22:27,598 ERROR [io.eagleseye.pipeline.store.PositionWriter] (vert.x-worker-thread-3) Failed to store position, dropping: {"eventType":"geofence.exited","vehicleId":"5cbea04a-7bf7-425d-9ac3-3f5101187023","vehicleLabel":"Delivery Van 1","tenantId":"dev-tenant","zoneId":"cbef1a6e-aba6-4427-8b7b-9437a2bed746","zoneName":"No: org.postgresql.util.PSQLException: ERROR: invalid input syntax for type json
-  Detail: The input string ended unexpectedly.
-  Where: JSON data, line 1: 
-	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2993)
-	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2656)
-	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:446)
-	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:533)
-	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:449)
-	at org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:197)
-	at org.postgresql.jdbc.PgPreparedStatement.executeUpdate(PgPreparedStatement.java:158)
-	at io.agroal.pool.wrapper.PreparedStatementWrapper.executeUpdate(PreparedStatementWrapper.java:87)
-	at io.eagleseye.pipeline.store.PositionWriter.store(PositionWriter.java:64)
-	at io.eagleseye.pipeline.store.PositionWriter_ClientProxy.store(Unknown Source)
-	at io.eagleseye.pipeline.store.PositionWriter_SmallRyeMessagingInvoker_store_796ff6a21c914b4433041c53dbcc28372d09541c.invoke(Unknown Source)
-	at io.smallrye.reactive.messaging.providers.AbstractMediator.lambda$invokeBlocking$15(AbstractMediator.java:194)
-	at io.smallrye.mutiny.operators.uni.builders.UniCreateFromDeferredSupplier.subscribe(UniCreateFromDeferredSupplier.java:25)
-	at io.smallrye.mutiny.operators.AbstractUni.subscribe(AbstractUni.java:35)
-	at io.smallrye.mutiny.groups.UniSubscribe.withSubscriber(UniSubscribe.java:51)
-	at io.smallrye.mutiny.groups.UniSubscribe.with(UniSubscribe.java:110)
-	at io.smallrye.mutiny.groups.UniSubscribe.with(UniSubscribe.java:88)
-	at io.vertx.mutiny.core.Context$1.handle(Context.java:172)
-	at io.vertx.mutiny.core.Context$1.handle(Context.java:170)
-	at io.vertx.core.impl.ContextImpl.lambda$executeBlocking$5(ContextImpl.java:205)
-	at io.vertx.core.impl.ContextInternal.dispatch(ContextInternal.java:270)
-	at io.vertx.core.impl.ContextImpl$1.execute(ContextImpl.java:221)
-	at io.vertx.core.impl.WorkerTask.run(WorkerTask.java:56)
-	at io.vertx.core.impl.TaskQueue.run(TaskQueue.java:81)
-	at org.jboss.threads.ContextHandler$1.runWith(ContextHandler.java:18)
-	at org.jboss.threads.EnhancedQueueExecutor$Task.doRunWith(EnhancedQueueExecutor.java:2651)
-	at org.jboss.threads.EnhancedQueueExecutor$Task.run(EnhancedQueueExecutor.java:2630)
-	at org.jboss.threads.EnhancedQueueExecutor.runThreadBody(EnhancedQueueExecutor.java:1622)
-	at org.jboss.threads.EnhancedQueueExecutor$ThreadBody.run(EnhancedQueueExecutor.java:1589)
-	at org.jboss.threads.DelegatingRunnable.run(DelegatingRunnable.java:11)
-	at org.jboss.threads.ThreadLocalResettingRunnable.run(ThreadLocalResettingRunnable.java:11)
-	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
-	at java.base/java.lang.Thread.run(Thread.java:1583)
-
-2026-08-09 17:22:43,696 INFO  [io.eagleseye.pipeline.rules.RulesEngine] (vert.x-worker-thread-5) ALERT [warning] Delivery Van 1 at 53 km/h (limit 50)
-2026-08-09 17:22:45,769 INFO  [io.eagleseye.pipeline.geofence.GeofenceEvaluator] (vert.x-worker-thread-4) 5cbea04a-7bf7-425d-9ac3-3f5101187023 ENTERED Depot
-2026-08-09 17:22:45,784 ERROR [io.eagleseye.pipeline.store.PositionWriter] (vert.x-worker-thread-5) Failed to store position, dropping: {"eventType":"geofence.entered","vehicleId":"5cbea04a-7bf7-425d-9ac3-3f5101187023","vehicleLabel":"Delivery Van 1","tenantId":"dev-tenant","zoneId":"d05bbdb7-ad32-42e7-9625-5fee26839193","zoneName":"D: org.postgresql.util.PSQLException: ERROR: invalid input syntax for type json
-  Detail: The input string ended unexpectedly.
-  Where: JSON data, line 1: 
-	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2993)
-	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2656)
-	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:446)
-	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:533)
-	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:449)
-	at org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:197)
-	at org.postgresql.jdbc.PgPreparedStatement.executeUpdate(PgPreparedStatement.java:158)
-	at io.agroal.pool.wrapper.PreparedStatementWrapper.executeUpdate(PreparedStatementWrapper.java:87)
-	at io.eagleseye.pipeline.store.PositionWriter.store(PositionWriter.java:64)
-	at io.eagleseye.pipeline.store.PositionWriter_ClientProxy.store(Unknown Source)
-	at io.eagleseye.pipeline.store.PositionWriter_SmallRyeMessagingInvoker_store_796ff6a21c914b4433041c53dbcc28372d09541c.invoke(Unknown Source)
-	at io.smallrye.reactive.messaging.providers.AbstractMediator.lambda$invokeBlocking$15(AbstractMediator.java:194)
-	at io.smallrye.mutiny.operators.uni.builders.UniCreateFromDeferredSupplier.subscribe(UniCreateFromDeferredSupplier.java:25)
-	at io.smallrye.mutiny.operators.AbstractUni.subscribe(AbstractUni.java:35)
-	at io.smallrye.mutiny.groups.UniSubscribe.withSubscriber(UniSubscribe.java:51)
-	at io.smallrye.mutiny.groups.UniSubscribe.with(UniSubscribe.java:110)
-	at io.smallrye.mutiny.groups.UniSubscribe.with(UniSubscribe.java:88)
-	at io.vertx.mutiny.core.Context$1.handle(Context.java:172)
-	at io.vertx.mutiny.core.Context$1.handle(Context.java:170)
-	at io.vertx.core.impl.ContextImpl.lambda$executeBlocking$5(ContextImpl.java:205)
-	at io.vertx.core.impl.ContextInternal.dispatch(ContextInternal.java:270)
-	at io.vertx.core.impl.ContextImpl$1.execute(ContextImpl.java:221)
-	at io.vertx.core.impl.WorkerTask.run(WorkerTask.java:56)
-	at io.vertx.core.impl.TaskQueue.run(TaskQueue.java:81)
-	at org.jboss.threads.ContextHandler$1.runWith(ContextHandler.java:18)
-	at org.jboss.threads.EnhancedQueueExecutor$Task.doRunWith(EnhancedQueueExecutor.java:2651)
-	at org.jboss.threads.EnhancedQueueExecutor$Task.run(EnhancedQueueExecutor.java:2630)
-	at org.jboss.threads.EnhancedQueueExecutor.runThreadBody(EnhancedQueueExecutor.java:1622)
-	at org.jboss.threads.EnhancedQueueExecutor$ThreadBody.run(EnhancedQueueExecutor.java:1589)
-	at org.jboss.threads.DelegatingRunnable.run(DelegatingRunnable.java:11)
-	at org.jboss.threads.ThreadLocalResettingRunnable.run(ThreadLocalResettingRunnable.java:11)
-	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
-	at java.base/java.lang.Thread.run(Thread.java:1583)
-
+2026-08-10 16:41:03,581 INFO  [io.eagleseye.pipeline.trips.TripEngine] (vert.x-worker-thread-3) Trip closed for 5cbea04a-7bf7-425d-9ac3-3f5101187023: 1.43 km, drive 6s, idle 32s, max 39 km/h
+2026-08-10 16:41:13,902 INFO  [io.eagleseye.pipeline.trips.TripEngine] (vert.x-worker-thread-4) Stop recorded for 5cbea04a-7bf7-425d-9ac3-3f5101187023: 0 min parked
+2026-08-10 16:41:13,918 INFO  [io.eagleseye.pipeline.trips.TripEngine] (vert.x-worker-thread-4) Trip opened for 5cbea04a-7bf7-425d-9ac3-3f5101187023 at (30.0601, 31.2289)

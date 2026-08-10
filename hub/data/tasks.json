@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "saved": "2026-08-10T13:22:00.192Z",
+  "saved": "2026-08-10T13:42:36.949Z",
   "tasks": [
     {
       "id": "T-101",
@@ -579,8 +579,8 @@
       "prio": "u",
       "biz": false,
       "title": "Trip engine: ignition+movement segmentation with hysteresis; trip/stop persistence",
-      "refs": "FR-TRP-01/03 — v1 streaming segmentation VERIFIED (open/accumulate/close, haversine distance, max speed); pending: stops table, per-tenant thresholds (settings), OSRM matching T-602, recompute T-603",
-      "status": "doing",
+      "refs": "FR-TRP-01/03/04 - trips + STOPS (between-trip parking, arrival/departure/duration/location) + idle/driving split VERIFIED. OSRM matching T-602, recompute T-603 remain",
+      "status": "done",
       "deps": [
         "T-501"
       ],
