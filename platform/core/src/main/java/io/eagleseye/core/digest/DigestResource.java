@@ -1,5 +1,8 @@
 package io.eagleseye.core.digest;
 
+import io.eagleseye.core.tenancy.ActivateTenant;
+import io.eagleseye.core.tenancy.TenantContext;
+import jakarta.transaction.Transactional;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.panache.common.Sort;
 import jakarta.inject.Inject;
@@ -46,7 +49,12 @@ public class DigestResource {
     @Inject
     DigestService service;
 
+    @Inject
+    TenantContext tenant;
+
     @GET
+    @ActivateTenant
+    @Transactional
     public List<Digest> list(@QueryParam("limit") @DefaultValue("30") int limit) {
         return Digest.findAll(Sort.descending("digestDate"))
                 .page(0, Math.min(Math.max(limit, 1), 90)).list();
@@ -59,7 +67,7 @@ public class DigestResource {
                 ? LocalDate.parse(date)
                 : LocalDate.now(ZoneId.of("Africa/Cairo")).minusDays(1);
         try {
-            return service.generate("dev-tenant", target);   // tenant from auth once T-401/403 land
+            return service.generate(tenant.tenantId(), target);
         } catch (Exception e) {
             throw new WebApplicationException("digest generation failed: " + e.getMessage(), 500);
         }

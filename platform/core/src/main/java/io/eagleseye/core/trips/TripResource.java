@@ -1,5 +1,7 @@
 package io.eagleseye.core.trips;
 
+import io.eagleseye.core.tenancy.ActivateTenant;
+import jakarta.transaction.Transactional;
 import io.quarkus.panache.common.Sort;
 import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
@@ -16,6 +18,8 @@ import java.util.List;
  */
 @Path("/api/v1/trips")
 @Produces(MediaType.APPLICATION_JSON)
+@ActivateTenant
+@Transactional
 public class TripResource {
 
     @GET

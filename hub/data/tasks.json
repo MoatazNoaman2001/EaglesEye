@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "saved": "2026-08-09T15:02:19.543Z",
+  "saved": "2026-08-10T08:24:57.615Z",
   "tasks": [
     {
       "id": "T-101",
@@ -347,8 +347,8 @@
       "prio": "u",
       "biz": false,
       "title": "Tenant model + hierarchy + branding fields; RLS on all tenant tables + migration lint",
-      "refs": "FR-SEC-01/02/08, AO-01/02/05",
-      "status": "backlog",
+      "refs": "FR-SEC-01/02/08, AO-01/02/05 - RLS LIVE: app role + policies on 8 tables + security-barrier view for positions (Timescale forbids RLS on compressed hypertables); tenants table with hierarchy+branding. VERIFIED: cross-tenant zero visibility incl. raw SQL. Pending: tenant provisioning API, OIDC tenant source (T-403)",
+      "status": "doing",
       "deps": [],
       "blockReason": ""
     },
@@ -358,8 +358,8 @@
       "prio": "u",
       "biz": false,
       "title": "Cross-tenant leak test in CI: two tenants, zero mutual visibility",
-      "refs": "RK-A2",
-      "status": "backlog",
+      "refs": "RK-A2 - leak test executed manually (5 scenarios green); CI automation pending (needs DB in Actions)",
+      "status": "doing",
       "deps": [],
       "blockReason": ""
     },

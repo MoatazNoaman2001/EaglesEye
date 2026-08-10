@@ -7,6 +7,12 @@ quarkus:
   # OIDC (Keycloak) not wired yet — enabled with T-403
   oidc:
     enabled: false
+  # DEFAULT datasource = RLS-bound app role; "system" = owner role, cross-tenant,
+  # for system components (digest, registry bootstrap). Credentials per profile.
+  datasource:
+    db-kind: postgresql
+    system:
+      db-kind: postgresql
   flyway:
     migrate-at-start: true
   mailer:
@@ -49,10 +55,21 @@ mp:
     redis:
       hosts: redis://localhost:6379
     datasource:
-      db-kind: postgresql
-      # env-first (matches infra/dev/.env), dev fallback so quarkus:dev works out of the box
-      username: ${EE_DB_USER:eagleseye}
-      password: ${EE_DB_PASSWORD:eagleseye-dev}
+      # DEFAULT = the API connection: app role, subject to row-level security (T-401)
+      username: ${EE_DB_APP_USER:eagleseye_app}
+      password: ${EE_DB_APP_PASSWORD:eagleseye-app-dev}
       jdbc:
         # host port 5433 — native PostgreSQL owns 5432 on this machine
         url: jdbc:postgresql://localhost:5433/${EE_DB_NAME:eagleseye}
+      # system = owner role, cross-tenant (digest, registry bootstrap)
+      system:
+        username: ${EE_DB_USER:eagleseye}
+        password: ${EE_DB_PASSWORD:eagleseye-dev}
+        jdbc:
+          url: jdbc:postgresql://localhost:5433/${EE_DB_NAME:eagleseye}
+    # migrations run as owner (create tables, roles, policies)
+    flyway:
+      username: ${EE_DB_USER:eagleseye}
+      password: ${EE_DB_PASSWORD:eagleseye-dev}
+      # dev only: self-heal the schema history after a failed migration attempt
+      repair-at-start: true

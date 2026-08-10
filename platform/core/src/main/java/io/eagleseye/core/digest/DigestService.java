@@ -3,6 +3,7 @@ package io.eagleseye.core.digest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.agroal.api.AgroalDataSource;
+import io.quarkus.agroal.DataSource;
 import io.quarkus.mailer.Mail;
 import io.quarkus.mailer.Mailer;
 import io.quarkus.scheduler.Scheduled;
@@ -37,7 +38,7 @@ public class DigestService {
     private static final Logger LOG = Logger.getLogger(DigestService.class);
     private static final ZoneId CAIRO = ZoneId.of("Africa/Cairo");   // tenant tz setting later (FR-LOC-03)
 
-    @Inject AgroalDataSource dataSource;
+    @Inject @DataSource("system") AgroalDataSource dataSource;   // cross-tenant by design (owner role)
     @Inject ObjectMapper mapper;
     @Inject Mailer mailer;
 
@@ -224,8 +225,7 @@ public class DigestService {
     private List<String> tenants() {
         List<String> result = new ArrayList<>();
         try (Connection c = dataSource.getConnection();
-             PreparedStatement ps = c.prepareStatement(
-                     "SELECT DISTINCT tenant_id FROM vehicles UNION SELECT DISTINCT tenant_id FROM devices");
+             PreparedStatement ps = c.prepareStatement("SELECT id FROM tenants");
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) result.add(rs.getString(1));
         } catch (Exception e) {

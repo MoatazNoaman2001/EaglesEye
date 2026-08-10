@@ -1,8 +1,10 @@
 package io.eagleseye.core.geofence;
 
+import io.eagleseye.core.tenancy.ActivateTenant;
+import io.eagleseye.core.tenancy.TenantContext;
+import jakarta.transaction.Transactional;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -33,6 +35,8 @@ import java.util.stream.Collectors;
 @Path("/api/v1/geofences")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@ActivateTenant
+@Transactional
 public class GeofenceResource {
 
     public record PointDto(double lat, double lon) {}
@@ -46,6 +50,9 @@ public class GeofenceResource {
 
     @Inject
     EntityManager em;
+
+    @Inject
+    TenantContext tenant;
 
     @GET
     @SuppressWarnings("unchecked")
@@ -65,10 +72,11 @@ public class GeofenceResource {
         UUID id = UUID.randomUUID();
         if ("circle".equals(req.areaType())) {
             em.createNativeQuery("""
-                    INSERT INTO geofences (id, name, category, color, area_type, center_lat, center_lon, radius_m, geom)
-                    VALUES (?1, ?2, ?3, ?4, 'circle', ?5, ?6, ?7,
+                    INSERT INTO geofences (id, tenant_id, name, category, color, area_type, center_lat, center_lon, radius_m, geom)
+                    VALUES (?1, ?8, ?2, ?3, ?4, 'circle', ?5, ?6, ?7,
                             ST_Buffer(ST_SetSRID(ST_MakePoint(?6, ?5), 4326)::geography, ?7)::geometry)
                     """)
+                    .setParameter(8, tenant.tenantId())
                     .setParameter(1, id).setParameter(2, req.name().trim())
                     .setParameter(3, req.category()).setParameter(4, req.color())
                     .setParameter(5, req.center().lat()).setParameter(6, req.center().lon())
@@ -76,9 +84,10 @@ public class GeofenceResource {
                     .executeUpdate();
         } else {
             em.createNativeQuery("""
-                    INSERT INTO geofences (id, name, category, color, area_type, geom)
-                    VALUES (?1, ?2, ?3, ?4, 'polygon', ST_GeomFromText(?5, 4326))
+                    INSERT INTO geofences (id, tenant_id, name, category, color, area_type, geom)
+                    VALUES (?1, ?6, ?2, ?3, ?4, 'polygon', ST_GeomFromText(?5, 4326))
                     """)
+                    .setParameter(6, tenant.tenantId())
                     .setParameter(1, id).setParameter(2, req.name().trim())
                     .setParameter(3, req.category()).setParameter(4, req.color())
                     .setParameter(5, toPolygonWkt(req.points()))

@@ -1,5 +1,8 @@
 package io.eagleseye.core.fleet;
 
+import io.eagleseye.core.tenancy.ActivateTenant;
+import io.eagleseye.core.tenancy.TenantContext;
+import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -24,7 +27,12 @@ import java.util.UUID;
 @Path("/api/v1/vehicles")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@ActivateTenant
+@Transactional
 public class VehicleResource {
+
+    @Inject
+    TenantContext tenant;
 
     public record VehicleRequest(String plate, String name, String make, String model,
                                  Integer modelYear, String category) {}
@@ -49,6 +57,7 @@ public class VehicleResource {
             throw new WebApplicationException("plate is required", 400);
         }
         Vehicle v = new Vehicle();
+        v.tenantId = tenant.tenantId();
         apply(v, req);
         v.persist();
         return Response.status(Response.Status.CREATED).entity(v).build();

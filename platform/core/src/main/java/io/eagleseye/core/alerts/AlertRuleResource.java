@@ -1,8 +1,10 @@
 package io.eagleseye.core.alerts;
 
+import io.eagleseye.core.tenancy.ActivateTenant;
+import io.eagleseye.core.tenancy.TenantContext;
+import jakarta.transaction.Transactional;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -24,6 +26,8 @@ import java.util.UUID;
 @Path("/api/v1/alert-rules")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@ActivateTenant
+@Transactional
 public class AlertRuleResource {
 
     private static final Set<String> TYPES =
@@ -34,6 +38,9 @@ public class AlertRuleResource {
     @Inject
     ObjectMapper mapper;
 
+    @Inject
+    TenantContext tenant;
+
     @GET
     public List<AlertRule> list() {
         return AlertRule.listAll();
@@ -43,6 +50,7 @@ public class AlertRuleResource {
     @Transactional
     public Response create(RuleRequest req) {
         AlertRule rule = new AlertRule();
+        rule.tenantId = tenant.tenantId();
         apply(rule, req, true);
         rule.persist();
         return Response.status(Response.Status.CREATED).entity(rule).build();

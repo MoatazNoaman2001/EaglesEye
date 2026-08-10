@@ -1,8 +1,10 @@
 package io.eagleseye.core.fleet;
 
+import io.eagleseye.core.tenancy.ActivateTenant;
+import io.eagleseye.core.tenancy.TenantContext;
+import jakarta.transaction.Transactional;
 import io.eagleseye.core.bridge.TraccarBridgeClient;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.NotFoundException;
@@ -27,6 +29,8 @@ import java.util.UUID;
 @Path("/api/v1/devices")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@ActivateTenant
+@Transactional
 public class DeviceResource {
 
     public record DeviceRequest(String imei, String protocol, String model, String simMsisdn, String notes) {}
@@ -36,6 +40,9 @@ public class DeviceResource {
 
     @Inject
     RegistryPublisher registry;
+
+    @Inject
+    TenantContext tenant;
 
     @GET
     public List<Device> list() {
@@ -61,6 +68,7 @@ public class DeviceResource {
             throw new WebApplicationException("device with this IMEI already exists", 409);
         }
         Device d = new Device();
+        d.tenantId = tenant.tenantId();
         d.imei = imei;
         d.protocol = req.protocol();
         d.model = req.model();

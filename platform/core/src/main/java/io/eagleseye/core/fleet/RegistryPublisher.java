@@ -2,6 +2,8 @@ package io.eagleseye.core.fleet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.agroal.api.AgroalDataSource;
+import io.quarkus.agroal.DataSource;
 import io.quarkus.runtime.StartupEvent;
 import io.smallrye.reactive.messaging.kafka.Record;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -32,6 +34,10 @@ public class RegistryPublisher {
     @Inject
     ObjectMapper mapper;
 
+    @Inject
+    @DataSource("system")
+    AgroalDataSource systemDs;   // startup republish is cross-tenant by design
+
     public void publish(Device device) {
         try {
             Vehicle vehicle = device.vehicleId != null ? Vehicle.findById(device.vehicleId) : null;
@@ -52,7 +58,27 @@ public class RegistryPublisher {
 
     /** Republish the whole registry on boot so a fresh compacted topic converges. */
     void onStart(@Observes StartupEvent event) {
-        Device.<Device>listAll().forEach(this::publish);
-        LOG.infof("Registry republished: %d device(s)", Device.count());
+        int count = 0;
+        try (var c = systemDs.getConnection();
+             var ps = c.prepareStatement("""
+                     SELECT d.imei, d.tenant_id, d.status, d.vehicle_id::text,
+                            COALESCE(NULLIF(v.name,''), v.plate)
+                     FROM devices d LEFT JOIN vehicles v ON v.id = d.vehicle_id
+                     """);
+             var rs = ps.executeQuery()) {
+            while (rs.next()) {
+                ObjectNode node = mapper.createObjectNode();
+                node.put("imei", rs.getString(1));
+                node.put("tenantId", rs.getString(2));
+                node.put("status", rs.getString(3));
+                node.put("vehicleId", rs.getString(4));
+                node.put("vehicleLabel", rs.getString(5));
+                emitter.send(Record.of(rs.getString(1), node.toString()));
+                count++;
+            }
+        } catch (Exception e) {
+            LOG.warnf(e, "Startup registry republish failed (compaction heals on next boot)");
+        }
+        LOG.infof("Registry republished: %d device(s)", count);
     }
 }

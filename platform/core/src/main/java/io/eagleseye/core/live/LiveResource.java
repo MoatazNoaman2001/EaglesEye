@@ -1,5 +1,6 @@
 package io.eagleseye.core.live;
 
+import io.eagleseye.core.tenancy.TenantContext;
 import io.quarkus.redis.datasource.RedisDataSource;
 import io.quarkus.redis.datasource.keys.KeyScanArgs;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -27,6 +28,9 @@ public class LiveResource {
     @Inject
     RedisDataSource redis;
 
+    @Inject
+    TenantContext tenant;
+
     @GET
     @Path("/vehicles")
     @Produces(MediaType.APPLICATION_JSON)
@@ -37,7 +41,7 @@ public class LiveResource {
         while (cursor.hasNext()) {
             for (String key : cursor.next()) {
                 Map<String, String> state = hash.hgetall(key);
-                if (!state.isEmpty()) result.add(state);
+                if (!state.isEmpty() && tenant.tenantId().equals(state.get("tenantId"))) result.add(state);
             }
         }
         return result;

@@ -1,7 +1,8 @@
 package io.eagleseye.core.alerts;
 
-import io.quarkus.panache.common.Sort;
+import io.eagleseye.core.tenancy.ActivateTenant;
 import jakarta.transaction.Transactional;
+import io.quarkus.panache.common.Sort;
 import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.NotFoundException;
@@ -18,6 +19,8 @@ import java.util.UUID;
 /** Alert history (FR-ALT-07): searchable list + acknowledgement. */
 @Path("/api/v1/alerts")
 @Produces(MediaType.APPLICATION_JSON)
+@ActivateTenant
+@Transactional
 public class AlertResource {
 
     @GET
