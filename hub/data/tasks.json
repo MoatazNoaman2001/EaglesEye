@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "saved": "2026-08-10T08:24:57.615Z",
+  "saved": "2026-08-10T13:22:00.192Z",
   "tasks": [
     {
       "id": "T-101",
@@ -369,8 +369,8 @@
       "prio": "h",
       "biz": false,
       "title": "Keycloak: OIDC, 5 roles, sessions, password policy, 2FA",
-      "refs": "FR-SEC-03/05/06",
-      "status": "backlog",
+      "refs": "FR-SEC-03/05/06 — Keycloak bootstrap DONE (realm, console client, 5 roles, tenant_id claim mapper verified in signed token, 2 users in different tenants). BLOCKED: OIDC tenant not activating in dev (403 no-challenge, no logs; discovery reachable) — needs focused session (suspect Quinoa+OIDC dev interaction). Interim: header-based tenant + RLS (proven).",
+      "status": "doing",
       "deps": [],
       "blockReason": ""
     },

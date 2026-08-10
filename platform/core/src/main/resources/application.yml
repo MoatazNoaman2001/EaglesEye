@@ -2,11 +2,37 @@
 quarkus:
   application:
     name: eagleseye-core
+  # OIDC (T-403). The API authenticates bearer tokens (service); the browser SPA
+  # obtains tokens from Keycloak directly (Vite/React login) and calls the API with
+  # them. Tenant comes from the signed token's tenant_id claim.
+  oidc:
+    # auth-server-url must be present in the base profile so the OIDC tenant is
+    # enabled at build time; %dev/%prod can override the host. Empty here would
+    # disable OIDC entirely (why bearer auth silently no-op'd before).
+    auth-server-url: http://localhost:8090/realms/eagleseye
+    client-id: eagleseye-console
+    application-type: service
+    roles:
+      source: accesstoken
+    devservices:
+      enabled: false   # we run our own Keycloak; don't let Dev Services hijack OIDC
+  keycloak:
+    devservices:
+      enabled: false
   http:
     port: 8080
-  # OIDC (Keycloak) not wired yet — enabled with T-403
-  oidc:
-    enabled: false
+    # T-403 PARKED: OIDC config below is correct and Keycloak is reachable (discovery
+    # 200, tokens carry the tenant_id claim), but the OIDC tenant is not activating as
+    # an auth mechanism in this dev setup — protected requests get a bare 403 with no
+    # Bearer challenge and no OIDC logs. Needs a focused session (suspect a Quinoa +
+    # OIDC dev-mode interaction). Until then the API is open in dev and the tenant is
+    # selected by the X-Tenant-Id header (TenantFilter), with RLS still fully enforcing
+    # isolation at the database. Flip this to `authenticated` once OIDC activates.
+    auth:
+      permission:
+        api:
+          paths: /api/*
+          policy: permit
   # DEFAULT datasource = RLS-bound app role; "system" = owner role, cross-tenant,
   # for system components (digest, registry bootstrap). Credentials per profile.
   datasource:
