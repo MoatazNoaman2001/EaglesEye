@@ -88,7 +88,9 @@ table.data tr:last-child td { border-block-end: none; }
 .live-row .lbl { font-weight: 700; color: var(--navy); font-size: 0.86rem; }
 .live-row .meta { margin-inline-start: auto; font-size: 0.76rem; color: var(--muted); }
 .live-empty { padding: 12px; font-size: 0.82rem; color: var(--muted); text-align: center; }
-.veh-marker { width: 16px; height: 16px; border-radius: 50%; border: 2.5px solid #fff; box-shadow: 0 1px 5px rgba(0,0,0,.4); cursor: pointer; }
+.veh-marker { width: 20px; height: 20px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 2px 7px rgba(0,0,0,.5); cursor: pointer; position: relative; }
+.veh-marker::after { content: ""; position: absolute; inset: -5px; border-radius: 50%; border: 2px solid rgba(20,168,214,.75); animation: ee-pulse 1.8s ease-out infinite; pointer-events: none; }
+@keyframes ee-pulse { 0% { transform: scale(.65); opacity: .9; } 100% { transform: scale(1.9); opacity: 0; } }
 
 /* alerts */
 .sev { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.72rem; font-weight: 700; }
