@@ -28,7 +28,8 @@ export default function LiveMapPage() {
   const mapRef = useRef<maplibregl.Map | null>(null);
   const markersRef = useRef<Map<string, { marker: maplibregl.Marker; popup: maplibregl.Popup }>>(new Map());
   const fittedRef = useRef(false);
-  const [count, setCount] = useState(0);
+  const [vehicles, setVehicles] = useState<LiveVehicle[]>([]);
+  const [listOpen, setListOpen] = useState(false);
 
   useEffect(() => {
     // dev tiles: public OSM raster; production self-hosts (ADR-6)
@@ -56,10 +57,10 @@ export default function LiveMapPage() {
       try {
         const res = await fetch("/api/v1/live/vehicles");
         if (!res.ok) return;
-        const vehicles: LiveVehicle[] = await res.json();
-        setCount(vehicles.length);
+        const list: LiveVehicle[] = await res.json();
+        setVehicles(list);
         const seen = new Set<string>();
-        for (const v of vehicles) {
+        for (const v of list) {
           const lat = parseFloat(v.lat);
           const lon = parseFloat(v.lon);
           if (!v.vehicleId || isNaN(lat) || isNaN(lon)) continue;
@@ -89,9 +90,9 @@ export default function LiveMapPage() {
             markersRef.current.delete(id);
           }
         }
-        if (!fittedRef.current && vehicles.length > 0) {
+        if (!fittedRef.current && list.length > 0) {
           const bounds = new maplibregl.LngLatBounds();
-          vehicles.forEach((v) => bounds.extend([parseFloat(v.lon), parseFloat(v.lat)]));
+          list.forEach((v) => bounds.extend([parseFloat(v.lon), parseFloat(v.lat)]));
           map.fitBounds(bounds, { padding: 80, maxZoom: 14 });
           fittedRef.current = true;
         }
@@ -110,10 +111,36 @@ export default function LiveMapPage() {
     };
   }, []);
 
+  // fly the map to a vehicle and open its popup
+  const focusVehicle = (v: LiveVehicle) => {
+    const lat = parseFloat(v.lat);
+    const lon = parseFloat(v.lon);
+    if (isNaN(lat) || isNaN(lon) || !mapRef.current) return;
+    mapRef.current.flyTo({ center: [lon, lat], zoom: 15, duration: 800 });
+    const m = markersRef.current.get(v.vehicleId);
+    if (m && !m.popup.isOpen()) m.marker.togglePopup();
+    setListOpen(false);
+  };
+
   return (
     <div className="page fill" style={{ position: "relative" }}>
-      <div className="map-count">
-        <b>{count}</b> {t("live.vehiclesLive")}
+      <div className="live-panel">
+        <button className="map-count" onClick={() => setListOpen((o) => !o)} aria-expanded={listOpen}>
+          <b>{vehicles.length}</b> {t("live.vehiclesLive")}
+          <span className={`chev ${listOpen ? "up" : ""}`}>▾</span>
+        </button>
+        {listOpen && (
+          <div className="live-list">
+            {vehicles.length === 0 && <div className="live-empty">{t("live.none")}</div>}
+            {vehicles.map((v) => (
+              <button key={v.vehicleId} className="live-row" onClick={() => focusVehicle(v)}>
+                <span className="dot" style={{ background: STATUS_COLORS[v.status] || "#5b6b7d" }} />
+                <span className="lbl">{v.vehicleLabel || v.imei}</span>
+                <span className="meta">{v.status} · {v.speedKmh ?? "0"} km/h</span>
+              </button>
+            ))}
+          </div>
+        )}
       </div>
       <div ref={containerRef} className="map-container" />
     </div>
