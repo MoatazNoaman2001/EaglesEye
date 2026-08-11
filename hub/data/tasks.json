@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "saved": "2026-08-10T13:42:36.949Z",
+  "saved": "2026-08-11T07:27:24.437Z",
   "tasks": [
     {
       "id": "T-101",
@@ -497,8 +497,8 @@
       "prio": "u",
       "biz": false,
       "title": "WebSocket/SSE live push with tenant+group filtering and throttle",
-      "refs": "FR-TRK-02, NFR-02, RK-A8",
-      "status": "backlog",
+      "refs": "FR-TRK-02, NFR-02 - WebSocket live push /ws/live: snapshot on connect + Valkey pub/sub fan-out; frontend replaced polling; client staleness removal decrements count when a device stops. Verified end-to-end (4 live pushes through the chain). Tenant scoping with T-403.",
+      "status": "done",
       "deps": [
         "T-501"
       ],

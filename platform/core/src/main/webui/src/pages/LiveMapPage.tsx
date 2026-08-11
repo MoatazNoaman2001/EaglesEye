@@ -9,6 +9,9 @@ const STATUS_COLORS: Record<string, string> = {
   NO_FIX: "#c93a2e",
 };
 
+// a vehicle with no update for this long is considered gone (drops off + decrements)
+const STALE_MS = 45_000;
+
 type LiveVehicle = {
   vehicleId: string;
   vehicleLabel?: string;
@@ -27,12 +30,13 @@ export default function LiveMapPage() {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
   const markersRef = useRef<Map<string, { marker: maplibregl.Marker; popup: maplibregl.Popup }>>(new Map());
+  const seenAtRef = useRef<Map<string, number>>(new Map());
   const fittedRef = useRef(false);
-  const [vehicles, setVehicles] = useState<LiveVehicle[]>([]);
+  const [vehicles, setVehicles] = useState<Record<string, LiveVehicle>>({});
   const [listOpen, setListOpen] = useState(false);
+  const [connected, setConnected] = useState(false);
 
   useEffect(() => {
-    // dev tiles: public OSM raster; production self-hosts (ADR-6)
     const map = new maplibregl.Map({
       container: containerRef.current!,
       style: {
@@ -53,65 +57,108 @@ export default function LiveMapPage() {
     map.addControl(new maplibregl.NavigationControl());
     mapRef.current = map;
 
-    const refresh = async () => {
-      try {
-        const res = await fetch("/api/v1/live/vehicles");
-        if (!res.ok) return;
-        const list: LiveVehicle[] = await res.json();
-        setVehicles(list);
-        const seen = new Set<string>();
-        for (const v of list) {
-          const lat = parseFloat(v.lat);
-          const lon = parseFloat(v.lon);
-          if (!v.vehicleId || isNaN(lat) || isNaN(lon)) continue;
-          seen.add(v.vehicleId);
-          const html =
-            `<b>${v.vehicleLabel || v.vehicleId}</b><br>` +
-            `${v.status} · ${v.speedKmh ?? "0"} km/h<br>` +
-            `${v.imei} · ${v.protocol}<br>` +
-            `${(v.deviceTime || "").replace("T", " ").slice(0, 19)}`;
-          const existing = markersRef.current.get(v.vehicleId);
-          if (existing) {
-            existing.marker.setLngLat([lon, lat]);
-            existing.marker.getElement().style.background = STATUS_COLORS[v.status] || "#5b6b7d";
-            existing.popup.setHTML(html);
-          } else {
-            const el = document.createElement("div");
-            el.className = "veh-marker";
-            el.style.background = STATUS_COLORS[v.status] || "#5b6b7d";
-            const popup = new maplibregl.Popup({ offset: 12 }).setHTML(html);
-            const marker = new maplibregl.Marker({ element: el }).setLngLat([lon, lat]).setPopup(popup).addTo(map);
-            markersRef.current.set(v.vehicleId, { marker, popup });
-          }
-        }
-        for (const [id, m] of markersRef.current) {
-          if (!seen.has(id)) {
-            m.marker.remove();
-            markersRef.current.delete(id);
-          }
-        }
-        if (!fittedRef.current && list.length > 0) {
-          const bounds = new maplibregl.LngLatBounds();
-          list.forEach((v) => bounds.extend([parseFloat(v.lon), parseFloat(v.lat)]));
-          map.fitBounds(bounds, { padding: 80, maxZoom: 14 });
-          fittedRef.current = true;
-        }
-      } catch {
-        /* transient — next poll retries */
+    const upsert = (v: LiveVehicle) => {
+      const lat = parseFloat(v.lat);
+      const lon = parseFloat(v.lon);
+      if (!v.vehicleId || isNaN(lat) || isNaN(lon)) return;
+      seenAtRef.current.set(v.vehicleId, Date.now());
+      setVehicles((prev) => ({ ...prev, [v.vehicleId]: v }));
+
+      const html =
+        `<b>${v.vehicleLabel || v.vehicleId}</b><br>` +
+        `${v.status} · ${v.speedKmh ?? "0"} km/h<br>` +
+        `${v.imei} · ${v.protocol}<br>` +
+        `${(v.deviceTime || "").replace("T", " ").slice(0, 19)}`;
+      const existing = markersRef.current.get(v.vehicleId);
+      if (existing) {
+        existing.marker.setLngLat([lon, lat]);
+        existing.marker.getElement().style.background = STATUS_COLORS[v.status] || "#5b6b7d";
+        existing.popup.setHTML(html);
+      } else {
+        const el = document.createElement("div");
+        el.className = "veh-marker";
+        el.style.background = STATUS_COLORS[v.status] || "#5b6b7d";
+        const popup = new maplibregl.Popup({ offset: 14 }).setHTML(html);
+        const marker = new maplibregl.Marker({ element: el }).setLngLat([lon, lat]).setPopup(popup).addTo(map);
+        markersRef.current.set(v.vehicleId, { marker, popup });
+      }
+      if (!fittedRef.current) {
+        map.flyTo({ center: [lon, lat], zoom: 14, duration: 600 });
+        fittedRef.current = true;
       }
     };
 
-    refresh();
-    const interval = setInterval(refresh, 2000);   // WebSocket push replaces polling in T-503
+    const remove = (id: string) => {
+      markersRef.current.get(id)?.marker.remove();
+      markersRef.current.delete(id);
+      seenAtRef.current.delete(id);
+      setVehicles((prev) => {
+        const next = { ...prev };
+        delete next[id];
+        return next;
+      });
+    };
+
+    // WebSocket live push (T-503) — replaces polling
+    let ws: WebSocket | null = null;
+    let reconnectTimer: number | undefined;
+    const connect = () => {
+      const proto = location.protocol === "https:" ? "wss" : "ws";
+      ws = new WebSocket(`${proto}://${location.host}/ws/live`);
+      ws.onopen = () => setConnected(true);
+      ws.onclose = () => {
+        setConnected(false);
+        reconnectTimer = window.setTimeout(connect, 2000);   // auto-reconnect
+      };
+      ws.onmessage = (msg) => {
+        try {
+          const data = JSON.parse(msg.data);
+          if (data.type === "snapshot") {
+            (data.vehicles as LiveVehicle[]).forEach(upsert);
+          } else if (data.type === "position") {
+            const e = data.event;
+            const t2 = e.telemetry;
+            upsert({
+              vehicleId: e.vehicleId,
+              vehicleLabel: e.vehicleLabel,
+              status: e.status,
+              lat: String(t2.latitude),
+              lon: String(t2.longitude),
+              speedKmh: t2.speedKmh != null ? String(Math.round(t2.speedKmh * 10) / 10) : undefined,
+              headingDeg: t2.headingDeg != null ? String(t2.headingDeg) : undefined,
+              imei: t2.imei,
+              protocol: t2.protocol,
+              deviceTime: t2.deviceTime,
+            });
+          }
+        } catch {
+          /* ignore malformed frame */
+        }
+      };
+    };
+    connect();
+
+    // staleness sweep: drop vehicles that stopped reporting (decrements the count)
+    const sweep = window.setInterval(() => {
+      const now = Date.now();
+      for (const [id, at] of seenAtRef.current) {
+        if (now - at > STALE_MS) remove(id);
+      }
+    }, 5000);
+
     return () => {
-      clearInterval(interval);
+      window.clearInterval(sweep);
+      window.clearTimeout(reconnectTimer);
+      ws?.close();
+      markersRef.current.forEach((m) => m.marker.remove());
       markersRef.current.clear();
       map.remove();
       mapRef.current = null;
     };
   }, []);
 
-  // fly the map to a vehicle and open its popup
+  const list = Object.values(vehicles);
+
   const focusVehicle = (v: LiveVehicle) => {
     const lat = parseFloat(v.lat);
     const lon = parseFloat(v.lon);
@@ -126,13 +173,14 @@ export default function LiveMapPage() {
     <div className="page fill" style={{ position: "relative" }}>
       <div className="live-panel">
         <button className="map-count" onClick={() => setListOpen((o) => !o)} aria-expanded={listOpen}>
-          <b>{vehicles.length}</b> {t("live.vehiclesLive")}
+          <span className={`live-dot ${connected ? "on" : "off"}`} />
+          <b>{list.length}</b> {t("live.vehiclesLive")}
           <span className={`chev ${listOpen ? "up" : ""}`}>▾</span>
         </button>
         {listOpen && (
           <div className="live-list">
-            {vehicles.length === 0 && <div className="live-empty">{t("live.none")}</div>}
-            {vehicles.map((v) => (
+            {list.length === 0 && <div className="live-empty">{t("live.none")}</div>}
+            {list.map((v) => (
               <button key={v.vehicleId} className="live-row" onClick={() => focusVehicle(v)}>
                 <span className="dot" style={{ background: STATUS_COLORS[v.status] || "#5b6b7d" }} />
                 <span className="lbl">{v.vehicleLabel || v.imei}</span>

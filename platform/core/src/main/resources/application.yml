@@ -50,6 +50,7 @@ quarkus:
     ignored-path-prefixes:
       - /api
       - /q
+      - /ws
     dev-server:
       port: 5173
 

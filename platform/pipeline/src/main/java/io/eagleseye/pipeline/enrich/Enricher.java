@@ -33,7 +33,10 @@ public class Enricher {
 
     /** TODO(T-210/T-411): read from platform settings; fixed for now. */
     private static final double MOVING_SPEED_KMH = 5.0;
-    private static final Duration LIVE_STATE_TTL = Duration.ofMinutes(10);
+    // short TTL: a vehicle that stops reporting disappears from the live map within
+    // ~2 min (WebSocket clients drop it even faster via staleness). Movement history
+    // lives in the positions hypertable, not here.
+    private static final Duration LIVE_STATE_TTL = Duration.ofMinutes(2);
     private static final String PUBSUB_CHANNEL = "positions";
 
     @Inject ObjectMapper mapper;
